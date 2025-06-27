@@ -1,0 +1,130 @@
+var num_cartas = 0;
+var num_pags = 1;
+
+ $(document).ready(function(){
+ 
+	inicializar();
+	
+	
+});
+
+var html_barra_lateral_general = `
+		<div id="add_carta_vacia" style="border: 1px solid gray; background-color:#eeeeee; width:88%; margin:auto; margin-top: 10px; margin-bottom:10px; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;">
+				+ Carta Vacía
+			</div>
+			<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
+				<div style="width:90%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">+ Importar imágenes</div>
+				<input id="importar_imagenes" type="file" multiple="multiple" id="imgs" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
+			</div>
+	`;
+	
+var html_barra_lateral_carta = `
+		
+	`;
+
+function inicializar(){
+	
+	cargarBarraLateralGeneral();
+	
+	$('#contenedor_paginas').click(function(){ desseleccionarCartas(); });
+	
+}
+
+function cargarBarraLateralGeneral(){
+	
+	
+	$('#menu_lateral').empty();
+	$('#menu_lateral').html(html_barra_lateral_general);
+	
+	$('#importar_imagenes').on('change', function(event) {
+	  const files = event.target.files;
+
+	  Array.from(files).forEach(file => {
+		if (file.type.startsWith('image/')) {
+			var carta = anyadirCartaVacia();
+			var img = $('<img>');
+			img.attr('src', URL.createObjectURL(file));
+			carta.append(img);
+			img.attr('class','carta_fondo');
+		  
+		  //carta.css('background', 'url('+ URL.createObjectURL(file)+'');
+		  //carta.css('background-size', '100% 100%');
+		}
+	  });
+	});
+	
+	$('#add_carta_vacia').click(function(){ anyadirCartaVacia(); });
+	
+	
+}
+
+function cargarBarraLateralCartaSeleccionada(){
+	$('#menu_lateral').empty();
+	$('#menu_lateral').html(html_barra_lateral_carta);
+	var cartas = $('.carta_seleccionada');
+	$('#menu_lateral').append("<span> "+cartas.length+ " cartas seleccionadas.</span>");
+	
+	if(cartas.length == 1){
+		
+		
+		
+	}else{
+		//ver campos en común y añadir opciones
+	}
+	
+}
+
+function seleccionarCarta(n){
+
+	var carta = $("#carta_"+n);
+	if(carta.hasClass('carta_seleccionada')){
+		carta.removeClass("carta_seleccionada");
+	}else{
+		carta.addClass("carta_seleccionada");
+	}
+	
+	cargarBarraLateralCartaSeleccionada();
+	
+	return carta;
+}
+
+function desseleccionarCartas(){
+	$(".carta_seleccionada").removeClass('carta_seleccionada');
+	cargarBarraLateralGeneral();
+}
+
+function anyadirCartaVacia(){
+	if(num_cartas%9 == 0 && num_cartas>0){
+		anyadirPagina();
+	}
+	pagina = getUltimaPagina();
+	num_cartas++;
+	
+	pagina.append("<div id='carta_"+num_cartas+"' class='carta' data-id='"+num_cartas+"'> </div>");
+	
+	$("#carta_"+num_cartas).click(function(event){ 
+		if (!event.ctrlKey) {
+			desseleccionarCartas();
+		}			
+		var id = $(this).attr('data-id'); 
+		seleccionarCarta(id) 
+		event.stopPropagation();
+	});
+	
+	return getUltimaCarta();
+}
+
+function anyadirPagina(){
+	var p = $('#contenedor_paginas').append("<div class='pagina'> </div>");
+	num_pags++;
+	return p;
+}
+
+function getUltimaPagina(){
+	return $('#contenedor_paginas').children().last();
+}
+
+function getUltimaCarta(){
+	var ultima_pagina = getUltimaPagina();
+	return ultima_pagina.children().last();
+}

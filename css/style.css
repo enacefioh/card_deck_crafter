@@ -1,0 +1,75 @@
+body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .pagina {
+            width: 210mm; /* Ancho de una página A4 */
+            min-height: 290mm; /* Alto de una página A4 */
+            margin: 20mm auto; /* Márgenes y centrado */
+			transform: translateX(150px);
+            padding: 5mm;
+            box-sizing: border-box;
+            background-color: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			page-break-after: always;
+        }
+		.carta{
+			width:63mm; 
+			height:88mm; 
+			border: 1px solid #CCC; 
+			margin-top:1mm;
+			margin-left:1mm;
+			position:relative;
+			border-radius:3mm;
+			float: left;
+			overflow: hidden;
+		}
+        @media print {
+            .pagina {
+                margin: 0;
+                padding: 5mm;
+                box-shadow: none;
+				transform: translateX(0px);
+            }
+			
+			#menu_superior, #menu_lateral{
+				display:none;
+			}
+        }
+		@page {
+			margin: 0;
+		}
+		
+		#menu_superior{
+			width:100%;
+			height: 30px;
+			position:fixed;
+			top:0;
+			left:0;
+			background: #eee;
+			border-bottom: 1px solid #ddd;
+		}
+		
+		#menu_lateral{
+			width:300px;
+			height: 100%;
+			position:fixed;
+			top:0;
+			left:0;
+			background: #eee;
+			border-right: 1px solid #ddd;
+			padding-top: 35px;
+		}
+		
+		.carta_fondo{
+			width:100%;
+			height:100%;
+			object-fit: fill;
+		}
+		
+		.carta_seleccionada{
+			border: 1px solid #C00; 
+		}
+		
+		
