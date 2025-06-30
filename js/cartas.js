@@ -135,13 +135,38 @@ function getUltimaCarta(){
 	return ultima_pagina.children().last();
 }
 
-function subir_cartas_seleccionadas(){
-	var cartas_seleccionadas = $('.carta_seleccionada');
-	alert(cartas_seleccionadas.length);
+function subir_cartas_seleccionadas() {
+    var cartas_seleccionadas = $('.carta_seleccionada');
+
+    if (cartas_seleccionadas.length !== 1) return;
+
+    var carta_actual = cartas_seleccionadas.first();
+    var carta_anterior = carta_actual.prev('.carta');
+
+    if (carta_anterior.length === 0) return;
+
+    // Intercambiar contenidos
+    var temp = carta_actual.html();
+    carta_actual.html(carta_anterior.html());
+    carta_anterior.html(temp);
+	carta_actual.removeClass('carta_seleccionada');
+	carta_anterior.addClass('carta_seleccionada');
 }
 
-function bajar_cartas_seleccionadas(){
-	var cartas_seleccionadas = $('.carta_seleccionada');
-	alert(cartas_seleccionadas.length);
-}
+function bajar_cartas_seleccionadas() {
+    var cartas_seleccionadas = $('.carta_seleccionada');
 
+    if (cartas_seleccionadas.length !== 1) return;
+
+    var carta_actual = cartas_seleccionadas.first();
+    var carta_siguiente = carta_actual.next('.carta');
+
+    if (carta_siguiente.length === 0) return;
+
+    // Intercambiar contenidos
+    var temp = carta_actual.html();
+    carta_actual.html(carta_siguiente.html());
+    carta_siguiente.html(temp);
+	carta_actual.removeClass('carta_seleccionada');
+	carta_siguiente.addClass('carta_seleccionada');
+}
