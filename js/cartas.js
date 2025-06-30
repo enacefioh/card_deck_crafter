@@ -19,7 +19,10 @@ var html_barra_lateral_general = `
 	`;
 	
 var html_barra_lateral_carta = `
-		
+		<div id='carta_seleccionada_controles_basicos' class='submenu_botones' >
+			<div id='subir_carta_seleccionada' class='submenu_botones_boton' title='Subir carta seleccionada'> ⬆️ </div>
+			<div id='bajar_carta_seleccionada' class='submenu_botones_boton' title='Bajar carta seleccionada'> ⬇️ </div>
+		</div>
 	`;
 
 function inicializar(){
@@ -63,6 +66,9 @@ function cargarBarraLateralCartaSeleccionada(){
 	$('#menu_lateral').html(html_barra_lateral_carta);
 	var cartas = $('.carta_seleccionada');
 	$('#menu_lateral').append("<span> "+cartas.length+ " cartas seleccionadas.</span>");
+	
+	$('#subir_carta_seleccionada').click(function(){ subir_cartas_seleccionadas() });
+	$('#bajar_carta_seleccionada').click(function(){ bajar_cartas_seleccionadas() });
 	
 	if(cartas.length == 1){
 		
@@ -128,3 +134,14 @@ function getUltimaCarta(){
 	var ultima_pagina = getUltimaPagina();
 	return ultima_pagina.children().last();
 }
+
+function subir_cartas_seleccionadas(){
+	var cartas_seleccionadas = $('.carta_seleccionada');
+	alert(cartas_seleccionadas.length);
+}
+
+function bajar_cartas_seleccionadas(){
+	var cartas_seleccionadas = $('.carta_seleccionada');
+	alert(cartas_seleccionadas.length);
+}
+

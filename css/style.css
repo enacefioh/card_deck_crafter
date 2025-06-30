@@ -72,4 +72,19 @@ body {
 			border: 1px solid #C00; 
 		}
 		
+		.submenu_botones_boton{
+			display: inline-block;
+			font-size: 30px;
+			cursor:pointer;
+		}
+		.submenu_botones{
+			width:90%;
+			text-align:center;
+			padding: 5px;
+			margin: auto;
+			margin-top: 5px;
+			margin-bottom: 5px;
+			
+		}
+		
 		
