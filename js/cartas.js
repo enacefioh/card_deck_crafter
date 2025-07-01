@@ -22,6 +22,7 @@ var html_barra_lateral_carta = `
 		<div id='carta_seleccionada_controles_basicos' class='submenu_botones' >
 			<div id='subir_carta_seleccionada' class='submenu_botones_boton' title='Subir carta seleccionada'> ⬆️ </div>
 			<div id='bajar_carta_seleccionada' class='submenu_botones_boton' title='Bajar carta seleccionada'> ⬇️ </div>
+			<div id='eliminar_cartas_seleccionadas' class='submenu_botones_boton' title='Eliminar cartas seleccionadas'> ❌ </div>
 		</div>
 	`;
 
@@ -69,6 +70,7 @@ function cargarBarraLateralCartaSeleccionada(){
 	
 	$('#subir_carta_seleccionada').click(function(){ subir_cartas_seleccionadas() });
 	$('#bajar_carta_seleccionada').click(function(){ bajar_cartas_seleccionadas() });
+	$('#eliminar_cartas_seleccionadas').click(function(){ eliminar_cartas_seleccionadas() });
 	
 	if(cartas.length == 1){
 		
@@ -177,4 +179,30 @@ function bajar_cartas_seleccionadas() {
     carta_siguiente.html(temp);
 	carta_actual.removeClass('carta_seleccionada');
 	carta_siguiente.addClass('carta_seleccionada');
+}
+
+function eliminar_cartas_seleccionadas() {
+    // 1. Eliminar todas las seleccionadas
+    $('.carta_seleccionada').remove();
+
+    // 2. Guardar el contenido de todas las cartas restantes
+    var cartas_guardadas = [];
+    $('.carta').each(function() {
+        cartas_guardadas.push($(this).html());
+    });
+
+    // 3. Eliminar todas las cartas del DOM
+    $('.carta').remove();
+    $('.pagina').remove();
+	num_pags = 0;
+	num_cartas = 0;
+	anyadirPagina();
+
+    // 4. Añadir cartas vacías y rellenarlas con el contenido guardado
+    for (var i = 0; i < cartas_guardadas.length; i++) {
+        var nueva_carta = anyadirCartaVacia(); // esta función debe devolver el nuevo div.carta insertado
+        nueva_carta.html(cartas_guardadas[i]);
+    }
+	
+	cargarBarraLateralGeneral();
 }
