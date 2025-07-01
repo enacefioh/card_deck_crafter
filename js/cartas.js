@@ -141,7 +141,11 @@ function subir_cartas_seleccionadas() {
     if (cartas_seleccionadas.length !== 1) return;
 
     var carta_actual = cartas_seleccionadas.first();
-    var carta_anterior = carta_actual.prev('.carta');
+    var todas_las_cartas = $('.carta');
+	var index = todas_las_cartas.index(carta_actual);
+	if (index > 0) {
+		var carta_anterior = todas_las_cartas.eq(index - 1);
+	}
 
     if (carta_anterior.length === 0) return;
 
@@ -159,7 +163,11 @@ function bajar_cartas_seleccionadas() {
     if (cartas_seleccionadas.length !== 1) return;
 
     var carta_actual = cartas_seleccionadas.first();
-    var carta_siguiente = carta_actual.next('.carta');
+    var todas_las_cartas = $('.carta');
+	var index = todas_las_cartas.index(carta_actual);
+	if (index < todas_las_cartas.length - 1) {
+		var carta_siguiente = todas_las_cartas.eq(index + 1);
+	}
 
     if (carta_siguiente.length === 0) return;
 
