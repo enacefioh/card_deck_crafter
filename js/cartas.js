@@ -23,6 +23,7 @@ var html_barra_lateral_carta = `
 			<div id='subir_carta_seleccionada' class='submenu_botones_boton' title='Subir carta seleccionada'> ⬆️ </div>
 			<div id='bajar_carta_seleccionada' class='submenu_botones_boton' title='Bajar carta seleccionada'> ⬇️ </div>
 			<div id='eliminar_cartas_seleccionadas' class='submenu_botones_boton' title='Eliminar cartas seleccionadas'> ❌ </div>
+			<div id='duplicar_carta_seleccionada' class='submenu_botones_boton' title='Duplicar carta seleccionada'> 📄‍↔️📄 </div>
 		</div>
 	`;
 
@@ -71,6 +72,7 @@ function cargarBarraLateralCartaSeleccionada(){
 	$('#subir_carta_seleccionada').click(function(){ subir_cartas_seleccionadas() });
 	$('#bajar_carta_seleccionada').click(function(){ bajar_cartas_seleccionadas() });
 	$('#eliminar_cartas_seleccionadas').click(function(){ eliminar_cartas_seleccionadas() });
+	$('#duplicar_carta_seleccionada').click(function(){ duplicar_cartas_seleccionadas() });
 	
 	if(cartas.length == 1){
 		
@@ -185,10 +187,16 @@ function eliminar_cartas_seleccionadas() {
     // 1. Eliminar todas las seleccionadas
     $('.carta_seleccionada').remove();
 
-    // 2. Guardar el contenido de todas las cartas restantes
+	reordenarCartas();
+	
+	cargarBarraLateralGeneral();
+} 
+
+function reordenarCartas(){
+	 // 2. Guardar el contenido de todas las cartas restantes
     var cartas_guardadas = [];
     $('.carta').each(function() {
-        cartas_guardadas.push($(this).html());
+        cartas_guardadas.push($(this));
     });
 
     // 3. Eliminar todas las cartas del DOM
@@ -201,8 +209,21 @@ function eliminar_cartas_seleccionadas() {
     // 4. Añadir cartas vacías y rellenarlas con el contenido guardado
     for (var i = 0; i < cartas_guardadas.length; i++) {
         var nueva_carta = anyadirCartaVacia(); // esta función debe devolver el nuevo div.carta insertado
-        nueva_carta.html(cartas_guardadas[i]);
+        nueva_carta.html(cartas_guardadas[i].html());
+		$(nueva_carta).attr("class", $(cartas_guardadas[i]).attr('class'));
     }
-	
-	cargarBarraLateralGeneral();
+} // Quita todas las cartas y páginas y las vuelve añadir, útil cuando se elimina alguna o quedan huecos o cartas de más en alguna página
+
+function duplicar_cartas_seleccionadas(){
+	var seleccionadas = $('.carta_seleccionada');
+
+    if (seleccionadas.length === 0) return;
+
+    seleccionadas.each(function() {
+        var original = $(this);
+        var clon = original.clone();
+        clon.removeClass('carta_seleccionada');
+        original.after(clon);
+    });
+	reordenarCartas();
 }

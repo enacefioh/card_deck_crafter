@@ -24,6 +24,7 @@ body {
 			border-radius:3mm;
 			float: left;
 			overflow: hidden;
+			border: 2px solid #FFF; 
 		}
         @media print {
             .pagina {
@@ -69,13 +70,18 @@ body {
 		}
 		
 		.carta_seleccionada{
-			border: 1px solid #C00; 
+			border: 2px solid #C00; 
 		}
 		
 		.submenu_botones_boton{
 			display: inline-block;
-			font-size: 30px;
+			font-size: 26px;
 			cursor:pointer;
+			border: 2px solid gray;
+			border-radius: 5px;
+			padding: 2px;
+			background: #666;
+			
 		}
 		.submenu_botones{
 			width:90%;
