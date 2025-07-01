@@ -17,14 +17,13 @@ body {
 		.carta{
 			width:63mm; 
 			height:88mm; 
-			border: 1px solid #CCC; 
+			border: 2px solid #CCC; 
 			margin-top:1mm;
 			margin-left:1mm;
 			position:relative;
 			border-radius:3mm;
 			float: left;
 			overflow: hidden;
-			border: 2px solid #FFF; 
 		}
         @media print {
             .pagina {
