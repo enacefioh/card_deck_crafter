@@ -82,6 +82,13 @@ function cargarBarraLateralCartaSeleccionada(){
 		//ver campos en común y añadir opciones
 	}
 	
+	//añadir menús de los elementos comunes
+	var clasesComunes = getClasesHijasComunesEnSeleccionadas();
+	
+	clasesComunes.forEach(function(clase) {
+		$('#menu_lateral').append("- "+clase);
+	});
+	
 }
 
 function seleccionarCarta(n){
@@ -227,3 +234,38 @@ function duplicar_cartas_seleccionadas(){
     });
 	reordenarCartas();
 }
+
+function getClasesHijasComunesEnSeleccionadas() {
+	coleccion = $(".carta_seleccionada");
+    if (coleccion.length === 0) return [];
+
+    // Inicializa con el conjunto de clases del primer elemento
+    var clases_comunes = new Set();
+
+    // Obtiene las clases de todos los descendientes del primer elemento
+    coleccion.first().find('*').each(function () {
+        $(this).attr('class')?.split(/\s+/).forEach(clase => {
+            if (clase) clases_comunes.add(clase);
+        });
+    });
+
+    // Para cada elemento restante, filtra las clases que no están en todos
+    coleccion.slice(1).each(function () {
+        var clases_en_este = new Set();
+        $(this).find('*').each(function () {
+            $(this).attr('class')?.split(/\s+/).forEach(clase => {
+                if (clase) clases_en_este.add(clase);
+            });
+        });
+
+        // Filtrar las que ya no están en este elemento
+        clases_comunes.forEach(clase => {
+            if (!clases_en_este.has(clase)) {
+                clases_comunes.delete(clase);
+            }
+        });
+    });
+
+    return Array.from(clases_comunes);
+}
+

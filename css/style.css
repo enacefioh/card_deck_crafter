@@ -24,7 +24,6 @@ body {
 			border-radius:3mm;
 			float: left;
 			overflow: hidden;
-			border: 2px solid #FFF; 
 		}
         @media print {
             .pagina {
