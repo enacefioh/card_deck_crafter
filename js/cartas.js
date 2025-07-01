@@ -14,7 +14,7 @@ var html_barra_lateral_general = `
 			</div>
 			<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 				<div style="width:90%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">+ Importar imágenes</div>
-				<input id="importar_imagenes" type="file" multiple="multiple" id="imgs" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
+				<input id="importar_imagenes" type="file" multiple="multiple" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
 			</div>
 	`;
 	
@@ -67,7 +67,6 @@ function cargarBarraLateralCartaSeleccionada(){
 	$('#menu_lateral').empty();
 	$('#menu_lateral').html(html_barra_lateral_carta);
 	var cartas = $('.carta_seleccionada');
-	$('#menu_lateral').append("<span> "+cartas.length+ " cartas seleccionadas.</span>");
 	
 	$('#subir_carta_seleccionada').click(function(){ subir_cartas_seleccionadas() });
 	$('#bajar_carta_seleccionada').click(function(){ bajar_cartas_seleccionadas() });
@@ -86,7 +85,8 @@ function cargarBarraLateralCartaSeleccionada(){
 	var clasesComunes = getClasesHijasComunesEnSeleccionadas();
 	
 	clasesComunes.forEach(function(clase) {
-		$('#menu_lateral').append("- "+clase);
+		// $('#menu_lateral').append("- "+clase);
+		cargarSubmenusClase(clase);
 	});
 	
 }
@@ -269,3 +269,49 @@ function getClasesHijasComunesEnSeleccionadas() {
     return Array.from(clases_comunes);
 }
 
+function cargarSubmenusClase(clase){
+	switch (clase) {
+		case "carta_fondo":
+			submenu_carta_fondo();
+			break;
+		default:
+			console.log("Clase no reconocida");
+	}
+}
+
+// FUNCIONALIDAD SUBMENÚS PARTES DE LA CARTA
+
+function submenu_carta_fondo(){
+	var html_submenu_carta_fondo = `
+		<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:80px; margin:auto; margin-top: 10px; margin-bottom:10px;">
+				<div style="width:90%; margin:auto; margin-top: 30px; color: #999999; font-size: 15px; position:absolute; text-align:center;">🔄Cambiar imagen fondo</div>
+				<input id="carta_fondo_cambiar_input" accept="image/*" type="file"  style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
+			</div>
+	`;
+	$('#menu_lateral').append(html_submenu_carta_fondo);
+	
+	$('#carta_fondo_cambiar_input').on('change', function(event) {
+	   const file = event.target.files[0];
+		if (!file) return;
+
+		const reader = new FileReader();
+
+		reader.onload = function(e) {
+			const imageDataUrl = e.target.result;
+
+			// Cambiar el fondo en todas las cartas seleccionadas
+			$('.carta_seleccionada .carta_fondo').each(function() {
+				// Si es una etiqueta <img>
+				if ($(this).is('img')) {
+					$(this).attr('src', imageDataUrl);
+				} else {
+					// Si es un div u otro elemento con fondo CSS
+					$(this).css('background-image', `url(${imageDataUrl})`);
+				}
+			});
+		};
+
+		reader.readAsDataURL(file); // Lee la imagen como DataURL para mostrarla directamente
+	  
+	});
+}
