@@ -54,11 +54,11 @@ function cargarBarraLateralGeneral(){
 	  Array.from(files).forEach(file => {
 		if (file.type.startsWith('image/')) {
 			var carta = anyadirCartaVacia();
-			var img = $('<img>');
+			
+			
+			var img = carta.find('.carta_fondo');
 			img.attr('src', URL.createObjectURL(file));
-			carta.append(img);
-			img.attr('data-id', 'carta_fondo');
-			img.attr('class','img carta_fondo');
+		  
 		  
 		  //carta.css('background', 'url('+ URL.createObjectURL(file)+'');
 		  //carta.css('background-size', '100% 100%');
@@ -143,7 +143,15 @@ function anyadirCartaVacia(){
 		event.stopPropagation();
 	});
 	
-	return getUltimaCarta();
+	var carta = getUltimaCarta();
+	
+	var img = $('<img>');
+			
+	carta.append(img);
+	img.attr('data-id', 'carta_fondo');
+	img.attr('class','img carta_fondo');
+	
+	return carta;
 }
 
 function anyadirPagina(){
