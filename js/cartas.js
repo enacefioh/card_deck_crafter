@@ -30,9 +30,16 @@ var html_barra_lateral_carta = `
 function inicializar(){
 	
 	cargarBarraLateralGeneral();
+	cargarFuncionalidadMenuPrincipal();
 	
 	$('#contenedor_paginas').click(function(){ desseleccionarCartas(); });
 	
+}
+
+function cargarFuncionalidadMenuPrincipal(){
+	$('#menu_archivo_nuevo').click(function(){ location.reload(); });
+	$('#menu_edicion_seleccionar_todo').click(function(){ $(".carta").addClass('carta_seleccionada'); });
+	$('#menu_edicion_seleccionar_nada').click(function(){ $(".carta_seleccionada").removeClass('carta_seleccionada'); });
 }
 
 function cargarBarraLateralGeneral(){
