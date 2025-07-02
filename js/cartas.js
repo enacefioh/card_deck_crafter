@@ -14,7 +14,7 @@ var html_barra_lateral_general = `
 			</div>
 			<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 				<div style="width:90%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">+ Importar imágenes</div>
-				<input id="importar_imagenes" type="file" multiple="multiple" id="imgs" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
+				<input id="importar_imagenes" type="file" multiple="multiple" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
 			</div>
 	`;
 	
@@ -50,7 +50,8 @@ function cargarBarraLateralGeneral(){
 			var img = $('<img>');
 			img.attr('src', URL.createObjectURL(file));
 			carta.append(img);
-			img.attr('class','carta_fondo');
+			img.attr('data-id', 'carta_fondo');
+			img.attr('class','img carta_fondo');
 		  
 		  //carta.css('background', 'url('+ URL.createObjectURL(file)+'');
 		  //carta.css('background-size', '100% 100%');
@@ -67,7 +68,6 @@ function cargarBarraLateralCartaSeleccionada(){
 	$('#menu_lateral').empty();
 	$('#menu_lateral').html(html_barra_lateral_carta);
 	var cartas = $('.carta_seleccionada');
-	$('#menu_lateral').append("<span> "+cartas.length+ " cartas seleccionadas.</span>");
 	
 	$('#subir_carta_seleccionada').click(function(){ subir_cartas_seleccionadas() });
 	$('#bajar_carta_seleccionada').click(function(){ bajar_cartas_seleccionadas() });
@@ -81,6 +81,21 @@ function cargarBarraLateralCartaSeleccionada(){
 	}else{
 		//ver campos en común y añadir opciones
 	}
+	
+	//añadir menús de los elementos comunes
+	var ids_comunes = getDataIdsComunesEnSeleccionadas();
+	
+	
+	ids_comunes.forEach(function(id) {
+		 var primer_objeto = $('.carta_seleccionada').find('[data-id="' + id + '"]').first();
+
+		// Obtener las clases (como array)
+		var clases = primer_objeto.attr('class')?.split(/\s+/) || [];
+
+		clases.forEach(function(clase) {
+			cargarSubmenusClase(clase); 
+		});
+	});
 	
 }
 
@@ -226,4 +241,114 @@ function duplicar_cartas_seleccionadas(){
         original.after(clon);
     });
 	reordenarCartas();
+}
+
+function getClasesHijasComunesEnSeleccionadas() {
+	coleccion = $(".carta_seleccionada");
+    if (coleccion.length === 0) return [];
+
+    // Inicializa con el conjunto de clases del primer elemento
+    var clases_comunes = new Set();
+
+    // Obtiene las clases de todos los descendientes del primer elemento
+    coleccion.first().find('*').each(function () {
+        $(this).attr('class')?.split(/\s+/).forEach(clase => {
+            if (clase) clases_comunes.add(clase);
+        });
+    });
+
+    // Para cada elemento restante, filtra las clases que no están en todos
+    coleccion.slice(1).each(function () {
+        var clases_en_este = new Set();
+        $(this).find('*').each(function () {
+            $(this).attr('class')?.split(/\s+/).forEach(clase => {
+                if (clase) clases_en_este.add(clase);
+            });
+        });
+
+        // Filtrar las que ya no están en este elemento
+        clases_comunes.forEach(clase => {
+            if (!clases_en_este.has(clase)) {
+                clases_comunes.delete(clase);
+            }
+        });
+    });
+
+    return Array.from(clases_comunes);
+}
+
+function getDataIdsComunesEnSeleccionadas() {
+	var coleccion = $('.carta_seleccionada');
+    if (coleccion.length === 0) return [];
+
+    // 1. Obtener los data-id del primer elemento
+    let data_ids_comunes = new Set();
+    coleccion.first().find('[data-id]').each(function () {
+        const id = $(this).data('id');
+        if (id) data_ids_comunes.add(id);
+    });
+
+    // 2. Filtrar los data-id que no están presentes en los demás elementos
+    coleccion.slice(1).each(function () {
+        let ids_en_este = new Set();
+        $(this).find('[data-id]').each(function () {
+            const id = $(this).data('id');
+            if (id) ids_en_este.add(id);
+        });
+
+        data_ids_comunes.forEach(id => {
+            if (!ids_en_este.has(id)) {
+                data_ids_comunes.delete(id);
+            }
+        });
+    });
+
+    return Array.from(data_ids_comunes);
+}
+
+function cargarSubmenusClase(clase){
+	switch (clase) {
+		case "img":
+			submenu_img();
+			break;
+		default:
+			console.log("Clase no reconocida");
+	}
+}
+
+// FUNCIONALIDAD SUBMENÚS PARTES DE LA CARTA
+
+function submenu_img(){
+	var html_submenu_img = `
+		<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:80px; margin:auto; margin-top: 10px; margin-bottom:10px;">
+				<div style="width:90%; margin:auto; margin-top: 30px; color: #999999; font-size: 15px; position:absolute; text-align:center;">🔄Cambiar imagen fondo</div>
+				<input id="img_cambiar_input" accept="image/*" type="file"  style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
+			</div>
+	`;
+	$('#menu_lateral').append(html_submenu_img);
+	
+	$('#img_cambiar_input').on('change', function(event) {
+	   const file = event.target.files[0];
+		if (!file) return;
+
+		const reader = new FileReader();
+
+		reader.onload = function(e) {
+			const imageDataUrl = e.target.result;
+
+			// Cambiar el fondo en todas las cartas seleccionadas
+			$('.carta_seleccionada .img').each(function() {
+				// Si es una etiqueta <img>
+				if ($(this).is('img')) {
+					$(this).attr('src', imageDataUrl);
+				} else {
+					// Si es un div u otro elemento con fondo CSS
+					$(this).css('background-image', `url(${imageDataUrl})`);
+				}
+			});
+		};
+
+		reader.readAsDataURL(file); // Lee la imagen como DataURL para mostrarla directamente
+	  
+	});
 }
