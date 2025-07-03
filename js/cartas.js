@@ -40,6 +40,17 @@ function cargarFuncionalidadMenuPrincipal(){
 	$('#menu_archivo_nuevo').click(function(){ location.reload(); });
 	$('#menu_edicion_seleccionar_todo').click(function(){ $(".carta").addClass('carta_seleccionada'); });
 	$('#menu_edicion_seleccionar_nada').click(function(){ $(".carta_seleccionada").removeClass('carta_seleccionada'); });
+	$('#menu_anyadir_carta_vacia').click(function(){ anyadirCartaVacia(); });
+	$('#menu_anyadir_plantilla_objetivos_dobles').click(function(){ 
+	
+	anyadirCartaDesdePlantilla('wargame_objetivos_dobles');
+	  /* .then(elemento => {
+		if (elemento) {
+		  document.querySelector('#contenedor_cartas').appendChild(elemento);
+		} }); */
+	
+	
+	});
 }
 
 function cargarBarraLateralGeneral(){
@@ -330,6 +341,35 @@ function cargarSubmenusClase(clase){
 			console.log("Clase no reconocida");
 	}
 }
+
+async function anyadirCartaDesdePlantilla(slug_plantilla) {
+  try {
+    // 1. Cargar el archivo HTML como texto
+    const respuesta = await fetch("./plantillas/"+slug_plantilla+"/carta.html");
+    var htmlTexto = await respuesta.text();
+	htmlTexto = htmlTexto.replace(/res\//g, "plantillas/"+slug_plantilla+"/res/");
+
+    // 2. Convertir el HTML en un documento DOM
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlTexto, 'text/html');
+
+    // 3. Buscar el elemento dentro del documento cargado
+    const elemento = doc.querySelector(".carta");
+
+    // 4. Retornar el nodo clonado (para que puedas insertarlo en tu DOM)
+    const carta_plantilla = elemento.cloneNode(true);
+	
+	const carta = anyadirCartaVacia();
+	//carta.innerHTML = ""; //vaciar contenido
+	carta.html($(elemento).html());
+
+  } catch (error) {
+    console.error('Error al cargar el HTML:', error);
+    return null;
+  }
+}
+
+
 
 // FUNCIONALIDAD SUBMENÚS PARTES DE LA CARTA
 
