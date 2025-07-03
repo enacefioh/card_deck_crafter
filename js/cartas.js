@@ -345,8 +345,9 @@ function cargarSubmenusClase(clase){
 async function anyadirCartaDesdePlantilla(slug_plantilla) {
   try {
     // 1. Cargar el archivo HTML como texto
-    const respuesta = await fetch("./plantillas/"+slug_plantilla+"/carta.html");
-    var htmlTexto = await respuesta.text();
+    /*const respuesta = await fetch("./plantillas/"+slug_plantilla+"/carta.html");
+    var htmlTexto = await respuesta.text(); 
+	
 	htmlTexto = htmlTexto.replace(/res\//g, "plantillas/"+slug_plantilla+"/res/");
 
     // 2. Convertir el HTML en un documento DOM
@@ -357,11 +358,15 @@ async function anyadirCartaDesdePlantilla(slug_plantilla) {
     const elemento = doc.querySelector(".carta");
 
     // 4. Retornar el nodo clonado (para que puedas insertarlo en tu DOM)
-    const carta_plantilla = elemento.cloneNode(true);
+    const carta_plantilla = elemento.cloneNode(true); 
 	
 	const carta = anyadirCartaVacia();
 	//carta.innerHTML = ""; //vaciar contenido
-	carta.html($(elemento).html());
+	carta.html($(elemento).html()); */
+	const carta = anyadirCartaVacia();
+	carta.html(plantillas[slug_plantilla]);
+	
+	
 
   } catch (error) {
     console.error('Error al cargar el HTML:', error);
