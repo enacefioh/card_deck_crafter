@@ -388,9 +388,93 @@ function submenu_texto_editable(id){
 	}
 	var html_submenu_texto_editable = `
 		<div style='text-align:center;'>`+id+`: </div>
+		<div style='width:90%; margin-left: 5%; text-align:center;'>
+			<div id='texto_editable_negrita_`+id+`' data-id='`+id+`' class="submenu_botones_boton" title="Negrita"><b>B</b></div>
+			<div id='texto_editable_cursiva_`+id+`' data-id='`+id+`' class="submenu_botones_boton" title="Cursiva"><i>I</i></div>
+			<div id='texto_editable_subrayado_`+id+`' data-id='`+id+`' class="submenu_botones_boton" title="Subrayado"><u>U</u></div>
+		<div/>
 		<textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:90%; height:50px; margin-left: 5%;'>`+texto+`</textarea>
 	`;	
+	
+
+	
 	$('#menu_lateral').append(html_submenu_texto_editable);
+	$('#texto_editable_negrita_'+id).click(function(){
+		var id_objeto = $(this).attr('data-id');
+		var textarea = $('#texto_editable_'+id_objeto);
+		
+			let start = textarea[0].selectionStart;
+			let end = textarea[0].selectionEnd;
+
+            if (start === end) return; // nada seleccionado
+
+            const texto = textarea.val();
+            const antes = texto.slice(0, start);
+            const seleccionado = texto.slice(start, end);
+            const despues = texto.slice(end);
+
+            const conEtiquetas = `<b>${seleccionado}</b>`;
+            textarea.val(antes + conEtiquetas + despues);
+
+            // restaurar selección tras insertar
+			textarea.focus();
+			textarea[0].selectionStart = start;
+			textarea[0].selectionEnd = start + conEtiquetas.length;
+			
+			$('.carta_seleccionada * [data-id='+id_objeto+']').html(textarea.val());
+	});	
+	
+	$('#texto_editable_cursiva_'+id).click(function(){
+		var id_objeto = $(this).attr('data-id');
+		var textarea = $('#texto_editable_'+id_objeto);
+		
+			let start = textarea[0].selectionStart;
+			let end = textarea[0].selectionEnd;
+
+            if (start === end) return; // nada seleccionado
+
+            const texto = textarea.val();
+            const antes = texto.slice(0, start);
+            const seleccionado = texto.slice(start, end);
+            const despues = texto.slice(end);
+
+            const conEtiquetas = `<i>${seleccionado}</i>`;
+            textarea.val(antes + conEtiquetas + despues);
+
+            // restaurar selección tras insertar
+			textarea.focus();
+			textarea[0].selectionStart = start;
+			textarea[0].selectionEnd = start + conEtiquetas.length;
+			
+			$('.carta_seleccionada * [data-id='+id_objeto+']').html(textarea.val());
+	});	
+	
+	$('#texto_editable_subrayado_'+id).click(function(){
+		var id_objeto = $(this).attr('data-id');
+		var textarea = $('#texto_editable_'+id_objeto);
+		
+			let start = textarea[0].selectionStart;
+			let end = textarea[0].selectionEnd;
+
+            if (start === end) return; // nada seleccionado
+
+            const texto = textarea.val();
+            const antes = texto.slice(0, start);
+            const seleccionado = texto.slice(start, end);
+            const despues = texto.slice(end);
+
+            const conEtiquetas = `<u>${seleccionado}</u>`;
+            textarea.val(antes + conEtiquetas + despues);
+
+            // restaurar selección tras insertar
+			textarea.focus();
+			textarea[0].selectionStart = start;
+			textarea[0].selectionEnd = start + conEtiquetas.length;
+			
+			$('.carta_seleccionada * [data-id='+id_objeto+']').html(textarea.val());
+	});	
+	
+	
 	$('#texto_editable_'+id).on('input', function(){
 		var id_objeto = $(this).attr('data-id');
 		$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());

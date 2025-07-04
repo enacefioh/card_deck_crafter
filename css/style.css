@@ -142,6 +142,9 @@ body {
 	border-radius: 5px;
 	padding: 2px;
 	background: #666;
+	min-width: 30px;
+    text-align: center;
+	margin: 2px;
 	
 }
 .submenu_botones{
