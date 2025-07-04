@@ -111,7 +111,7 @@ function cargarBarraLateralCartaSeleccionada(){
 		var clases = primer_objeto.attr('class')?.split(/\s+/) || [];
 
 		clases.forEach(function(clase) {
-			cargarSubmenusClase(clase); 
+			cargarSubmenusClase(clase, id); 
 		});
 	});
 	
@@ -332,11 +332,14 @@ function getDataIdsComunesEnSeleccionadas() {
     return Array.from(data_ids_comunes);
 }
 
-function cargarSubmenusClase(clase){
+function cargarSubmenusClase(clase, id){
 	switch (clase) {
 		case "img":
-			submenu_img();
+			submenu_img(id);
 			break;
+		case "texto_editable":
+			submenu_texto_editable(id);
+			break;	
 		default:
 			console.log("Clase no reconocida");
 	}
@@ -378,7 +381,14 @@ async function anyadirCartaDesdePlantilla(slug_plantilla) {
 
 // FUNCIONALIDAD SUBMENÚS PARTES DE LA CARTA
 
-function submenu_img(){
+function submenu_texto_editable(id){
+	var html_submenu_texto_editable = `
+		<div style='text-align:center;'>`+id+`: </div>
+		<textarea style='width:90%; height:50px; margin-left: 5%;'></textarea>
+	`;
+	$('#menu_lateral').append(html_submenu_texto_editable);
+}
+function submenu_img(id){
 	var html_submenu_img = `
 		<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:80px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 				<div style="width:90%; margin:auto; margin-top: 30px; color: #999999; font-size: 15px; position:absolute; text-align:center;">🔄Cambiar imagen fondo</div>
