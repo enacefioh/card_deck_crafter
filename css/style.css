@@ -122,6 +122,8 @@ body {
 	background: #eee;
 	border-right: 1px solid #ddd;
 	padding-top: 35px;
+	overflow: scroll;
+	padding-bottom: 25px;
 }
 
 .carta_fondo{
@@ -132,6 +134,11 @@ body {
 
 .carta_seleccionada{
 	border: 2px solid #C00; 
+}
+
+.carta_seleccionada_exportar{
+	border: 0px !important;
+	border-radius: 0px !important;
 }
 
 .submenu_botones_boton{

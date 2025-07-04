@@ -24,6 +24,7 @@ var html_barra_lateral_carta = `
 			<div id='bajar_carta_seleccionada' class='submenu_botones_boton' title='Bajar carta seleccionada'> ⬇️ </div>
 			<div id='eliminar_cartas_seleccionadas' class='submenu_botones_boton' title='Eliminar cartas seleccionadas'> ❌ </div>
 			<div id='duplicar_carta_seleccionada' class='submenu_botones_boton' title='Duplicar carta seleccionada'> 📄‍↔️📄 </div>
+			<div id='exportar_cartas_seleccionadas' class='submenu_botones_boton' title='Exportar cartas seleccionadas'> 💾 </div>
 		</div>
 	`;
 
@@ -91,6 +92,7 @@ function cargarBarraLateralCartaSeleccionada(){
 	$('#bajar_carta_seleccionada').click(function(){ bajar_cartas_seleccionadas() });
 	$('#eliminar_cartas_seleccionadas').click(function(){ eliminar_cartas_seleccionadas() });
 	$('#duplicar_carta_seleccionada').click(function(){ duplicar_cartas_seleccionadas() });
+	$('#exportar_cartas_seleccionadas').click(function(){ exportar_cartas_seleccionadas() });
 	
 	if(cartas.length == 1){
 		
@@ -268,6 +270,21 @@ function duplicar_cartas_seleccionadas(){
     });
 	reordenarCartas();
 }
+
+function exportar_cartas_seleccionadas(){
+	$('.carta_seleccionada').addClass('carta_seleccionada_exportar');
+	const cartaElem = $('.carta_seleccionada')[0];
+	html2canvas(cartaElem, { scale: 2 }).then(canvas => {
+        canvas.toBlob(function(blob) {
+            const enlace = document.createElement('a');
+            enlace.href = URL.createObjectURL(blob);
+            enlace.download = 'carta.png';
+            enlace.click();
+			$('.carta_seleccionada').removeClass('carta_seleccionada_exportar');
+        }, 'image/png');
+    });
+}
+
 
 function getClasesHijasComunesEnSeleccionadas() {
 	coleccion = $(".carta_seleccionada");
