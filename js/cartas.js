@@ -1,9 +1,12 @@
+var version = "1.0.250704";
 var num_cartas = 0;
 var num_pags = 1;
 
  $(document).ready(function(){
  
 	inicializar();
+	
+	$('#app_version').html("Card Deck Editor v"+version);
 	
 	
 });
@@ -42,16 +45,10 @@ function cargarFuncionalidadMenuPrincipal(){
 	$('#menu_edicion_seleccionar_todo').click(function(){ $(".carta").addClass('carta_seleccionada'); });
 	$('#menu_edicion_seleccionar_nada').click(function(){ $(".carta_seleccionada").removeClass('carta_seleccionada'); });
 	$('#menu_anyadir_carta_vacia').click(function(){ anyadirCartaVacia(); });
-	$('#menu_anyadir_plantilla_objetivos_dobles').click(function(){ 
-	
-	anyadirCartaDesdePlantilla('wargame_objetivos_dobles');
-	  /* .then(elemento => {
-		if (elemento) {
-		  document.querySelector('#contenedor_cartas').appendChild(elemento);
-		} }); */
-	
-	
-	});
+	$('#menu_anyadir_plantilla_objetivos_dobles').click(function(){ anyadirCartaDesdePlantilla('wargame_objetivos_dobles'); });
+	$('#exportar_cartas_png').click(function(){ $(".carta").addClass('carta_seleccionada'); exportar_cartas_seleccionadas(); });
+	$('#guardar_cde').click(function(){ exportarProyectoCDE(); });
+	$('#importar_cde').click(function(){ importarProyectoCDE(); });
 }
 
 function cargarBarraLateralGeneral(){
@@ -271,20 +268,50 @@ function duplicar_cartas_seleccionadas(){
 	reordenarCartas();
 }
 
-function exportar_cartas_seleccionadas(){
-	$('.carta_seleccionada').addClass('carta_seleccionada_exportar');
-	const cartaElem = $('.carta_seleccionada')[0];
-	html2canvas(cartaElem, { scale: 2 }).then(canvas => {
-        canvas.toBlob(function(blob) {
-            const enlace = document.createElement('a');
-            enlace.href = URL.createObjectURL(blob);
-            enlace.download = 'carta.png';
-            enlace.click();
-			$('.carta_seleccionada').removeClass('carta_seleccionada_exportar');
-        }, 'image/png');
-    });
-}
+function exportar_cartas_seleccionadas() {
+    const cartas = $('.carta_seleccionada');
 
+    if (cartas.length === 0) return;
+
+    cartas.addClass('carta_seleccionada_exportar');
+
+    if (cartas.length === 1) {
+        const cartaElem = cartas[0];
+        html2canvas(cartaElem, { scale: 2 }).then(canvas => {
+            canvas.toBlob(function(blob) {
+                const enlace = document.createElement('a');
+                enlace.href = URL.createObjectURL(blob);
+                enlace.download = 'carta.png';
+                enlace.click();
+                cartas.removeClass('carta_seleccionada_exportar');
+            }, 'image/png');
+        });
+    } else {
+        const zip = new JSZip();
+        let procesadas = 0;
+
+        cartas.each(function(index) {
+            const carta = this;
+
+            html2canvas(carta, { scale: 2 }).then(canvas => {
+                canvas.toBlob(function(blob) {
+                    zip.file(`carta_${index + 1}.png`, blob);
+                    procesadas++;
+
+                    if (procesadas === cartas.length) {
+                        zip.generateAsync({ type: 'blob' }).then(content => {
+                            const enlace = document.createElement('a');
+                            enlace.href = URL.createObjectURL(content);
+                            enlace.download = 'cartas.zip';
+                            enlace.click();
+                            cartas.removeClass('carta_seleccionada_exportar');
+                        });
+                    }
+                }, 'image/png');
+            });
+        });
+    }
+}
 
 function getClasesHijasComunesEnSeleccionadas() {
 	coleccion = $(".carta_seleccionada");
@@ -363,38 +390,76 @@ function cargarSubmenusClase(clase, id){
 }
 
 async function anyadirCartaDesdePlantilla(slug_plantilla) {
-  try {
-    // 1. Cargar el archivo HTML como texto
-    /*const respuesta = await fetch("./plantillas/"+slug_plantilla+"/carta.html");
-    var htmlTexto = await respuesta.text(); 
-	
-	htmlTexto = htmlTexto.replace(/res\//g, "plantillas/"+slug_plantilla+"/res/");
-
-    // 2. Convertir el HTML en un documento DOM
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlTexto, 'text/html');
-
-    // 3. Buscar el elemento dentro del documento cargado
-    const elemento = doc.querySelector(".carta");
-
-    // 4. Retornar el nodo clonado (para que puedas insertarlo en tu DOM)
-    const carta_plantilla = elemento.cloneNode(true); 
-	
 	const carta = anyadirCartaVacia();
-	//carta.innerHTML = ""; //vaciar contenido
-	carta.html($(elemento).html()); */
-	const carta = anyadirCartaVacia();
-	carta.html(plantillas[slug_plantilla]);
-	
-	
-
-  } catch (error) {
-    console.error('Error al cargar el HTML:', error);
-    return null;
-  }
+	carta.html(plantillas[slug_plantilla]);	
 }
 
+function exportarProyectoCDE() {
+    // Datos base
+    
 
+    const contenido_html = document.getElementById('contenedor_paginas').innerHTML;
+
+    // Crear objeto JSON
+    const data = {
+        version: version,
+        num_cartas: num_cartas,
+        num_pags: num_pags,
+        contenido_html: contenido_html
+    };
+
+    // Convertir a JSON y exportar como .cdc
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const enlace = document.createElement('a');
+    enlace.href = URL.createObjectURL(blob);
+    enlace.download = 'proyecto.cde';
+    enlace.click();
+}
+
+function importarProyectoCDE() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.cde'; 
+
+    input.onchange = (event) => {
+        const archivo = event.target.files[0];
+        if (!archivo) return;
+
+        const lector = new FileReader();
+
+        lector.onload = (e) => {
+            try {
+                const datos = JSON.parse(e.target.result);
+
+                // Asignar variables globales
+                window.num_cartas = datos.num_cartas;
+                window.num_pags = datos.num_pags;
+
+                // Insertar HTML en el contenedor
+                document.getElementById('contenedor_paginas').innerHTML = datos.contenido_html;
+				$(".carta").each( function(){
+					$(this).click(function(event){ 
+						if (!event.ctrlKey) {
+							desseleccionarCartas();
+						}			
+						var id = $(this).attr('data-id'); 
+						seleccionarCarta(id) 
+						event.stopPropagation();
+					});
+				});
+
+                console.log('Proyecto cargado:', datos);
+            } catch (error) {
+                alert('Error al leer el archivo. ¿Es un archivo válido .cde?');
+                console.error(error);
+            }
+        };
+
+        lector.readAsText(archivo);
+    };
+
+    input.click(); // simula el click del usuario
+}
 
 // FUNCIONALIDAD SUBMENÚS PARTES DE LA CARTA
 
@@ -519,17 +584,12 @@ function submenu_img(id){
 
 			// Cambiar el fondo en todas las cartas seleccionadas
 			$('.carta_seleccionada .img').each(function() {
-				// Si es una etiqueta <img>
 				if ($(this).is('img')) {
 					$(this).attr('src', imageDataUrl);
-				} else {
-					// Si es un div u otro elemento con fondo CSS
-					$(this).css('background-image', `url(${imageDataUrl})`);
 				}
 			});
 		};
 
 		reader.readAsDataURL(file); // Lee la imagen como DataURL para mostrarla directamente
-	  
 	});
 }
