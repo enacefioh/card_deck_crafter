@@ -382,11 +382,21 @@ async function anyadirCartaDesdePlantilla(slug_plantilla) {
 // FUNCIONALIDAD SUBMENÚS PARTES DE LA CARTA
 
 function submenu_texto_editable(id){
+	var texto = "";
+	if($('.carta_seleccionada').length == 1){
+		texto = $('.carta_seleccionada * [data-id='+id+']').html();
+	}
 	var html_submenu_texto_editable = `
 		<div style='text-align:center;'>`+id+`: </div>
-		<textarea style='width:90%; height:50px; margin-left: 5%;'></textarea>
-	`;
+		<textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:90%; height:50px; margin-left: 5%;'>`+texto+`</textarea>
+	`;	
 	$('#menu_lateral').append(html_submenu_texto_editable);
+	$('#texto_editable_'+id).on('input', function(){
+		var id_objeto = $(this).attr('data-id');
+		$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());
+		
+	});
+		
 }
 function submenu_img(id){
 	var html_submenu_img = `
