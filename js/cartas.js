@@ -46,6 +46,7 @@ function cargarFuncionalidadMenuPrincipal(){
 	$('#menu_edicion_seleccionar_nada').click(function(){ $(".carta_seleccionada").removeClass('carta_seleccionada'); });
 	$('#menu_anyadir_carta_vacia').click(function(){ anyadirCartaVacia(); });
 	$('#menu_anyadir_plantilla_objetivos_dobles').click(function(){ anyadirCartaDesdePlantilla('wargame_objetivos_dobles'); });
+	$('#menu_anyadir_plantilla_wu_fighter').click(function(){ anyadirCartaDesdePlantilla('wu_fighter'); });
 	$('#exportar_cartas_png').click(function(){ $(".carta").addClass('carta_seleccionada'); exportar_cartas_seleccionadas(); });
 	$('#guardar_cde').click(function(){ exportarProyectoCDE(); });
 	$('#importar_cde').click(function(){ importarProyectoCDE(); });
@@ -378,12 +379,18 @@ function getDataIdsComunesEnSeleccionadas() {
 
 function cargarSubmenusClase(clase, id){
 	switch (clase) {
+		case "menu_plantilla":			
+			menus_plantilla(id);
+			break;
 		case "img":
 			submenu_img(id);
 			break;
 		case "texto_editable":
 			submenu_texto_editable(id);
 			break;	
+		case "img_swap":
+			submenu_img_swap(id);
+			break;		
 		default:
 			console.log("Clase no reconocida");
 	}
@@ -564,6 +571,7 @@ function submenu_texto_editable(id){
 	});
 		
 }
+
 function submenu_img(id){
 	var html_submenu_img = `
 		<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:80px; margin:auto; margin-top: 10px; margin-bottom:10px;">
@@ -592,4 +600,30 @@ function submenu_img(id){
 
 		reader.readAsDataURL(file); // Lee la imagen como DataURL para mostrarla directamente
 	});
+}
+
+function submenu_img_swap(id){
+	var item = $('.carta_seleccionada * [data-id='+id+']');
+	var num_opcs = item.attr('data-cantidad');
+	
+	var html_submenu_img = `
+		<div style='text-align:center;'>`+id+`: </div>
+		<select style='width:90%; margin-left:5%;' name="select_`+id+`" id="select_`+id+`">`;
+	for(i=1; i<=num_opcs;i++){
+		var num_titulo = item.attr('data-nombre'+i);
+		html_submenu_img += '<option value="'+i+'">'+num_titulo+'</option>';
+	}		
+		
+		
+		html_submenu_img += '</select>';
+		
+	
+	 $('#menu_lateral').append(html_submenu_img);
+	
+	$('#select_'+id).on('change', function(event) {
+		var indice = $(this).val();
+		var img_base64 = item.attr('data-src'+indice);
+		item.attr('src', img_base64);
+	   
+	}); 
 }
