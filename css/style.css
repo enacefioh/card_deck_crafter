@@ -143,17 +143,51 @@ body {
 
 .submenu_botones_boton{
 	display: inline-block;
-	font-size: 26px;
+	font-size: 20px;
 	cursor:pointer;
 	border: 2px solid gray;
 	border-radius: 5px;
 	padding: 2px;
-	background: #666;
-	min-width: 30px;
+	background: #ddd;
+	min-width: 22px;
     text-align: center;
 	margin: 2px;
+}
+
+.submenu_botones_boton_texto_editable{
+	display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    /* border: 2px solid #DDD; */
+    border-radius: 5px 5px 0px 0px;
+    padding: 3px;
+    background: #ddd;
+    min-width: 16px;
+    text-align: center;
+    margin: 1px;
+    margin-bottom: 0px;
+	float:right;
 	
 }
+
+.etiqueta_submenu{
+	display:inline-block; 
+	float:left; 
+	max-width:40%; 
+	margin-left:5%; 
+	height: 20px;  
+	white-space: nowrap; 
+	overflow: hidden; 
+	text-overflow: ellipsis;
+}
+
+.seccion_editable{
+	border-bottom: 1px solid #999;
+	margin-bottom:3px;
+	min-height:24px;
+	clear:both;
+}
+
 .submenu_botones{
 	width:90%;
 	text-align:center;

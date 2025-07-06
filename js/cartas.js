@@ -1,4 +1,4 @@
-var version = "1.0.250704";
+var version = "1.0.250706";
 var num_cartas = 0;
 var num_pags = 1;
 
@@ -388,6 +388,12 @@ function cargarSubmenusClase(clase, id){
 		case "texto_editable":
 			submenu_texto_editable(id);
 			break;	
+		case "texto_linea":
+			submenu_texto_linea(id);
+			break;	
+		case "texto_numero":
+			submenu_texto_numero(id);
+			break;
 		case "img_swap":
 			submenu_img_swap(id);
 			break;		
@@ -468,7 +474,61 @@ function importarProyectoCDE() {
     input.click(); // simula el click del usuario
 }
 
+function slugToTexto(slug){
+	return slug.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase());
+}
+
 // FUNCIONALIDAD SUBMENÚS PARTES DE LA CARTA
+
+function submenu_texto_linea(id){
+	var texto = "";
+	if($('.carta_seleccionada').length == 1){
+		texto = $('.carta_seleccionada * [data-id='+id+']').html();
+	}
+	var html_submenu_texto_linea = `
+		<div class='seccion_editable'>
+			<div class='seccion_texto'>
+				<div class='etiqueta_submenu'>`+slugToTexto(id)+`: </div>
+				<input type='text' id='texto_linea_`+id+`' data-id='`+id+`' style='max-width:45%; margin-right: 5%; float:right;' value='`+texto+`' />
+			</div>
+		</div>
+	`;	
+	
+	$('#menu_lateral').append(html_submenu_texto_linea);
+	
+	
+	$('#texto_linea_'+id).on('input', function(){
+		var id_objeto = $(this).attr('data-id');
+		$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());
+		
+	});
+		
+}
+
+function submenu_texto_numero(id){
+	var texto = "";
+	if($('.carta_seleccionada').length == 1){
+		texto = $('.carta_seleccionada * [data-id='+id+']').html();
+	}
+	var html_submenu_texto_linea = `
+		<div class='seccion_editable'>
+			<div class='seccion_num'>
+				<div class='etiqueta_submenu'>`+slugToTexto(id)+`: </div>
+				<input type='number' step='1' id='texto_num_`+id+`' data-id='`+id+`' style='max-width:45%; margin-right: 5%; float:right;' value='`+texto+`' />
+			</div>
+		</div>
+	`;	
+	
+	$('#menu_lateral').append(html_submenu_texto_linea);
+	
+	
+	$('#texto_num_'+id).on('input', function(){
+		var id_objeto = $(this).attr('data-id');
+		$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());
+		
+	});
+		
+}
 
 function submenu_texto_editable(id){
 	var texto = "";
@@ -476,16 +536,16 @@ function submenu_texto_editable(id){
 		texto = $('.carta_seleccionada * [data-id='+id+']').html();
 	}
 	var html_submenu_texto_editable = `
-		<div style='text-align:center;'>`+id+`: </div>
+		<div class='seccion_editable'>
 		<div style='width:90%; margin-left: 5%; text-align:center;'>
-			<div id='texto_editable_negrita_`+id+`' data-id='`+id+`' class="submenu_botones_boton" title="Negrita"><b>B</b></div>
-			<div id='texto_editable_cursiva_`+id+`' data-id='`+id+`' class="submenu_botones_boton" title="Cursiva"><i>I</i></div>
-			<div id='texto_editable_subrayado_`+id+`' data-id='`+id+`' class="submenu_botones_boton" title="Subrayado"><u>U</u></div>
+			<div style='display:inline-block; float:left;'>`+slugToTexto(id)+`: </div>
+			<div id='texto_editable_negrita_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>B</b></div>
+			<div id='texto_editable_cursiva_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Cursiva"><i>I</i></div>
+			<div id='texto_editable_subrayado_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Subrayado"><u>U</u></div>
 		<div/>
 		<textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:90%; height:50px; margin-left: 5%;'>`+texto+`</textarea>
+		</div>
 	`;	
-	
-
 	
 	$('#menu_lateral').append(html_submenu_texto_editable);
 	$('#texto_editable_negrita_'+id).click(function(){
@@ -563,7 +623,6 @@ function submenu_texto_editable(id){
 			$('.carta_seleccionada * [data-id='+id_objeto+']').html(textarea.val());
 	});	
 	
-	
 	$('#texto_editable_'+id).on('input', function(){
 		var id_objeto = $(this).attr('data-id');
 		$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());
@@ -603,19 +662,22 @@ function submenu_img(id){
 }
 
 function submenu_img_swap(id){
+	
 	var item = $('.carta_seleccionada * [data-id='+id+']');
 	var num_opcs = item.attr('data-cantidad');
 	
 	var html_submenu_img = `
-		<div style='text-align:center;'>`+id+`: </div>
-		<select style='width:90%; margin-left:5%;' name="select_`+id+`" id="select_`+id+`">`;
+		<div class='seccion_editable' style='padding-bottom:3px;'>
+		<div class='etiqueta_submenu'>`+slugToTexto(id)+`: </div>
+		<select style='width:49%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' name="select_`+id+`" id="select_`+id+`">
+		`;
 	for(i=1; i<=num_opcs;i++){
 		var num_titulo = item.attr('data-nombre'+i);
 		html_submenu_img += '<option value="'+i+'">'+num_titulo+'</option>';
 	}		
 		
 		
-		html_submenu_img += '</select>';
+		html_submenu_img += '</select> </div>';
 		
 	
 	 $('#menu_lateral').append(html_submenu_img);
