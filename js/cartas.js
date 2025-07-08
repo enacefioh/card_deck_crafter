@@ -377,31 +377,6 @@ function getDataIdsComunesEnSeleccionadas() {
     return Array.from(data_ids_comunes);
 }
 
-function cargarSubmenusClase(clase, id){
-	switch (clase) {
-		case "menu_plantilla":			
-			menus_plantilla(id);
-			break;
-		case "img":
-			submenu_img(id);
-			break;
-		case "texto_editable":
-			submenu_texto_editable(id);
-			break;	
-		case "texto_linea":
-			submenu_texto_linea(id);
-			break;	
-		case "texto_numero":
-			submenu_texto_numero(id);
-			break;
-		case "img_swap":
-			submenu_img_swap(id);
-			break;		
-		default:
-			console.log("Clase no reconocida");
-	}
-}
-
 async function anyadirCartaDesdePlantilla(slug_plantilla) {
 	const carta = anyadirCartaVacia();
 	carta.html(plantillas[slug_plantilla]);	
@@ -479,6 +454,34 @@ function slugToTexto(slug){
 }
 
 // FUNCIONALIDAD SUBMENÚS PARTES DE LA CARTA
+
+function cargarSubmenusClase(clase, id){
+	switch (clase) {
+		case "menu_plantilla":			
+			menus_plantilla(id);
+			break;
+		case "img":
+			submenu_img(id);
+			break;
+		case "texto_editable":
+			submenu_texto_editable(id);
+			break;	
+		case "texto_linea":
+			submenu_texto_linea(id);
+			break;	
+		case "texto_numero":
+			submenu_texto_numero(id);
+			break;
+		case "img_swap":
+			submenu_img_swap(id);
+			break;	
+		case "tintable":
+			submenu_tintable(id);
+			break;				
+		default:
+			console.log("Clase no reconocida");
+	}
+}
 
 function submenu_texto_linea(id){
 	var texto = "";
@@ -624,7 +627,7 @@ function submenu_texto_editable(id){
 	});	
 	
 	$('#texto_editable_'+id).on('input', function(){
-		var id_objeto = $(this).attr('data-id');
+		var id_objeto = $('#img_cambiar_input_'+id);
 		$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());
 		
 	});
@@ -634,23 +637,24 @@ function submenu_texto_editable(id){
 function submenu_img(id){
 	var html_submenu_img = `
 		<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:80px; margin:auto; margin-top: 10px; margin-bottom:10px;">
-				<div style="width:90%; margin:auto; margin-top: 30px; color: #999999; font-size: 15px; position:absolute; text-align:center;">🔄Cambiar imagen fondo</div>
-				<input id="img_cambiar_input" accept="image/*" type="file"  style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
+				<div style="width:90%; margin:auto; margin-top: 30px; color: #999999; font-size: 15px; position:absolute; text-align:center;">🔄Cambiar imagen `+slugToTexto(id)+`</div>
+				<input id="img_cambiar_input_`+id+`" data-id='`+id+`' accept="image/*" type="file"  style=" width: 90%; height: 80px; opacity: 0; position:absolute;"> 
 			</div>
 	`;
 	$('#menu_lateral').append(html_submenu_img);
 	
-	$('#img_cambiar_input').on('change', function(event) {
+	$('#img_cambiar_input_'+id).on('change', function(event) {
 	   const file = event.target.files[0];
 		if (!file) return;
 
 		const reader = new FileReader();
-
+		var id_objeto = $(this).attr('data-id');
 		reader.onload = function(e) {
 			const imageDataUrl = e.target.result;
 
 			// Cambiar el fondo en todas las cartas seleccionadas
-			$('.carta_seleccionada .img').each(function() {
+			
+			$('.carta_seleccionada [data-id='+id_objeto+']').each(function() {
 				if ($(this).is('img')) {
 					$(this).attr('src', imageDataUrl);
 				}
@@ -689,3 +693,113 @@ function submenu_img_swap(id){
 	   
 	}); 
 }
+
+/* function submenu_tintable(id){
+	
+	var item = $('.carta_seleccionada * [data-id='+id+']');
+	
+	var html_submenu_tintado = `
+		<div class='seccion_tintable' style='padding-bottom:3px;'>
+		<div class='etiqueta_submenu'>Color `+slugToTexto(id)+`: </div>
+		<select style='width:49%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' name="select_`+id+`" id="select_`+id+`">
+		<option value="#ff0000">Rojo</option>
+		<option value="#00ff00">Verde</option>
+		<option value="#0000ff">Azul</option>
+		</select>		
+		`;
+	
+		
+	
+	 $('#menu_lateral').append(html_submenu_tintado);
+	
+	$('#select_'+id).on('change', function(event) {
+		var colorHex = $(this).val();
+			const $img = $('.carta_seleccionada  [data-id='+id+']');
+
+		  const filtroId = 'tinte_' + colorHex.replace('#', '');
+
+		// Verificar si ya existe el filtro, si no, lo añade
+		  if (!document.getElementById(filtroId)) {
+			const svgFiltro = `
+			  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+				<filter id="${filtroId}">
+				  <feComponentTransfer>
+					<feFuncR type="linear" slope="${parseInt(colorHex.substr(1, 2), 16) / 255}"/>
+					<feFuncG type="linear" slope="${parseInt(colorHex.substr(3, 2), 16) / 255}"/>
+					<feFuncB type="linear" slope="${parseInt(colorHex.substr(5, 2), 16) / 255}"/>
+				  </feComponentTransfer>
+				</filter>
+			  </svg>
+			`;
+			$('body').append(svgFiltro);
+		  }
+
+		  // Aplicar el filtro SVG a cada imagen
+		  $img.css({
+			filter: `url(#${filtroId})`,
+			WebkitFilter: `url(#${filtroId})`
+		  });
+	   
+	}); 
+} // esta función falla al exportar como imagen...  */
+
+
+function submenu_tintable(id){
+	
+	var item = $('.carta_seleccionada * [data-id='+id+']');
+	
+	var html_submenu_tintado = `
+		<div class='seccion_tintable' style='padding-bottom:3px;'>
+		<div class='etiqueta_submenu'>Color `+slugToTexto(id)+`: </div>
+		
+
+		<input style='width:49%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' type="color" name="select_`+id+`" id="select_`+id+`" value="#ff0000">
+		`;
+	
+		
+	
+	 $('#menu_lateral').append(html_submenu_tintado);
+	
+	$('#select_' + id).on('change', function (event) {
+	  const colorHex = $(this).val();
+	  const $img = $('.carta_seleccionada [data-id=' + id + ']');
+	  var src = $img.attr('src');
+	  if($img.attr('data-original')!== undefined){
+		src = $img.attr('data-original');
+	  }else{
+		  $img.attr('data-original', src);
+	  }
+	  if (!src) return;
+
+	  const img = new Image();
+	  img.src = src;
+
+	  img.onload = function () {
+		const canvas = document.createElement('canvas');
+		canvas.width = img.width;
+		canvas.height = img.height;
+
+		const ctx = canvas.getContext('2d');
+
+		// Paso 1: Dibuja la imagen original
+		ctx.drawImage(img, 0, 0);
+
+		// Paso 2: Multiplica el color encima
+		ctx.globalCompositeOperation = 'multiply';
+		ctx.fillStyle = colorHex;
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+		// Paso 3: Aplicar canal alfa original
+		ctx.globalCompositeOperation = 'destination-in';
+		ctx.drawImage(img, 0, 0);
+
+		// Convertir a base64 y aplicar
+		const result = canvas.toDataURL('image/png');
+		$img.attr('src', result);
+	  };
+
+	  img.onerror = function () {
+		console.error('Error cargando la imagen base64 para tintar');
+	  };
+	});
+} 
