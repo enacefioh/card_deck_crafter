@@ -657,8 +657,8 @@ function submenu_texto_editable(id){
 	});	
 	
 	$('#texto_editable_'+id).on('input', function(){
-		var id_objeto = $('#img_cambiar_input_'+id);
-		$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());
+		var id_objeto = $(this).attr('data-id');
+		$(".carta_seleccionada [data-id='"+id_objeto+"']").html($(this).val());
 		
 	});
 		
