@@ -540,17 +540,47 @@ function submenu_texto_editable(id){
 	}
 	var html_submenu_texto_editable = `
 		<div class='seccion_editable'>
-		<div style='width:90%; margin-left: 5%; text-align:center;'>
-			<div style='display:inline-block; float:left;'>`+slugToTexto(id)+`: </div>
-			<div id='texto_editable_negrita_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>B</b></div>
-			<div id='texto_editable_cursiva_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Cursiva"><i>I</i></div>
-			<div id='texto_editable_subrayado_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Subrayado"><u>U</u></div>
-		<div/>
-		<textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:90%; height:50px; margin-left: 5%;'>`+texto+`</textarea>
+			<div style='width:90%; margin-left: 5%; text-align:center;'>
+				<div style='display:inline-block; float:left;'>`+slugToTexto(id)+`: </div>
+				<div id='texto_editable_abrir_menu_edicion_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Abrir controles">🔽</div>
+			</div>
+			<div id='texto_editable_menu_edicion_`+id+`' style='width:90%; margin-left: 5%; text-align:center; display:none; clear:both;'>
+				<div id='texto_editable_aumentar_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>+</b></div>
+				<div id='texto_editable_reducir_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>-</b></div>
+				<div id='texto_editable_negrita_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>B</b></div>
+				<div id='texto_editable_cursiva_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Cursiva"><i>I</i></div>
+				<div id='texto_editable_subrayado_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Subrayado"><u>U</u></div>
+			</div>
+			<textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:90%; height:50px; margin-left: 5%;'>`+texto+`</textarea>
 		</div>
 	`;	
 	
 	$('#menu_lateral').append(html_submenu_texto_editable);
+	
+	$('#texto_editable_abrir_menu_edicion_'+id).click(function(){
+		if($('#texto_editable_menu_edicion_'+id).css('display') == 'none'){
+			$('#texto_editable_menu_edicion_'+id).css('display', 'block');
+			$(this).html("🔼");
+		}else{
+			$('#texto_editable_menu_edicion_'+id).css('display', 'none');
+			$(this).html("🔽");
+		}
+	});	
+	
+	$('#texto_editable_aumentar_'+id).click(function(){
+		var id_objeto = $(this).attr('data-id');
+		var $texto = $('.carta_seleccionada * [data-id='+id_objeto+']');
+		var tam = parseInt($texto.css('font-size'), 10)+1;
+		$texto.css('font-size', tam );
+	});	
+	
+	$('#texto_editable_reducir_'+id).click(function(){
+		var id_objeto = $(this).attr('data-id');
+		var $texto = $('.carta_seleccionada * [data-id='+id_objeto+']');
+		var tam = parseInt($texto.css('font-size'), 10)-1;
+		$texto.css('font-size', tam );
+	});	
+	
 	$('#texto_editable_negrita_'+id).click(function(){
 		var id_objeto = $(this).attr('data-id');
 		var textarea = $('#texto_editable_'+id_objeto);
@@ -749,20 +779,26 @@ function submenu_tintable(id){
 	var item = $('.carta_seleccionada * [data-id='+id+']');
 	
 	var html_submenu_tintado = `
-		<div class='seccion_tintable' style='padding-bottom:3px;'>
+		<div class='seccion_editable' style='padding-bottom:3px;'>
 		<div class='etiqueta_submenu'>Color `+slugToTexto(id)+`: </div>
 		
 
-		<input style='width:49%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' type="color" name="select_`+id+`" id="select_`+id+`" value="#ff0000">
+		<input style='width:49%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' type="color" name="select_`+id+`" id="select_`+id+`" value="#ffffff">
 		`;
 	
-		
-	
 	 $('#menu_lateral').append(html_submenu_tintado);
+	
+	 if( $('.carta_seleccionada [data-id=' + id + ']').attr('data-val-tintable')!== undefined){
+		 const color_sugerido = $('.carta_seleccionada [data-id=' + id + ']').attr('data-val-tintable');
+		 $('#select_' + id).attr("value",color_sugerido);
+	 }
+	
+	 
 	
 	$('#select_' + id).on('change', function (event) {
 	  const colorHex = $(this).val();
 	  const $img = $('.carta_seleccionada [data-id=' + id + ']');
+	  $img.attr('data-val-tintable', colorHex);
 	  var src = $img.attr('src');
 	  if($img.attr('data-original')!== undefined){
 		src = $img.attr('data-original');
