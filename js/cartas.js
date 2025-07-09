@@ -1,4 +1,4 @@
-var version = "1.0.250706";
+var version = "1.0.250709";
 var num_cartas = 0;
 var num_pags = 1;
 
@@ -536,7 +536,7 @@ function submenu_texto_numero(id){
 function submenu_texto_editable(id){
 	var texto = "";
 	if($('.carta_seleccionada').length == 1){
-		texto = $('.carta_seleccionada * [data-id='+id+']').html();
+		texto = $('.carta_seleccionada * [data-id='+id+']').html().replace(/<br\s*\/?>/gi, '\n');
 	}
 	var html_submenu_texto_editable = `
 		<div class='seccion_editable'>
@@ -656,10 +656,10 @@ function submenu_texto_editable(id){
 			$('.carta_seleccionada * [data-id='+id_objeto+']').html(textarea.val());
 	});	
 	
-	$('#texto_editable_'+id).on('input', function(){
+	$('#texto_editable_' + id).on('input', function () {
 		var id_objeto = $(this).attr('data-id');
-		$(".carta_seleccionada [data-id='"+id_objeto+"']").html($(this).val());
-		
+		var texto_con_saltos = $(this).val().replace(/\n/g, '<br>');
+		$(".carta_seleccionada [data-id='" + id_objeto + "']").html(texto_con_saltos);
 	});
 		
 }
@@ -723,56 +723,6 @@ function submenu_img_swap(id){
 	   
 	}); 
 }
-
-/* function submenu_tintable(id){
-	
-	var item = $('.carta_seleccionada * [data-id='+id+']');
-	
-	var html_submenu_tintado = `
-		<div class='seccion_tintable' style='padding-bottom:3px;'>
-		<div class='etiqueta_submenu'>Color `+slugToTexto(id)+`: </div>
-		<select style='width:49%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' name="select_`+id+`" id="select_`+id+`">
-		<option value="#ff0000">Rojo</option>
-		<option value="#00ff00">Verde</option>
-		<option value="#0000ff">Azul</option>
-		</select>		
-		`;
-	
-		
-	
-	 $('#menu_lateral').append(html_submenu_tintado);
-	
-	$('#select_'+id).on('change', function(event) {
-		var colorHex = $(this).val();
-			const $img = $('.carta_seleccionada  [data-id='+id+']');
-
-		  const filtroId = 'tinte_' + colorHex.replace('#', '');
-
-		// Verificar si ya existe el filtro, si no, lo añade
-		  if (!document.getElementById(filtroId)) {
-			const svgFiltro = `
-			  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-				<filter id="${filtroId}">
-				  <feComponentTransfer>
-					<feFuncR type="linear" slope="${parseInt(colorHex.substr(1, 2), 16) / 255}"/>
-					<feFuncG type="linear" slope="${parseInt(colorHex.substr(3, 2), 16) / 255}"/>
-					<feFuncB type="linear" slope="${parseInt(colorHex.substr(5, 2), 16) / 255}"/>
-				  </feComponentTransfer>
-				</filter>
-			  </svg>
-			`;
-			$('body').append(svgFiltro);
-		  }
-
-		  // Aplicar el filtro SVG a cada imagen
-		  $img.css({
-			filter: `url(#${filtroId})`,
-			WebkitFilter: `url(#${filtroId})`
-		  });
-	   
-	}); 
-} // esta función falla al exportar como imagen...  */
-
 
 function submenu_tintable(id){
 	
