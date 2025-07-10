@@ -31,12 +31,36 @@ var html_barra_lateral_carta = `
 		</div>
 	`;
 
+// FUNCIONALIDAD POPUP
+
+function abrirPopup() {
+  $('#fondo_popup').fadeIn(200);
+}
+
+function cerrarPopup() {
+  $('#fondo_popup').fadeOut(200);
+  $('#contenedor_popup').empty(); // Limpia el contenido al cerrar
+}
+
+// Botón de cierre
+
+
+// Tecla ESC para cerrar
+$(document).on('keydown', function (e) {
+  if (e.key === 'Escape') {
+    cerrarPopup();
+  }
+});
+
+// FIN FUNCIONALIDAD POPUP	
+
 function inicializar(){
 	
 	cargarBarraLateralGeneral();
 	cargarFuncionalidadMenuPrincipal();
 	
 	$('#contenedor_paginas').click(function(){ desseleccionarCartas(); });
+	$('#cerrar_popup').on('click', cerrarPopup);
 	
 }
 
