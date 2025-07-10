@@ -131,12 +131,18 @@ function cargarBarraLateralCartaSeleccionada(){
 	ids_comunes.forEach(function(id) {
 		 var primer_objeto = $('.carta_seleccionada').find('[data-id="' + id + '"]').first();
 
-		// Obtener las clases (como array)
+	
+		var plantilla = primer_objeto.attr("data-plantilla");
+
+	// Obtener las clases (como array)
 		var clases = primer_objeto.attr('class')?.split(/\s+/) || [];
 
 		clases.forEach(function(clase) {
-			cargarSubmenusClase(clase, id); 
+			cargarSubmenusClase(clase, id, plantilla); 
 		});
+		
+		
+		
 	});
 	
 }
@@ -403,7 +409,16 @@ function getDataIdsComunesEnSeleccionadas() {
 
 async function anyadirCartaDesdePlantilla(slug_plantilla) {
 	const carta = anyadirCartaVacia();
-	carta.html(plantillas[slug_plantilla]);	
+	 const script = document.createElement('script');
+	  script.src = `plantillas/${slug_plantilla}/script.js`;
+	  script.onload = () => {
+		const plantilla = window.Plantillas[slug_plantilla];
+		if (plantilla) {
+		  carta.html(plantilla.html);
+		  //plantilla.cargarOpcionesEnMenu(document.getElementById("opciones"));
+		}
+	  };
+	  document.body.appendChild(script);
 }
 
 function exportarProyectoCDE() {
@@ -479,10 +494,11 @@ function slugToTexto(slug){
 
 // FUNCIONALIDAD SUBMENÚS PARTES DE LA CARTA
 
-function cargarSubmenusClase(clase, id){
+function cargarSubmenusClase(clase, id, slug_plantilla){
 	switch (clase) {
 		case "menu_plantilla":			
-			menus_plantilla(id);
+			const plantilla = window.Plantillas[slug_plantilla];			
+			  plantilla.cargarOpcionesEnMenu(id);			
 			break;
 		case "img":
 			submenu_img(id);
