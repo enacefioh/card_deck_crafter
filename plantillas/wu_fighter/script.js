@@ -1,6 +1,10 @@
 window.Plantillas = window.Plantillas || {};
 
 window.Plantillas["wu_fighter"] = {
+  nombre: 'Ficha de Guerrero – Warhammer Underworlds',
+  desc: 'Plantilla editable para representar las estadísticas, habilidades especiales y armas de luchadores en Warhammer Underworlds. Útil para personalizar bandas, crear proxies o adaptar personajes no oficiales.',
+  tags: 'underworlds, warhammer, games workshop, guerrero, ficha, atributos, armas, escaramuza, personalizable, banda, stats, habilidades, combate, nueva edición, carta de unidad, proxy',
+  tipo: 'standard_vertical',  
   html: `
 		<style>
 			@font-face {

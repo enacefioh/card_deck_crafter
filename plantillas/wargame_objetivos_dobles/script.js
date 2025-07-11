@@ -2,6 +2,10 @@
 window.Plantillas = window.Plantillas || {};
 
 window.Plantillas["wargame_objetivos_dobles"] = {
+  nombre: 'Objetivo Táctico Alternativo',
+  desc: 'Plantilla diseñada para partidas de escaramuzas que permite asignar objetivos secundarios a unidades, ofreciendo puntos de victoria o pequeñas ventajas tácticas si resultan difíciles de completar.',
+  tags: 'escaramuza, objetivos, grimdark future, firefight, táctico, opcional, plantillas, juego de miniaturas, puntos de victoria, reglas caseras, opr, secundario, personalizable',
+  tipo: 'standard_vertical',   
   html: `
 	<style>
 			@font-face {

@@ -59,8 +59,37 @@ function inicializar(){
 	cargarBarraLateralGeneral();
 	cargarFuncionalidadMenuPrincipal();
 	
+	cargarPlantillas();
+	
 	$('#contenedor_paginas').click(function(){ desseleccionarCartas(); });
 	$('#cerrar_popup').on('click', cerrarPopup);
+	
+}
+
+async function cargarPlantillas(){
+	$ul_lista_plantillas = $('#submenu_plantillas');
+	for (var i = 0; i < lista_plantillas.length; i++){
+	  let slug_plantilla = lista_plantillas[i];	
+	  const script = document.createElement('script');
+	  script.src = `plantillas/${slug_plantilla}/script.js`;
+	  script.onload = () => {
+		const plantilla = window.Plantillas[slug_plantilla];
+		if (plantilla) {
+		  $ul_lista_plantillas.append("<li id='menu_plantilla_"+slug_plantilla+"' data-plantilla='"+slug_plantilla+"'>"+plantilla.nombre+"</li>");
+		  $('#menu_plantilla_'+slug_plantilla).click(function(){
+			  var slug_plantilla = $(this).attr('data-plantilla');
+			  anyadirCartaDesdePlantilla(slug_plantilla);
+			  
+		  });
+		  
+		}
+	  };
+	  document.body.appendChild(script);
+	  
+	}
+	
+	
+						
 	
 }
 
@@ -407,18 +436,15 @@ function getDataIdsComunesEnSeleccionadas() {
     return Array.from(data_ids_comunes);
 }
 
-async function anyadirCartaDesdePlantilla(slug_plantilla) {
+function anyadirCartaDesdePlantilla(slug_plantilla) {
 	const carta = anyadirCartaVacia();
-	 const script = document.createElement('script');
-	  script.src = `plantillas/${slug_plantilla}/script.js`;
-	  script.onload = () => {
-		const plantilla = window.Plantillas[slug_plantilla];
-		if (plantilla) {
-		  carta.html(plantilla.html);
-		  //plantilla.cargarOpcionesEnMenu(document.getElementById("opciones"));
-		}
-	  };
-	  document.body.appendChild(script);
+	 
+	const plantilla = window.Plantillas[slug_plantilla];
+	if (plantilla) {
+		carta.html(plantilla.html);
+	}	  
+		
+	document.body.appendChild(script);
 }
 
 function exportarProyectoCDE() {
