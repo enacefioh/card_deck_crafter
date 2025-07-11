@@ -12,9 +12,8 @@ var num_pags = 1;
 });
 
 var html_barra_lateral_general = `
-		<div id="add_carta_vacia" style="border: 1px solid gray; background-color:#eeeeee; width:88%; margin:auto; margin-top: 10px; margin-bottom:10px; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;">
-				+ Carta Vacía
-			</div>
+		 <div id="add_carta_vacia" style="border: 1px solid gray; background-color:#eeeeee; width:88%; margin:auto; margin-top: 10px; margin-bottom:10px; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;"> + Carta Vacía </div>
+		 <div id="add_carta_plantilla" style="border: 1px solid gray; background-color:#eeeeee; width:88%; margin:auto; margin-top: 10px; margin-bottom:10px; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;"> + Desde Plantilla</div>
 			<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 				<div style="width:90%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">+ Importar imágenes</div>
 				<input id="importar_imagenes" type="file" multiple="multiple" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
@@ -35,6 +34,7 @@ var html_barra_lateral_carta = `
 
 function abrirPopup() {
   $('#fondo_popup').fadeIn(200);
+  $('#contenedor_popup').empty();
 }
 
 function cerrarPopup() {
@@ -42,10 +42,6 @@ function cerrarPopup() {
   $('#contenedor_popup').empty(); // Limpia el contenido al cerrar
 }
 
-// Botón de cierre
-
-
-// Tecla ESC para cerrar
 $(document).on('keydown', function (e) {
   if (e.key === 'Escape') {
     cerrarPopup();
@@ -107,7 +103,6 @@ function cargarFuncionalidadMenuPrincipal(){
 
 function cargarBarraLateralGeneral(){
 	
-	
 	$('#menu_lateral').empty();
 	$('#menu_lateral').html(html_barra_lateral_general);
 	
@@ -130,7 +125,7 @@ function cargarBarraLateralGeneral(){
 	});
 	
 	$('#add_carta_vacia').click(function(){ anyadirCartaVacia(); });
-	
+	$('#add_carta_plantilla').click(function(){ abrir_menu_plantillas(); });
 	
 }
 
@@ -222,6 +217,21 @@ function anyadirCartaVacia(){
 	img.attr('class','img carta_fondo');
 	
 	return carta;
+}
+
+function abrir_menu_plantillas(){
+	abrirPopup();
+	$('#contenedor_popup').append("<div id='contenedor_popup_interior' style=\"display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;\"></div>");
+	for (const clave in window.Plantillas) {
+		const plantilla = window.Plantillas[clave];
+	    $('#contenedor_popup_interior').append("<div class='anyadir_desde_plantilla' data-plantilla='"+clave+"' style='text-align:center; cursor:pointer;' title='"+plantilla.desc+"' ><img style='max-height:150px; max-width:150px;' src='./plantillas/"+clave+"/mini.png' /> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>"+plantilla.nombre+"</div></div>");
+	};
+	$('.anyadir_desde_plantilla').click(function(){
+		var slug = $(this).attr('data-plantilla');
+		anyadirCartaDesdePlantilla(slug);
+		cerrarPopup();
+	});
+	
 }
 
 function anyadirPagina(){
@@ -444,7 +454,6 @@ function anyadirCartaDesdePlantilla(slug_plantilla) {
 		carta.html(plantilla.html);
 	}	  
 		
-	document.body.appendChild(script);
 }
 
 function exportarProyectoCDE() {
