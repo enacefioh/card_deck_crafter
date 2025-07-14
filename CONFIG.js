@@ -6,6 +6,7 @@ const lista_plantillas = [
 
 	'wargame_objetivos_dobles'
 	,'wu_fighter'
+	,'opr_grimdark_future_firefight'
 	
 	/* Añade aquí arriba las nuevas plantillas con el siguiente formato->     ,'nueva_plantilla'          */
 	];

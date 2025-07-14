@@ -1,4 +1,4 @@
-var version = "1.0.250709";
+var version = "1.0.250711";
 var num_cartas = 0;
 var num_pags = 1;
 
@@ -552,10 +552,30 @@ function cargarSubmenusClase(clase, id, slug_plantilla){
 			break;	
 		case "tintable":
 			submenu_tintable(id);
+			break;	
+		case "titulo_seccion":
+			submenu_titulo_seccion(id);
 			break;				
 		default:
 			console.log("Clase no reconocida");
 	}
+}
+
+function submenu_titulo_seccion(id){
+	var texto = "";
+	if($('.carta_seleccionada').length == 1){
+		texto = $('.carta_seleccionada * [data-id='+id+']').html();
+	}
+	var html_submenu_texto_linea = `
+		<u class='seccion_editable' style='idth: 100%; display: block; text-align: center; padding-top: 8px;'>
+			`+slugToTexto(id)+`</u>
+	`;	
+	
+	$('#menu_lateral').append(html_submenu_texto_linea);
+	
+	
+
+		
 }
 
 function submenu_texto_linea(id){
