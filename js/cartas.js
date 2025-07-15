@@ -56,6 +56,7 @@ function inicializar(){
 	cargarFuncionalidadMenuPrincipal();
 	
 	cargarPlantillas();
+	cargarPlugins();
 	
 	$('#contenedor_paginas').click(function(){ desseleccionarCartas(); });
 	$('#cerrar_popup').on('click', cerrarPopup);
@@ -82,11 +83,33 @@ async function cargarPlantillas(){
 	  };
 	  document.body.appendChild(script);
 	  
-	}
+	}						
 	
-	
-						
-	
+}
+
+async function cargarPlugins(){
+	$ul_lista_plugins = $('#submenu_plugins');
+	for (var i = 0; i < lista_plugins.length; i++){
+	  let slug_plugin = lista_plugins[i];	
+	  const script = document.createElement('script');
+	  script.src = `plugins/${slug_plugin}/script.js`;
+	  script.onload = () => {
+		const plugin_ = window.Plugins[slug_plugin];
+		if (plugin_) {			
+			for (const key in plugin_.funciones) {
+			  const nombre = plugin_.funciones[key].nombre;
+			  const ejecutar = plugin_.funciones[key].funcion;
+			  $ul_lista_plugins.append("<li id='menu_plugin_"+key+"'>"+nombre+"</li>");
+			  $('#menu_plugin_'+key).click(function(){
+				  ejecutar();				  
+			  });
+			  
+			}		  
+		}
+	  };
+	  document.body.appendChild(script);
+	  
+	}						
 }
 
 function cargarFuncionalidadMenuPrincipal(){
@@ -453,7 +476,7 @@ function anyadirCartaDesdePlantilla(slug_plantilla) {
 	if (plantilla) {
 		carta.html(plantilla.html);
 	}	  
-		
+	return carta;	
 }
 
 function exportarProyectoCDE() {
