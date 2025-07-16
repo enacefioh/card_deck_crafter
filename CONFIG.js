@@ -1,19 +1,13 @@
 // Para añadir una nueva plantilla o plugin:
-// 	1.- Copia su carpeta descomprimida en el directorio de plantillas o plugins
-//  2.- Añade el nombre de la carpeta en la lista correspondiente, entre comillas precedida por una coma, al final de la lista  (,'XXX') 
+// 	1.- Copia su carpeta descomprimida en el directorio modulos
+//  2.- Añade el nombre del módulo en la lista correspondiente, entre comillas precedida por una coma, al final de la lista  (,'XXX') 
 
-const lista_plantillas = [
+const modulos = [
 
-	'wargame_objetivos_dobles'
-	,'wu_fighter'
+	'general'
 	,'opr_grimdark_future_firefight'
+	,'warhammer_underworlds2'
 	
-	/* Añade aquí arriba las nuevas plantillas con el siguiente formato->     ,'nueva_plantilla'          */
+	/* Añade aquí arriba los nuevos módulos con el siguiente formato->     ,'nuevo_modulo'          */
 	];
 	
-const lista_plugins = [
-
-	'opr'
-	
-	/* Añade aquí arriba los nuevas plugins con el siguiente formato->     ,'nuevo_plugin'          */
-	];

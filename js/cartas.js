@@ -55,7 +55,7 @@ function inicializar(){
 	cargarBarraLateralGeneral();
 	cargarFuncionalidadMenuPrincipal();
 	
-	cargarPlantillas();
+	
 	cargarPlugins();
 	
 	$('#contenedor_paginas').click(function(){ desseleccionarCartas(); });
@@ -63,15 +63,47 @@ function inicializar(){
 	
 }
 
-async function cargarPlantillas(){
-	$ul_lista_plantillas = $('#submenu_plantillas');
-	for (var i = 0; i < lista_plantillas.length; i++){
-	  let slug_plantilla = lista_plantillas[i];	
+async function cargarPlugins(){
+	$ul_lista_modulos = $('#submenu_plantillas');
+	$ul_lista_plugins = $('#submenu_plugins');
+	
+	
+	for (var i = 0; i < modulos.length; i++){
+	  let slug_modulo = modulos[i];	
 	  const script = document.createElement('script');
-	  script.src = `plantillas/${slug_plantilla}/script.js`;
+	  script.src = `modulos/${slug_modulo}/script.js`;
 	  script.onload = () => {
-		const plantilla = window.Plantillas[slug_plantilla];
-		if (plantilla) {
+		 const plantillas = window.Plantillas[slug_modulo];
+		 $ul_lista_modulos.append("<li  data-plantilla='"+slug_modulo+"'>"+plantillas.nombre+"<ul class='submenu' id='menu_modulo_plantillas_"+slug_modulo+"' ></ul></li>");
+		 $ul_lista_plantillas = $('#menu_modulo_plantillas_'+slug_modulo);
+		 for(var i = 0; i<plantillas.plantillas.length;i++){
+			 var plantilla = plantillas.plantillas[i];
+			 var slug_plantilla = plantilla.slug;
+			 $ul_lista_plantillas.append("<li id='menu_plantilla_"+slug_plantilla+"' data-modulo='"+slug_modulo+"' data-plantilla='"+slug_plantilla+"'>"+plantilla.nombre+"</li>");
+			  $('#menu_plantilla_'+slug_plantilla).click(function(){
+				  var slug_modulo = $(this).attr('data-modulo');
+				  var slug_plantilla = $(this).attr('data-plantilla');
+				  anyadirCartaDesdePlantilla(slug_modulo, slug_plantilla);  
+			  });
+		 }
+		 if(window.Plugins){
+			const plugins = window.Plugins[slug_modulo];
+			if(plugins){
+			 $ul_lista_plugins.append("<li data-plugin='"+slug_modulo+"'>"+plugins.nombre+"<ul class='submenu' id='menu_modulo_plugins_"+slug_modulo+"' ></ul></li>");
+			 $ul_lista_plugins = $('#menu_modulo_plugins_'+slug_modulo);		 
+				 for(var i = 0; i<plugins.plugins.length;i++){
+					 var plugin_ = plugins.plugins[i];
+					 var slug_plugin = plugin_.slug;
+					 $ul_lista_plugins.append("<li id='menu_plugin_"+slug_plugin+"' data-plugin='"+slug_plugin+"'>"+plugin_.nombre+"</li>");
+					  $('#menu_plugin_'+slug_plugin).click(function(){
+						 // var slug_plugin = $(this).attr('data-plugin');
+						  plugin_.funcion();  
+					  });
+				 }
+			}
+		 }
+		 
+		/*if (plantilla) {
 		  $ul_lista_plantillas.append("<li id='menu_plantilla_"+slug_plantilla+"' data-plantilla='"+slug_plantilla+"'>"+plantilla.nombre+"</li>");
 		  $('#menu_plantilla_'+slug_plantilla).click(function(){
 			  var slug_plantilla = $(this).attr('data-plantilla');
@@ -79,16 +111,14 @@ async function cargarPlantillas(){
 			  
 		  });
 		  
-		}
+		} */
+		//cargar plugins y plantillas
+		
 	  };
 	  document.body.appendChild(script);
 	  
 	}						
-	
-}
-
-async function cargarPlugins(){
-	$ul_lista_plugins = $('#submenu_plugins');
+	/*
 	for (var i = 0; i < lista_plugins.length; i++){
 	  let slug_plugin = lista_plugins[i];	
 	  const script = document.createElement('script');
@@ -102,23 +132,20 @@ async function cargarPlugins(){
 			  $ul_lista_plugins.append("<li id='menu_plugin_"+key+"'>"+nombre+"</li>");
 			  $('#menu_plugin_'+key).click(function(){
 				  ejecutar();				  
-			  });
-			  
+			  });			  
 			}		  
 		}
 	  };
 	  document.body.appendChild(script);
-	  
-	}						
+	} */
 }
+
 
 function cargarFuncionalidadMenuPrincipal(){
 	$('#menu_archivo_nuevo').click(function(){ location.reload(); });
 	$('#menu_edicion_seleccionar_todo').click(function(){ $(".carta").addClass('carta_seleccionada'); });
 	$('#menu_edicion_seleccionar_nada').click(function(){ $(".carta_seleccionada").removeClass('carta_seleccionada'); });
 	$('#menu_anyadir_carta_vacia').click(function(){ anyadirCartaVacia(); });
-	$('#menu_anyadir_plantilla_objetivos_dobles').click(function(){ anyadirCartaDesdePlantilla('wargame_objetivos_dobles'); });
-	$('#menu_anyadir_plantilla_wu_fighter').click(function(){ anyadirCartaDesdePlantilla('wu_fighter'); });
 	$('#exportar_cartas_png').click(function(){ $(".carta").addClass('carta_seleccionada'); exportar_cartas_seleccionadas(); });
 	$('#guardar_cde').click(function(){ exportarProyectoCDE(); });
 	$('#importar_cde').click(function(){ importarProyectoCDE(); });
@@ -469,13 +496,16 @@ function getDataIdsComunesEnSeleccionadas() {
     return Array.from(data_ids_comunes);
 }
 
-function anyadirCartaDesdePlantilla(slug_plantilla) {
+function anyadirCartaDesdePlantilla(slug_modulo, slug_plantilla) {
 	const carta = anyadirCartaVacia();
 	 
-	const plantilla = window.Plantillas[slug_plantilla];
-	if (plantilla) {
-		carta.html(plantilla.html);
-	}	  
+	const plantillas = window.Plantillas[slug_modulo];
+	for(var i = 0; i< plantillas.plantillas.length; i++){
+		if(plantillas.plantillas[i].slug == slug_plantilla){
+		
+			carta.html(plantillas.plantillas[i].html);
+		}	  
+	}
 	return carta;	
 }
 
