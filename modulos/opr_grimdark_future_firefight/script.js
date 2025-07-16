@@ -53,7 +53,7 @@ window.Plantillas["opr_grimdark_future_firefight"] = {
 					
 					<div style='position:absolute; bottom: 5px; width:90%; left:4%;'>
 						<div style='position:relative; text-align:center; padding:2px; border: 3px solid black; border-radius:10px; background-color: #fff; font-size:12px;'><b><u>Reglas especiales</u></b><div data-id="reglas_especiales" class='texto_editable'> </div> </div>
-						<div class='menu_plantilla' data-id='add_arma' data-plantilla='opr_grimdark_future_firefight' style='display:none;'></div>
+						<div class='menu_plantilla' data-id='add_arma' data-modulo='opr_grimdark_future_firefight' data-plantilla='unidad' style='display:none;'></div>
 						<div style='position:relative; text-align:center; padding:2px; ; border: 3px solid black; border-radius:10px; background-color: #fff;'>
 							<table class='opr_grimdark_future_firefight_tabla_armas' style='width:100%; font-size: 12px;'>
 								<tr><td>Arma</td><td>🧿</td><td>💥</td><td>AP</td><td>Tags.</td></tr>

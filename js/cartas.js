@@ -207,12 +207,13 @@ function cargarBarraLateralCartaSeleccionada(){
 
 	
 		var plantilla = primer_objeto.attr("data-plantilla");
+		var modulo = primer_objeto.attr("data-modulo");
 
 	// Obtener las clases (como array)
 		var clases = primer_objeto.attr('class')?.split(/\s+/) || [];
 
 		clases.forEach(function(clase) {
-			cargarSubmenusClase(clase, id, plantilla); 
+			cargarSubmenusClase(clase, id, modulo, plantilla); 
 		});
 		
 		
@@ -582,11 +583,16 @@ function slugToTexto(slug){
 
 // FUNCIONALIDAD SUBMENÚS PARTES DE LA CARTA
 
-function cargarSubmenusClase(clase, id, slug_plantilla){
+function cargarSubmenusClase(clase, id, slug_modulo ,slug_plantilla){
 	switch (clase) {
 		case "menu_plantilla":			
-			const plantilla = window.Plantillas[slug_plantilla];			
-			  plantilla.cargarOpcionesEnMenu(id);			
+			const plantillas = window.Plantillas[slug_modulo];	
+			for(var i = 0; i< plantillas.plantillas.length; i++){
+				if(plantillas.plantillas[i].slug == slug_plantilla){
+				
+					plantillas.plantillas[i].cargarOpcionesEnMenu(id);
+				}	  
+			}			
 			break;
 		case "img":
 			submenu_img(id);
