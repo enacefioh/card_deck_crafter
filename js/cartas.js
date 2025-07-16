@@ -1,4 +1,4 @@
-var version = "1.0.250711";
+var version = "1.0.250716";
 var num_cartas = 0;
 var num_pags = 1;
 

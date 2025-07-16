@@ -25,7 +25,8 @@ window.Plantillas["opr_grimdark_future_firefight"] = {
 	
 		<img data-id="carta_fondo" class="img carta_fondo">
 		<div style='position:absolute; width:100%; height:100%; top:0px;  border: 5px solid black; box-sizing: border-box; font-family: MerriweatherBold;'>
-			<div data-id="nombre_guerrero" class='texto_linea' style='width:90%; left:4%; top:5px; position:absolute; text-align:center; padding:2px;  border: 3px solid black; border-radius:10px; font-weight:bold; background-color:#fff;'>Nombre</div>
+			<div data-id="nombre_guerrero" class='texto_linea' style='width:90%; left:4%; top:5px; position:absolute; text-align:center; padding:2px;  border: 3px solid black; border-radius: 10px; font-weight:bold; background-color:#fff;'>Nombre</div>
+			<div style='width:50%; left:24%; top:32px; position:absolute; text-align:center; padding:2px;  border-radius:0px 0px 10px 10px; background-color:#000000; color:white; font-size: 11px;'>Models: <span class='texto_numero' data-id='número_minis' >1</span></div>
 			<div style='width:30px; height:20px; left:5px; top:17%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#fff;'>Q</div>
 			<div style='width:30px; height:20px; left:5px; top:29%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#fff;'>D</div>
 			<div style='width:24px; height:24px; left:8%; top:15%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#fff; font-weight:bold;'><span data-id="calidad" class='texto_numero'>3</span>+</div>

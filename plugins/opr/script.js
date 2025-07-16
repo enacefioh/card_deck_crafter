@@ -50,7 +50,27 @@ function oggfft2c(){
 	$('#contenedor_popup').append(`
 		<h2>Pega aquí tu banda de OPR Exportada como texto</h2>
 		<i style='display:block; text-align:center;'>Edita tu banda => Menú => Share as Text</i>
-		<textarea id='oggfft2c_text' style='width:90%; margin: 5px 0px 5px 4%; height: 250px;'></textarea>
+		<textarea id='oggfft2c_text' style='width:90%; margin: 5px 0px 5px 4%; height: 250px;'>
+		
+		++ Bugs! - Alien Hives (v3.4.4) [GFF 320pts] ++
+
+Brood Leader [1] Q4+ D4+ | 95pts | Fearless, Hero, Tough(3), Pheromones
+2x Serrated Blade (A2, AP(4))
+
+2x Assault Grunts [3] Q5+ D5+ | 50pts | 3x Fast, 3x Strider, 3x Poison in Melee
+2x Razor Claws (A2), Serrated Claws (A2, AP(4))
+
+Shooter Grunts [3] Q5+ D5+ | 40pts | 3x Strider
+2x Bio-Spiner (6", A2, AP(1)), 3x Razor Claws (A1), Bio-Flamer (6", A1, Blast(3), Reliable)
+
+Soul-Snatcher [1] Q3+ D4+ | 45pts | Fast, Scout, Strider, Caster(+1)
+Heavy Claws (A2, AP(1), Rending)
+
+Winged Grunts [3] Q5+ D5+ | 40pts | 3x Ambush, 3x Flying
+3x Bio-Spiner (6", A2, AP(1)), 3x Razor Claws (A1)
+
+		
+		</textarea>
 		<button id='oggfft2c_button' style='width:90%; margin: 5px 0px 5px 4%; height: 50px; font-size:22px;'>Generar Cartas</button>
 	`);
 	
@@ -73,15 +93,19 @@ function oggfft2c(){
 			attrs_mini = lineas[0];
 			var nombre_partes = attrs_mini.split('[');
 			var nombre = nombre_partes[0].trim();
-			var cantidad_minis = 1;				
+			
+			const num_minis_match  = lineas[0].match(/\[(\d+)\]/);
+			guerrero.num_minis = num_minis_match  ? parseInt(num_minis_match [1], 10) : null;
+			
+			var cantidad_unidades = 1;				
 			if (/^\s*\d+x/.test(attrs_mini.trim())) {
 				var partes_cantidad = attrs_mini.split('x');
-				cantidad_minis = partes_cantidad[0];
-				nombre = nombre_partes[0].replace(cantidad_minis+"x", "").trim();
+				cantidad_unidades = partes_cantidad[0];
+				nombre = nombre_partes[0].replace(cantidad_unidades+"x", "").trim();
 			}
 			
 			guerrero.nombre = nombre.trim();
-			guerrero.cantidad = cantidad_minis;
+			guerrero.cantidad = cantidad_unidades;
 			
 			const match1 = attrs_mini.match(/Q([1-6])\+/);
 			var calidad = match1 ? parseInt(match1[1], 10) : null;
@@ -97,11 +121,11 @@ function oggfft2c(){
 			guerrero.habilidades = habilidades.trim();
 			var carta = anyadirCartaDesdePlantilla("opr_grimdark_future_firefight");		
 			carta.find("[data-id='nombre_guerrero']").html(guerrero.nombre);
-			if(cantidad_minis>1)
-				carta.find("[data-id='nombre_guerrero']").append(" (x"+cantidad_minis+")");
+			
 			carta.find("[data-id='calidad']").html(guerrero.calidad);
 			carta.find("[data-id='defensa']").html(guerrero.defensa);
 			carta.find("[data-id='reglas_especiales']").html(guerrero.habilidades);
+			carta.find("[data-id='número_minis']").html(guerrero.num_minis);
 			
 			guerrero.armas = [];				
 			var num_armas = 0;
@@ -168,7 +192,14 @@ function oggfft2c(){
 					}
 					
 				}
-			}				
+			}
+			for(var n = 1; n<cantidad_unidades; n++){
+				var carta_copia = anyadirCartaDesdePlantilla("opr_grimdark_future_firefight");
+				carta_copia.html(carta.html());
+			}
+			/* if(cantidad_unidades>1)
+				carta.find("[data-id='nombre_guerrero']").append(" (x"+cantidad_unidades+")"); */
+					
 		}
 	});
 
