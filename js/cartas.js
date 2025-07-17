@@ -273,13 +273,21 @@ function anyadirCartaVacia(){
 function abrir_menu_plantillas(){
 	abrirPopup();
 	$('#contenedor_popup').append("<div id='contenedor_popup_interior' style=\"display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;\"></div>");
-	for (const clave in window.Plantillas) {
-		const plantilla = window.Plantillas[clave];
-	    $('#contenedor_popup_interior').append("<div class='anyadir_desde_plantilla' data-plantilla='"+clave+"' style='text-align:center; cursor:pointer;' title='"+plantilla.desc+"' ><img style='max-height:150px; max-width:150px;' src='./plantillas/"+clave+"/mini.png' /> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>"+plantilla.nombre+"</div></div>");
+	
+	
+	for (const key in window.Plantillas) {
+		const plantillas = window.Plantillas[key];
+	    $('#contenedor_popup_interior').append("<h2 title='"+plantillas.desc+"' style='width:100%; text-align:center;' >"+plantillas.nombre+"</h2>");
+		for (const clave in window.Plantillas[key].plantillas){
+			const plantilla = window.Plantillas[key].plantillas[clave];
+			$('#contenedor_popup_interior').append("<div class='anyadir_desde_plantilla' data-modulo="+key+" data-plantilla='"+plantilla.slug+"' style='text-align:center; cursor:pointer;' title='"+plantilla.desc+"' ><img style='max-height:150px; max-width:150px;' src='./modulos/"+key+"/mini_"+plantilla.slug+".png' /> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>"+plantilla.nombre+"</div></div>");
+		}
+		$('#contenedor_popup_interior').append("<div style='clear:both;'> </div>");
 	};
 	$('.anyadir_desde_plantilla').click(function(){
-		var slug = $(this).attr('data-plantilla');
-		anyadirCartaDesdePlantilla(slug);
+		var slug_plantilla = $(this).attr('data-plantilla');
+		var slug_modulo = $(this).attr('data-modulo');
+		anyadirCartaDesdePlantilla(slug_modulo, slug_plantilla);
 		cerrarPopup();
 	});
 	
