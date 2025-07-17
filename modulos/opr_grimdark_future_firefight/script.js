@@ -57,7 +57,7 @@ window.Plantillas["opr_grimdark_future_firefight"] = {
 						<div style='position:relative; text-align:center; padding:2px; ; border: 3px solid black; border-radius:10px; background-color: #fff;'>
 							<table class='opr_grimdark_future_firefight_tabla_armas' style='width:100%; font-size: 12px;'>
 								<tr><td>Arma</td><td>🧿</td><td>💥</td><td>AP</td><td>Tags.</td></tr>
-								<tr class='opr_grimdark_future_firefight_arma titulo_seccion' data-id='arma_1'><td data-id="nombre_arma1" class='texto_linea' ></td><td data-id="distancia_arma1" class='texto_numero'></td><td data-id="daño_arma1" class='texto_numero'></td><td data-id="penetracion_arma1" class='texto_numero'>0</td><td data-id="habilidades_arma1" class='texto_linea'>-</td></tr>					
+								<tr class='opr_grimdark_future_firefight_arma titulo_seccion' data-indice='1' data-id='arma_1'><td data-id="nombre_arma1" class='texto_linea' ></td><td data-id="distancia_arma1" class='texto_numero'></td><td data-id="daño_arma1" class='texto_numero'></td><td data-id="penetracion_arma1" class='texto_numero'>0</td><td data-id="habilidades_arma1" class='texto_linea'>-</td></tr>					
 							</table>
 						</div>
 					</div>
@@ -84,9 +84,9 @@ window.Plantillas["opr_grimdark_future_firefight"] = {
 
 function opr_grimdark_future_firefight_add_arma(carta){
 	
-			var opr_grimdark_future_firefight_num_armas = carta.find('* .opr_grimdark_future_firefight_tabla_armas').children().length+1;
+			var opr_grimdark_future_firefight_num_armas = parseInt(carta.find('* .opr_grimdark_future_firefight_tabla_armas tr').last().attr('data-indice'))+1;
 			var html_opr_grimdark_future_firefight = `
-			<tr class='opr_grimdark_future_firefight_arma titulo_seccion' data-id='arma_`+opr_grimdark_future_firefight_num_armas+`'><td data-id="nombre_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_linea' ></td><td data-id="distancia_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_numero'></td><td data-id="num_ataques_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_numero'></td><td data-id="penetracion_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_numero'>0</td><td data-id="habilidades_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_linea'>-</td></tr>	
+			<tr class='opr_grimdark_future_firefight_arma titulo_seccion eliminable' data-indice='`+opr_grimdark_future_firefight_num_armas+`' data-id='eliminar_arma_`+opr_grimdark_future_firefight_num_armas+`'><td data-id="nombre_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_linea' ></td><td data-id="distancia_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_numero'></td><td data-id="num_ataques_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_numero'></td><td data-id="penetracion_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_numero'>0</td><td data-id="habilidades_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_linea'>-</td></tr>	
 			`;
 			
 			carta.find('* .opr_grimdark_future_firefight_tabla_armas').append(html_opr_grimdark_future_firefight);

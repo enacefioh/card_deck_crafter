@@ -1,4 +1,4 @@
-var version = "1.0.250716";
+var version = "1.0.250717";
 var num_cartas = 0;
 var num_pags = 1;
 
@@ -614,7 +614,10 @@ function cargarSubmenusClase(clase, id, slug_modulo ,slug_plantilla){
 			break;	
 		case "titulo_seccion":
 			submenu_titulo_seccion(id);
-			break;				
+			break;	
+		case "eliminable":
+			submenu_eliminable(id);
+			break;
 		default:
 			console.log("Clase no reconocida");
 	}
@@ -657,6 +660,32 @@ function submenu_texto_linea(id){
 	$('#texto_linea_'+id).on('input', function(){
 		var id_objeto = $(this).attr('data-id');
 		$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());
+		
+	});
+		
+}
+
+function submenu_eliminable(id){
+	var texto = "";
+	if($('.carta_seleccionada').length == 1){
+		texto = $('.carta_seleccionada * [data-id='+id+']').html();
+	}
+	var html_submenu_texto_eliminar_elemento = `
+		<div class='seccion_editable'>
+			<div class='seccion_texto'>
+				<div class='etiqueta_submenu'>`+slugToTexto(id)+`: </div>
+				<span id='eliminar_elemento_`+id+`' data-id='`+id+`' style='cursor:pointer; color:red;' >❌</span>
+			</div>
+		</div>
+	`;	
+	
+	$('#menu_lateral').append(html_submenu_texto_eliminar_elemento);
+	
+	
+	$('#eliminar_elemento_'+id).click( function(){
+		var id_objeto = $(this).attr('data-id');
+		$('.carta_seleccionada * [data-id='+id_objeto+']').remove();
+		cargarBarraLateralCartaSeleccionada();
 		
 	});
 		
