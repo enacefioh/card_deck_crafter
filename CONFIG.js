@@ -5,7 +5,7 @@
 const modulos = [
 
 	'general'
-	,'opr_grimdark_future_firefight'
+	,'one_page_rules'
 	,'warhammer_underworlds2'
 	
 	/* Añade aquí arriba los nuevos módulos con el siguiente formato->     ,'nuevo_modulo'          */

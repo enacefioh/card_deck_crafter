@@ -1,8 +1,8 @@
 window.Plantillas = window.Plantillas || {};
 window.Plugins = window.Plugins || {};
 
-window.Plugins["opr_grimdark_future_firefight"] = {
-  nombre: 'OPR Grimpdark Future Firefight',
+window.Plugins["one_page_rules"] = {
+  nombre: 'One Page Rules (OPR)',
   desc: 'Funciones útiles para OPR',
   tags: 'wargame,miniatures', 
   plugins: [
@@ -15,8 +15,8 @@ window.Plugins["opr_grimdark_future_firefight"] = {
   ]
 };
 
-window.Plantillas["opr_grimdark_future_firefight"] = {
-  nombre: 'OPR Grimdark Future Firefight',
+window.Plantillas["one_page_rules"] = {
+  nombre: 'One Page Rules (OPR)',
   desc: 'Plantillas útiles para OPR rimdark Future Firefight',
   tags: 'wargame,miniatures', 
   plantillas: [
@@ -32,32 +32,32 @@ window.Plantillas["opr_grimdark_future_firefight"] = {
 				
 					@font-face {
 					  font-family: 'MerriweatherBold';
-					  src: url('./modulos/opr_grimdark_future_firefight/Merriweather_120pt-Bold.ttf') format('truetype');
+					  src: url('./modulos/one_page_rules/Merriweather_120pt-Bold.ttf') format('truetype');
 					}
 						
 						
-					#opr_grimdark_future_firefight_tabla_armas tr:nth-child(odd) {
+					#one_page_rules_tabla_armas tr:nth-child(odd) {
 					  background-color: #f2f2f2;
 					}
 					
 				</style>
 			
-				<img data-id="carta_fondo" class="img carta_fondo">
+				<img data-id="carta_fondo" class="img carta_fondo" style='object-fit: cover; object-position: center;' >
 				<div style='position:absolute; width:100%; height:100%; top:0px;  border: 5px solid black; box-sizing: border-box; font-family: MerriweatherBold;'>
-					<div data-id="nombre_guerrero" class='texto_linea' style='width:90%; left:4%; top:5px; position:absolute; text-align:center; padding:2px;  border: 3px solid black; border-radius: 10px; font-weight:bold; background-color:#fff;'>Nombre</div>
+					<div data-id="nombre_guerrero" class='texto_linea' style='width:90%; left:4%; top:5px; position:absolute; text-align:center; padding:2px;  border: 3px solid black; border-radius: 10px; font-weight:bold; background-color:#ffffffCC;'>Nombre</div>
 					<div style='width:50%; left:24%; top:32px; position:absolute; text-align:center; padding:2px;  border-radius:0px 0px 10px 10px; background-color:#000000; color:white; font-size: 11px;'>Models: <span class='texto_numero' data-id='número_minis' >1</span></div>
-					<div style='width:30px; height:20px; left:5px; top:17%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#fff;'>Q</div>
-					<div style='width:30px; height:20px; left:5px; top:29%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#fff;'>D</div>
-					<div style='width:24px; height:24px; left:8%; top:15%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#fff; font-weight:bold;'><span data-id="calidad" class='texto_numero'>3</span>+</div>
-					<div style='width:24px; height:24px; left:8%; top:27%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#fff;  font-weight:bold;'><span data-id="defensa" class='texto_numero'>3</span>+</div>
+					<div style='width:30px; height:20px; left:5px; top:17%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#ffffffCC;'>Q</div>
+					<div style='width:30px; height:20px; left:5px; top:29%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#ffffffCC;'>D</div>
+					<div style='width:24px; height:24px; left:8%; top:15%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#ffffff; font-weight:bold;'><span data-id="calidad" class='texto_numero'>3</span>+</div>
+					<div style='width:24px; height:24px; left:8%; top:27%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#ffffff;  font-weight:bold;'><span data-id="defensa" class='texto_numero'>3</span>+</div>
 					
 					<div style='position:absolute; bottom: 5px; width:90%; left:4%;'>
-						<div style='position:relative; text-align:center; padding:2px; border: 3px solid black; border-radius:10px; background-color: #fff; font-size:12px;'><b><u>Reglas especiales</u></b><div data-id="reglas_especiales" class='texto_editable'> </div> </div>
-						<div class='menu_plantilla' data-id='add_arma' data-modulo='opr_grimdark_future_firefight' data-plantilla='unidad' style='display:none;'></div>
-						<div style='position:relative; text-align:center; padding:2px; ; border: 3px solid black; border-radius:10px; background-color: #fff;'>
-							<table class='opr_grimdark_future_firefight_tabla_armas' style='width:100%; font-size: 12px;'>
+						<div style='position:relative; text-align:center; padding:2px; border: 3px solid black; border-radius:10px; background-color: #ffffffCC; font-size:12px;'><b><u>Reglas especiales</u></b><div data-id="reglas_especiales" class='texto_editable'> </div> </div>
+						<div class='menu_plantilla' data-id='add_arma' data-modulo='one_page_rules' data-plantilla='unidad' style='display:none;'></div>
+						<div style='position:relative; text-align:center; padding:2px; ; border: 3px solid black; border-radius:10px; background-color: #ffffffCC;'>
+							<table class='one_page_rules_tabla_armas' style='width:100%; font-size: 12px;'>
 								<tr><td>Arma</td><td>🧿</td><td>💥</td><td>AP</td><td>Tags.</td></tr>
-								<tr class='opr_grimdark_future_firefight_arma titulo_seccion' data-indice='1' data-id='arma_1'><td data-id="nombre_arma1" class='texto_linea' ></td><td data-id="distancia_arma1" class='texto_numero'></td><td data-id="daño_arma1" class='texto_numero'></td><td data-id="penetracion_arma1" class='texto_numero'>0</td><td data-id="habilidades_arma1" class='texto_linea'>-</td></tr>					
+								<tr class='one_page_rules_arma titulo_seccion' data-indice='1' data-id='arma_1'><td data-id="nombre_arma1" class='texto_linea' ></td><td data-id="distancia_arma1" class='texto_numero'></td><td data-id="daño_arma1" class='texto_numero'></td><td data-id="penetracion_arma1" class='texto_numero'>0</td><td data-id="habilidades_arma1" class='texto_linea'>-</td></tr>					
 							</table>
 						</div>
 					</div>
@@ -74,7 +74,7 @@ window.Plantillas["opr_grimdark_future_firefight"] = {
 				
 				$('#anyadir_arma').click(function(){
 					var carta_seleccionada = $('.carta_seleccionada');
-					opr_grimdark_future_firefight_add_arma(carta_seleccionada);
+					one_page_rules_add_arma(carta_seleccionada);
 					cargarBarraLateralCartaSeleccionada();
 				});
 		  }
@@ -82,14 +82,14 @@ window.Plantillas["opr_grimdark_future_firefight"] = {
 	]
 };
 
-function opr_grimdark_future_firefight_add_arma(carta){
+function one_page_rules_add_arma(carta){
 	
-			var opr_grimdark_future_firefight_num_armas = parseInt(carta.find('* .opr_grimdark_future_firefight_tabla_armas tr').last().attr('data-indice'))+1;
-			var html_opr_grimdark_future_firefight = `
-			<tr class='opr_grimdark_future_firefight_arma titulo_seccion eliminable' data-indice='`+opr_grimdark_future_firefight_num_armas+`' data-id='eliminar_arma_`+opr_grimdark_future_firefight_num_armas+`'><td data-id="nombre_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_linea' ></td><td data-id="distancia_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_numero'></td><td data-id="num_ataques_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_numero'></td><td data-id="penetracion_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_numero'>0</td><td data-id="habilidades_arma`+opr_grimdark_future_firefight_num_armas+`" class='texto_linea'>-</td></tr>	
+			var one_page_rules_num_armas = parseInt(carta.find('* .one_page_rules_tabla_armas tr').last().attr('data-indice'))+1;
+			var html_one_page_rules = `
+			<tr class='one_page_rules_arma titulo_seccion eliminable' data-indice='`+one_page_rules_num_armas+`' data-id='eliminar_arma_`+one_page_rules_num_armas+`'><td data-id="nombre_arma`+one_page_rules_num_armas+`" class='texto_linea' ></td><td data-id="distancia_arma`+one_page_rules_num_armas+`" class='texto_numero'></td><td data-id="num_ataques_arma`+one_page_rules_num_armas+`" class='texto_numero'></td><td data-id="penetracion_arma`+one_page_rules_num_armas+`" class='texto_numero'>0</td><td data-id="habilidades_arma`+one_page_rules_num_armas+`" class='texto_linea'>-</td></tr>	
 			`;
 			
-			carta.find('* .opr_grimdark_future_firefight_tabla_armas').append(html_opr_grimdark_future_firefight);
+			carta.find('* .one_page_rules_tabla_armas').append(html_one_page_rules);
 					
 }
 
@@ -178,7 +178,7 @@ function ogfft2c(){
 			var partes_atrs = attrs_mini.split('|');
 			var habilidades = partes_atrs[partes_atrs.length-1];
 			guerrero.habilidades = habilidades.trim();
-			var carta = anyadirCartaDesdePlantilla("opr_grimdark_future_firefight", "unidad");		
+			var carta = anyadirCartaDesdePlantilla("one_page_rules", "unidad");		
 			carta.find("[data-id='nombre_guerrero']").html(guerrero.nombre);
 			
 			carta.find("[data-id='calidad']").html(guerrero.calidad);
@@ -237,7 +237,7 @@ function ogfft2c(){
 						arma.penetracion = 0;
 					}
 					if(armas_anyadidas>0)
-					   opr_grimdark_future_firefight_add_arma(carta);
+					   one_page_rules_add_arma(carta);
 					armas_anyadidas++;
 					carta.find("[data-id='nombre_arma"+armas_anyadidas+"']").html(arma.nombre);
 					if(arma.distancia > 0)
@@ -253,7 +253,7 @@ function ogfft2c(){
 				}
 			}
 			for(var n = 1; n<cantidad_unidades; n++){
-				var carta_copia = anyadirCartaDesdePlantilla("opr_grimdark_future_firefight");
+				var carta_copia = anyadirCartaDesdePlantilla("one_page_rules");
 				carta_copia.html(carta.html());
 			}
 			/* if(cantidad_unidades>1)
