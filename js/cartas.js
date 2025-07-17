@@ -147,8 +147,8 @@ function cargarFuncionalidadMenuPrincipal(){
 	$('#menu_edicion_seleccionar_nada').click(function(){ $(".carta_seleccionada").removeClass('carta_seleccionada'); });
 	$('#menu_anyadir_carta_vacia').click(function(){ anyadirCartaVacia(); });
 	$('#exportar_cartas_png').click(function(){ $(".carta").addClass('carta_seleccionada'); exportar_cartas_seleccionadas(); });
-	$('#guardar_cde').click(function(){ exportarProyectoCDE(); });
-	$('#importar_cde').click(function(){ importarProyectoCDE(); });
+	$('#guardar_cdc').click(function(){ exportarProyectoCDC(); });
+	$('#importar_cdc').click(function(){ importarProyectoCDC(); });
 }
 
 function cargarBarraLateralGeneral(){
@@ -510,7 +510,7 @@ function anyadirCartaDesdePlantilla(slug_modulo, slug_plantilla) {
 	return carta;	
 }
 
-function exportarProyectoCDE() {
+function exportarProyectoCDC() {
     // Datos base
     
 
@@ -528,14 +528,14 @@ function exportarProyectoCDE() {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const enlace = document.createElement('a');
     enlace.href = URL.createObjectURL(blob);
-    enlace.download = 'proyecto.cde';
+    enlace.download = 'cartas.cdc';
     enlace.click();
 }
 
-function importarProyectoCDE() {
+function importarProyectoCDC() {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.cde'; 
+    input.accept = '.cdc'; 
 
     input.onchange = (event) => {
         const archivo = event.target.files[0];
@@ -566,7 +566,7 @@ function importarProyectoCDE() {
 
                 console.log('Proyecto cargado:', datos);
             } catch (error) {
-                alert('Error al leer el archivo. ¿Es un archivo válido .cde?');
+                alert('Error al leer el archivo. ¿Es un archivo válido .cdc?');
                 console.error(error);
             }
         };
