@@ -61,6 +61,46 @@ function inicializar(){
 	$('#contenedor_paginas').click(function(){ desseleccionarCartas(); });
 	$('#cerrar_popup').on('click', cerrarPopup);
 	
+	
+	funcionalidadBarraLateralRedimensionadora();
+	
+	
+}
+
+function funcionalidadBarraLateralRedimensionadora(){
+	
+	  const resizer = document.getElementById('resizer');
+	  const panel = document.getElementById('menu_lateral_padre');
+	  const contenido = document.getElementById('contenedor_paginas');
+	  let isResizing = false;
+
+	
+	
+	  resizer.addEventListener('mousedown', function () {
+		isResizing = true;
+		document.body.style.cursor = 'col-resize';
+	  });
+
+	  document.addEventListener('mousemove', function (e) {
+		if (!isResizing) return;
+
+		let newWidth = e.clientX;
+		const minWidth = 150;
+		const maxWidth = 500;
+		newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+
+		panel.style.width = newWidth + 'px';
+		resizer.style.left = newWidth + 'px';
+		contenido.style.marginLeft = (newWidth + 5) + 'px';
+	  });
+
+	  document.addEventListener('mouseup', function () {
+		if (isResizing) {
+		  isResizing = false;
+		  document.body.style.cursor = 'default';
+		 
+		}
+	  });
 }
 
 async function cargarPlugins(){

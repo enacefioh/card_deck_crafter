@@ -256,5 +256,46 @@ body {
 	margin-bottom: 5px;
 	
 }
+
+#menu_lateral_padre {
+  position: fixed;
+  top: 30px; /* debajo del menú superior */
+  left: 0;
+  bottom: 0;
+  width: 250px; /* valor inicial o dinámico */
+  min-width: 150px;
+  max-width: 500px;
+  background-color: #f1f1f1;
+  z-index: 5;
+  overflow-y: auto;
+}
+
+#resizer {
+  position: fixed;
+  top: 30px;
+  left: 250px; /* sincronizado con el ancho inicial del menú */
+  width: 5px;
+  height: calc(100% - 30px);
+  cursor: col-resize;
+  background-color: #ccc;
+  z-index: 10;
+}
+
+#contenedor_paginas {
+  margin-left: 255px; /* ancho menú + ancho resizer */
+  padding-top: 30px; /* para dejar sitio al menú superior */
+  height: calc(100vh - 30px);
+  overflow: auto;
+}
+
+#menu_superior {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background-color: #ddd;
+  z-index: 20;
+}
 		
 		
