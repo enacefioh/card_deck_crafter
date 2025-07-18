@@ -86,7 +86,7 @@ function one_page_rules_add_arma(carta){
 	
 			var one_page_rules_num_armas = parseInt(carta.find('* .one_page_rules_tabla_armas tr').last().attr('data-indice'))+1;
 			var html_one_page_rules = `
-			<tr class='one_page_rules_arma titulo_seccion eliminable' data-indice='`+one_page_rules_num_armas+`' data-id='eliminar_arma_`+one_page_rules_num_armas+`'><td data-id="nombre_arma`+one_page_rules_num_armas+`" class='texto_linea' ></td><td data-id="distancia_arma`+one_page_rules_num_armas+`" class='texto_numero'></td><td data-id="num_ataques_arma`+one_page_rules_num_armas+`" class='texto_numero'></td><td data-id="penetracion_arma`+one_page_rules_num_armas+`" class='texto_numero'>0</td><td data-id="habilidades_arma`+one_page_rules_num_armas+`" class='texto_linea'>-</td></tr>	
+			<tr class='one_page_rules_arma titulo_seccion eliminable' data-indice='`+one_page_rules_num_armas+`' data-id='arma_`+one_page_rules_num_armas+`'><td data-id="nombre_arma`+one_page_rules_num_armas+`" class='texto_linea' ></td><td data-id="distancia_arma`+one_page_rules_num_armas+`" class='texto_numero'></td><td data-id="num_ataques_arma`+one_page_rules_num_armas+`" class='texto_numero'></td><td data-id="penetracion_arma`+one_page_rules_num_armas+`" class='texto_numero'>0</td><td data-id="habilidades_arma`+one_page_rules_num_armas+`" class='texto_linea'>-</td></tr>	
 			`;
 			
 			carta.find('* .one_page_rules_tabla_armas').append(html_one_page_rules);

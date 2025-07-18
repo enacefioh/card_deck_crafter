@@ -1,4 +1,4 @@
-var version = "1.0.250717";
+var version = "1.0.250718";
 var num_cartas = 0;
 var num_pags = 1;
 
@@ -681,7 +681,7 @@ function submenu_eliminable(id){
 	var html_submenu_texto_eliminar_elemento = `
 		<div class='seccion_editable'>
 			<div class='seccion_texto'>
-				<div class='etiqueta_submenu'>`+slugToTexto(id)+`: </div>
+				<div class='etiqueta_submenu'>Eliminar `+slugToTexto(id)+`: </div>
 				<span id='eliminar_elemento_`+id+`' data-id='`+id+`' style='cursor:pointer; color:red;' >❌</span>
 			</div>
 		</div>
