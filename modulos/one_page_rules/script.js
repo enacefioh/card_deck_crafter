@@ -136,7 +136,9 @@ function ogfft2c(){
 	$("#oggfft2c_button").click(function(){
 		const guerreros = [];	
 
-		const texto =  $("#oggfft2c_text").val().trim();	
+		var texto =  $("#oggfft2c_text").val().trim();
+		const texto_original = texto;
+		texto = texto.replace("| Joined to:", "");
 		cerrarPopup();
 		
 		const str_guerreros = texto.split(/\r?\n\r?\n/);			
