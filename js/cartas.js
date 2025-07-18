@@ -1,6 +1,7 @@
 var version = "1.0.250718";
 var num_cartas = 0;
 var num_pags = 1;
+var ultima_carta_seleccionada = -1;
 
  $(document).ready(function(){
  
@@ -180,7 +181,6 @@ async function cargarPlugins(){
 	} */
 }
 
-
 function cargarFuncionalidadMenuPrincipal(){
 	$('#menu_archivo_nuevo').click(function(){ location.reload(); });
 	$('#menu_edicion_seleccionar_todo').click(function(){ $(".carta").addClass('carta_seleccionada'); });
@@ -272,7 +272,7 @@ function seleccionarCarta(n){
 	}
 	
 	cargarBarraLateralCartaSeleccionada();
-	
+	ultima_carta_seleccionada = n;
 	return carta;
 }
 
@@ -291,11 +291,25 @@ function anyadirCartaVacia(){
 	pagina.append("<div id='carta_"+num_cartas+"' class='carta' data-id='"+num_cartas+"'> </div>");
 	
 	$("#carta_"+num_cartas).click(function(event){ 
-		if (!event.ctrlKey) {
-			desseleccionarCartas();
-		}			
 		var id = $(this).attr('data-id'); 
-		seleccionarCarta(id) 
+		 if(event.shiftKey && ultima_carta_seleccionada > 0){
+			desseleccionarCartas();
+			var inicio = ultima_carta_seleccionada;
+			var fin = id;
+			if(id<ultima_carta_seleccionada){
+				inicio = id;
+				fin = ultima_carta_seleccionada;
+			}
+			for(var i = inicio; i<=fin;i++){
+				seleccionarCarta(i)
+			}
+			
+		}else{
+			if (!event.ctrlKey) {
+				desseleccionarCartas();
+			}
+			seleccionarCarta(id); 
+		}
 		event.stopPropagation();
 	});
 	

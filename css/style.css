@@ -127,7 +127,6 @@ body {
 .pagina {
 	width: 210mm; /* Ancho de una página A4 */
 	min-height: 290mm; /* Alto de una página A4 */
-	margin: 20mm auto; /* Márgenes y centrado */
 	transform: translateX(150px);
 	padding: 5mm;
 	box-sizing: border-box;
@@ -145,6 +144,9 @@ body {
 	border-radius:3mm;
 	float: left;
 	overflow: hidden;
+	user-select: none;
+   -webkit-user-select: none;
+   -moz-user-select: none;
 }
 @media print {
 	.pagina {
