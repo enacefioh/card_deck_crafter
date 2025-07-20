@@ -59,7 +59,6 @@ body {
   }
 }
 
-
 /* FIN POPUP */
 
 
@@ -126,13 +125,14 @@ body {
 
 .pagina {
 	width: 210mm; /* Ancho de una página A4 */
-	min-height: 290mm; /* Alto de una página A4 */
+	height: 290mm; /* Alto de una página A4 */
 	transform: translateX(150px);
-	padding: 5mm;
+	padding: 5mm 0 0 7mm;
 	box-sizing: border-box;
 	background-color: white;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 	page-break-after: always;
+	
 }
 .carta{
 	width:63mm; 
@@ -149,14 +149,36 @@ body {
    -moz-user-select: none;
 }
 @media print {
-	.pagina {
-		margin: 0;
-		padding: 5mm;
+	.pagina{
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
 		box-shadow: none;
 		transform: translateX(0px);
+		height:auto;
 	}
 	
-	#menu_superior, #menu_lateral_padre, #fondo_popup{
+	 #contenedor, #contenedor_paginas{
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+		box-shadow: none;
+		transform: translateX(0px);
+		height:auto;
+		overflow:visible !important;
+	}
+	
+	 ::-webkit-scrollbar {
+		display: none;
+	  }
+	
+	#menu_superior, #menu_lateral_padre, #fondo_popup, #resizer{
 		display:none;
 	}
 }
@@ -300,4 +322,24 @@ body {
   z-index: 20;
 }
 		
-		
+.boton {
+  background-color: #666666;       /* Fondo gris */
+  color: white;                    /* Texto blanco */
+  padding: 10px 16px;              /* Espaciado interno */
+  border-radius: 8px;              /* Bordes redondeados */
+  text-align: center;              /* Centrar texto */
+  cursor: pointer;                 /* Manita al pasar el ratón */
+  font-size: 14px;                 /* Tamaño de fuente */
+  user-select: none;              /* Evita selección de texto */
+  margin:1px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.boton:hover {
+  color: #DDDDDD;       /* Gris más oscuro al pasar el ratón */
+}
+
+.radio_orientacion_seleccionado div{
+	background-color:#8dc7f8;
+}	
