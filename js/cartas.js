@@ -146,7 +146,9 @@ function cargarFuncionalidadMenuPrincipal(){
 		$('#menu_edicion_seleccionar_nada').click(function(){ $(".carta_seleccionada").removeClass('carta_seleccionada'); });
 	
 	//Anyadir
-	$('#menu_anyadir_carta_vacia').click(function(){ anyadirCartaVacia(); });
+		//Vacía
+		$('#menu_anyadir_carta_standard_vertical').click(function(){ anyadirCartaStandardVertical(); });
+		$('#menu_anyadir_carta_standard_horizontal').click(function(){ anyadirCartaStandardHorizontal(); });
 	
 	//Plugins
 	
@@ -350,56 +352,13 @@ function cargarFuncionalidadMenuPrincipal(){
 	//Edicion
 	
 	//Anyadir
-	function anyadirCartaVacia(){
-	if(num_cartas%num_cartas_por_pag == 0 && num_cartas>0){
-		anyadirPagina();
-	}
-	pagina = getUltimaPagina();
-	num_cartas++;
 	
-	pagina.append("<div id='carta_"+num_cartas+"' class='carta' data-id='"+num_cartas+"'> </div>");
-	
-	$("#carta_"+num_cartas).click(function(event){ 
-		var id = $(this).attr('data-id'); 
-		 if(event.shiftKey && ultima_carta_seleccionada > 0){
-			desseleccionarCartas();
-			var inicio = ultima_carta_seleccionada;
-			var fin = id;
-			if(id<ultima_carta_seleccionada){
-				inicio = id;
-				fin = ultima_carta_seleccionada;
-			}
-			for(var i = inicio; i<=fin;i++){
-				seleccionarCarta(i)
-			}
-			
-		}else{
-			if (!event.ctrlKey) {
-				desseleccionarCartas();
-			}
-			seleccionarCarta(id); 
-		}
-		event.stopPropagation();
-	});
-	
-	var carta = getUltimaCarta();
-	
-	var img = $('<img>');
-			
-	carta.append(img);
-	img.attr('data-id', 'carta_fondo');
-	img.attr('class','img carta_fondo');
-	
-	return carta;
-}
-
 	
 //MENÚ LATERAL
 function cargarBarraLateralGeneral(){
 	
 	var html_barra_lateral_general = `
-		 <div id="add_carta_vacia" style="border: 1px solid gray; background-color:#eeeeee; width:88%; margin:auto; margin-top: 10px; margin-bottom:10px; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;"> + Carta Vacía </div>
-		 <div id="add_carta_plantilla" style="border: 1px solid gray; background-color:#eeeeee; width:88%; margin:auto; margin-top: 10px; margin-bottom:10px; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;"> + Desde Plantilla</div>
+		 <div id="add_carta_plantilla" style="border: 1px solid gray; background-color:#eeeeee; width:88%; margin:auto; margin-top: 10px; margin-bottom:10px; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;"> + Añadir Carta</div>
 			<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 				<div style="width:90%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">+ Importar imágenes</div>
 				<input id="importar_imagenes" type="file" multiple="multiple" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
@@ -414,7 +373,7 @@ function cargarBarraLateralGeneral(){
 
 	  Array.from(files).forEach(file => {
 		if (file.type.startsWith('image/')) {
-			var carta = anyadirCartaVacia();
+			var carta = anyadirCartaStandardVertical();
 			
 			
 			var img = carta.find('.carta_fondo');
@@ -427,7 +386,7 @@ function cargarBarraLateralGeneral(){
 	  });
 	});
 	
-	$('#add_carta_vacia').click(function(){ anyadirCartaVacia(); });
+	$('#add_carta_vacia').click(function(){ anyadirCartaStandardVertical(); });
 	$('#add_carta_plantilla').click(function(){ abrir_menu_plantillas(); });
 	
 }
@@ -485,10 +444,17 @@ function cargarBarraLateralCartaSeleccionada(){
 	
 }
 
-//+Carta vacía: MENÚ SUPERIOR > anyadirCartaVacia()
+//+Carta vacía: MENÚ SUPERIOR > anyadirCartaStandardVertical()
 function abrir_menu_plantillas(){
 	abrirPopup();
 	$('#contenedor_popup').append("<div id='contenedor_popup_interior' style=\"display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;\"></div>");
+	
+	$('#contenedor_popup_interior').append("<h2 title='Plantillas Vacías' style='width:100%; text-align:center;' >Plantillas Vacías</h2>");
+	
+	$('#contenedor_popup_interior').append("<div style='text-align:center; cursor:pointer;' title='Standard Vertical' onclick='anyadirCarta(63,88); cerrarPopup();' > <div style='width:107px; height:150px; border:2px solid #ccc; border-radius:1mm; box-sizing: border-box; padding-top:50px; font-size:12px; text-align:center'> 63mm x 88mm </div> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>Standard Vertical</div></div>");
+	$('#contenedor_popup_interior').append("<div style='text-align:center; cursor:pointer;' title='Standard Horizontal' onclick='anyadirCarta(88,63); cerrarPopup();' > <div style='width:150px; height:107px; border:2px solid #ccc; border-radius:1mm; box-sizing: border-box; padding-top:50px; font-size:12px; text-align:center'> 88mm x 63mm </div> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>Standard Horizontal</div></div>");
+	$('#contenedor_popup_interior').append("<div style='text-align:center; cursor:pointer;' title='Tarot Vertical' onclick='anyadirCarta(88,63); cerrarPopup();' > <div style='width:88px; height:150px; border:2px solid #ccc; border-radius:1mm; box-sizing: border-box; padding-top:50px; font-size:12px; text-align:center'> 70mm x 120mm </div> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>Tarot Vertical</div></div>");
+	$('#contenedor_popup_interior').append("<div style='text-align:center; cursor:pointer;' title='Tarot Horizontal' onclick='anyadirCarta(88,63); cerrarPopup();' > <div style='width:150px; height:88px; border:2px solid #ccc; border-radius:1mm; box-sizing: border-box; padding-top:50px; font-size:12px; text-align:center'> 120mm x 70mm </div> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>Tarot Horizontal</div></div>");
 	
 	for (const key in window.Plantillas) {
 		const plantillas = window.Plantillas[key];
@@ -510,6 +476,49 @@ function abrir_menu_plantillas(){
 
 //FUNCIONES
 	//CARTAS
+	
+	function anyadirCarta(width_mm, height_mm){
+		if(num_cartas%num_cartas_por_pag == 0 && num_cartas>0){
+			anyadirPagina();
+		}
+		pagina = getUltimaPagina();
+		num_cartas++;
+		
+		pagina.append("<div id='carta_"+num_cartas+"' style='width:"+width_mm+"mm; height:"+height_mm+"mm' class='carta' data-id='"+num_cartas+"'> </div>");
+		
+		$("#carta_"+num_cartas).click(function(event){ 
+			var id = $(this).attr('data-id'); 
+			 if(event.shiftKey && ultima_carta_seleccionada > 0){
+				desseleccionarCartas();
+				var inicio = ultima_carta_seleccionada;
+				var fin = id;
+				if(id<ultima_carta_seleccionada){
+					inicio = id;
+					fin = ultima_carta_seleccionada;
+				}
+				for(var i = inicio; i<=fin;i++){
+					seleccionarCarta(i)
+				}
+				
+			}else{
+				if (!event.ctrlKey) {
+					desseleccionarCartas();
+				}
+				seleccionarCarta(id); 
+			}
+			event.stopPropagation();
+		});
+		
+		var carta = getUltimaCarta();
+		
+		var img = $('<img>');
+				
+		carta.append(img);
+		img.attr('data-id', 'carta_fondo');
+		img.attr('class','img carta_fondo');
+		
+		return carta;
+	}
 	function seleccionarCarta(n){
 
 		var carta = $("#carta_"+n);
@@ -551,6 +560,12 @@ function abrir_menu_plantillas(){
 		carta_anterior.html(temp);
 		carta_actual.removeClass('carta_seleccionada');
 		carta_anterior.addClass('carta_seleccionada');
+		w_anterior = carta_anterior.css('width');
+		h_anterior = carta_anterior.css('height');
+		carta_anterior.css('width', carta_actual.css('width'));
+		carta_anterior.css('height', carta_actual.css('height'));
+		carta_actual.css('width', w_anterior);
+		carta_actual.css('height', h_anterior);
 	}
 	function bajar_cartas_seleccionadas() {
 		var cartas_seleccionadas = $('.carta_seleccionada');
@@ -572,6 +587,12 @@ function abrir_menu_plantillas(){
 		carta_siguiente.html(temp);
 		carta_actual.removeClass('carta_seleccionada');
 		carta_siguiente.addClass('carta_seleccionada');
+		w_siguiente = carta_siguiente.css('width');
+		h_siguiente = carta_siguiente.css('height');
+		carta_siguiente.css('width', carta_actual.css('width'));
+		carta_siguiente.css('height', carta_actual.css('height'));
+		carta_actual.css('width', w_siguiente);
+		carta_actual.css('height', h_siguiente);
 	}
 	function eliminar_cartas_seleccionadas() {
 		// 1. Eliminar todas las seleccionadas
@@ -592,7 +613,9 @@ function abrir_menu_plantillas(){
 		anyadirPagina();
 
 		for (var i = 0; i < cartas_guardadas.length; i++) {
-			var nueva_carta = anyadirCartaVacia(); // esta función debe devolver el nuevo div.carta insertado
+			var nueva_carta = anyadirCartaStandardVertical(); // esta función debe devolver el nuevo div.carta insertado
+			nueva_carta.css('width', cartas_guardadas[i].css('width'));
+			nueva_carta.css('height', cartas_guardadas[i].css('height'));
 			nueva_carta.html(cartas_guardadas[i].html());
 			$(nueva_carta).attr("class", $(cartas_guardadas[i]).attr('class'));
 		}
@@ -670,7 +693,7 @@ function abrir_menu_plantillas(){
 		return Array.from(data_ids_comunes);
 	}
 	function anyadirCartaDesdePlantilla(slug_modulo, slug_plantilla) {
-		const carta = anyadirCartaVacia();
+		const carta = anyadirCartaStandardVertical();
 		 
 		const plantillas = window.Plantillas[slug_modulo];
 		for(var i = 0; i< plantillas.plantillas.length; i++){

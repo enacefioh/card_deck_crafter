@@ -65,9 +65,16 @@
 				<li>
 				  Añadir
 				  <ul class="submenu"  id='submenu_plantillas'>
-					<li id='menu_anyadir_carta_vacia'>
-					 Carta vacía
+					<li>
+					 Vacía
+					 <ul class="submenu">
+						<li onclick="anyadirCarta(63,88);"> Standard Vertical (63mm x 88mm) </li>
+						<li onclick="anyadirCarta(88,63);" > Standard Horizontal (88mm x 63mm) </li>
+						<li onclick="anyadirCarta(70,120);" > Tarot Vertical (70mm x 120mm) </li>
+						<li onclick="anyadirCarta(120,70);" > Tarot Horizontal (120mm x 70mm) </li>
+					 </ul>
 					</li>
+						
 					
 				  </ul>
 				</li>
