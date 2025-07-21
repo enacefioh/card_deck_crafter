@@ -1,4 +1,4 @@
-var version = "1.0.250720";
+var version = "1.0.250721";
 var num_cartas = 0;
 var num_pags = 1;
 var num_cartas_por_pag = 9;
@@ -69,6 +69,12 @@ async function cargarPluginsYPlantillas(){
 	
 	for (var i = 0; i < modulos.length; i++){
 	  let slug_modulo = modulos[i];	
+	  
+	  let link = document.createElement('link');
+	  link.rel = 'stylesheet';
+	  link.href = 'modulos/'+slug_modulo+'/style.css';
+	  document.head.appendChild(link);
+	  
 	  const script = document.createElement('script');
 	  script.src = `modulos/${slug_modulo}/script.js`;
 	  script.onload = () => {

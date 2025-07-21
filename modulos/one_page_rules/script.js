@@ -28,19 +28,7 @@ window.Plantillas["one_page_rules"] = {
 		  tipo: 'standard_vertical',   
 		  html: `
 			
-				<style>
 				
-					@font-face {
-					  font-family: 'MerriweatherBold';
-					  src: url('./modulos/one_page_rules/Merriweather_120pt-Bold.ttf') format('truetype');
-					}
-						
-						
-					#one_page_rules_tabla_armas tr:nth-child(odd) {
-					  background-color: #f2f2f2;
-					}
-					
-				</style>
 			
 				<img data-id="carta_fondo" class="img carta_fondo" style='object-fit: cover; object-position: center;' >
 				<div style='position:absolute; width:100%; height:100%; top:0px;  border: 5px solid black; box-sizing: border-box; font-family: MerriweatherBold;'>

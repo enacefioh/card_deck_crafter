@@ -176,6 +176,7 @@ body {
 		transform: translateX(0px);
 		height:auto;
 		overflow:visible !important;
+		background-color:#ffffff;
 	}
 	
 	 ::-webkit-scrollbar {
@@ -216,7 +217,7 @@ body {
 .carta_fondo{
 	width:100%;
 	height:100%;
-	object-fit: fill;
+	object-fit: cover;
 }
 
 .carta_seleccionada{
@@ -283,6 +284,10 @@ body {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	
+}
+
+.img{
+	object-fit:cover;
 }
 
 #menu_lateral_padre {
