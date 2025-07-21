@@ -706,16 +706,23 @@ function abrir_menu_plantillas(){
 		return Array.from(data_ids_comunes);
 	}
 	function anyadirCartaDesdePlantilla(slug_modulo, slug_plantilla) {
-		const carta = anyadirCartaStandardVertical();
+		
 		 
 		const plantillas = window.Plantillas[slug_modulo];
 		for(var i = 0; i< plantillas.plantillas.length; i++){
 			if(plantillas.plantillas[i].slug == slug_plantilla){
-			
+				var w = 63;
+				var h = 88;
+				if(plantillas.plantillas[i].width)
+					w = plantillas.plantillas[i].width;
+				if(plantillas.plantillas[i].height)
+					h = plantillas.plantillas[i].height;
+				const carta = anyadirCarta(w,h);
 				carta.html(plantillas.plantillas[i].html);
+				return carta;
 			}	  
 		}
-		return carta;	
+		return anyadirCarta(63,88);	
 	}
 
 	//PARTES CARTA EDITABLES
@@ -1149,4 +1156,5 @@ function abrir_menu_plantillas(){
 function slugToTexto(slug){
 	return slug.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase());
 }
+
 

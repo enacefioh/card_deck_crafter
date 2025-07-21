@@ -5,6 +5,7 @@
 const modulos = [
 
 	'general'
+	,'time_stories'
 	,'one_page_rules'
 	,'warhammer_underworlds2'
 	
