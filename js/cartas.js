@@ -5,6 +5,12 @@ var num_cartas_por_pag = 9;
 var ultima_carta_seleccionada = -1;
 var orientacion_vertical = true;
 
+//Página
+var autoconfigurada = false;
+var padding_pagina_top = 25;
+var padding_pagina_left = 25;
+
+
  $(document).ready(function(){ inicializar(); });
 
 
@@ -453,8 +459,8 @@ function abrir_menu_plantillas(){
 	
 	$('#contenedor_popup_interior').append("<div style='text-align:center; cursor:pointer;' title='Standard Vertical' onclick='anyadirCarta(63,88); cerrarPopup();' > <div style='width:107px; height:150px; border:2px solid #ccc; border-radius:1mm; box-sizing: border-box; padding-top:50px; font-size:12px; text-align:center'> 63mm x 88mm </div> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>Standard Vertical</div></div>");
 	$('#contenedor_popup_interior').append("<div style='text-align:center; cursor:pointer;' title='Standard Horizontal' onclick='anyadirCarta(88,63); cerrarPopup();' > <div style='width:150px; height:107px; border:2px solid #ccc; border-radius:1mm; box-sizing: border-box; padding-top:50px; font-size:12px; text-align:center'> 88mm x 63mm </div> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>Standard Horizontal</div></div>");
-	$('#contenedor_popup_interior').append("<div style='text-align:center; cursor:pointer;' title='Tarot Vertical' onclick='anyadirCarta(88,63); cerrarPopup();' > <div style='width:88px; height:150px; border:2px solid #ccc; border-radius:1mm; box-sizing: border-box; padding-top:50px; font-size:12px; text-align:center'> 70mm x 120mm </div> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>Tarot Vertical</div></div>");
-	$('#contenedor_popup_interior').append("<div style='text-align:center; cursor:pointer;' title='Tarot Horizontal' onclick='anyadirCarta(88,63); cerrarPopup();' > <div style='width:150px; height:88px; border:2px solid #ccc; border-radius:1mm; box-sizing: border-box; padding-top:50px; font-size:12px; text-align:center'> 120mm x 70mm </div> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>Tarot Horizontal</div></div>");
+	$('#contenedor_popup_interior').append("<div style='text-align:center; cursor:pointer;' title='Tarot Vertical' onclick='anyadirCarta(70,120); cerrarPopup();' > <div style='width:88px; height:150px; border:2px solid #ccc; border-radius:1mm; box-sizing: border-box; padding-top:50px; font-size:12px; text-align:center'> 70mm x 120mm </div> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>Tarot Vertical</div></div>");
+	$('#contenedor_popup_interior').append("<div style='text-align:center; cursor:pointer;' title='Tarot Horizontal' onclick='anyadirCarta(120,70); cerrarPopup();' > <div style='width:150px; height:88px; border:2px solid #ccc; border-radius:1mm; box-sizing: border-box; padding-top:50px; font-size:12px; text-align:center'> 120mm x 70mm </div> <br /> <div style='font-size: 12px; max-width: 170px; height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>Tarot Horizontal</div></div>");
 	
 	for (const key in window.Plantillas) {
 		const plantillas = window.Plantillas[key];
@@ -478,6 +484,7 @@ function abrir_menu_plantillas(){
 	//CARTAS
 	
 	function anyadirCarta(width_mm, height_mm){
+		
 		if(num_cartas%num_cartas_por_pag == 0 && num_cartas>0){
 			anyadirPagina();
 		}
@@ -516,7 +523,9 @@ function abrir_menu_plantillas(){
 		carta.append(img);
 		img.attr('data-id', 'carta_fondo');
 		img.attr('class','img carta_fondo');
-		
+		if(num_cartas <= 1 && !autoconfigurada){
+			autoConfigurarPagina(pagina, carta);
+		}
 		return carta;
 	}
 	function seleccionarCarta(n){
@@ -1094,12 +1103,30 @@ function abrir_menu_plantillas(){
 
 	//PÁGINAS
 	function anyadirPagina(){
-		var p = $('#contenedor_paginas').append("<div class='pagina'> </div>");
+		var p = $('#contenedor_paginas').append("<div class='pagina' style='padding-left:"+padding_pagina_left+"px; padding-top:"+padding_pagina_top+"px; '> </div>");
 		num_pags++;
 		return p;
 	}
 	function getUltimaPagina(){
 		return $('#contenedor_paginas').children().last();
+	}
+	function autoConfigurarPagina(pagina, carta){
+		if(autoconfigurada) return;
+		autoconfigurada = true;
+		const w_pag = parseInt(pagina.css("width"))- parseInt(pagina.css("paddingLeft")) - parseInt(pagina.css("paddingRight"));
+		const h_pag = parseInt(pagina.css("height"))- parseInt(pagina.css("paddingTop")) - parseInt(pagina.css("paddingBottom"));
+		const w_carta = parseInt(carta.css("width"))- parseInt(carta.css("marginLeft")) - parseInt(carta.css("marginRight"));
+		const h_carta = parseInt(carta.css("height"))- parseInt(carta.css("marginTop")) - parseInt(carta.css("marginBottom"));
+		var columnas = parseInt(w_pag/w_carta);
+		var filas = parseInt(h_pag/h_carta);		
+		padding_pagina_left = (w_pag - w_carta*columnas)/2;
+		padding_pagina_top = (h_pag - h_carta*filas)/2;
+		if(padding_pagina_left<25){  columnas--; padding_pagina_left = (w_pag - w_carta*columnas)/2;}
+		if(padding_pagina_top<25){  filas--; padding_pagina_top = (h_pag - h_carta*filas)/2;}
+		num_cartas_por_pag = filas*columnas;
+		
+		pagina.css('paddingLeft', ''+padding_pagina_left+"px");
+		pagina.css('paddingTop', ''+padding_pagina_top+"px");
 	}
 
 	//FUNCIONALIDAD POPUP
