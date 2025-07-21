@@ -613,11 +613,15 @@ function abrir_menu_plantillas(){
 		anyadirPagina();
 
 		for (var i = 0; i < cartas_guardadas.length; i++) {
-			var nueva_carta = anyadirCartaStandardVertical(); // esta función debe devolver el nuevo div.carta insertado
+			var nueva_carta = anyadirCarta(1,1); // esta función debe devolver el nuevo div.carta insertado
 			nueva_carta.css('width', cartas_guardadas[i].css('width'));
 			nueva_carta.css('height', cartas_guardadas[i].css('height'));
 			nueva_carta.html(cartas_guardadas[i].html());
 			$(nueva_carta).attr("class", $(cartas_guardadas[i]).attr('class'));
+			w_guardada = cartas_guardadas[i].css('width');
+			h_guardada = cartas_guardadas[i].css('height');
+			nueva_carta.css('width', w_guardada);
+			nueva_carta.css('height', h_guardada);
 		}
 	} 
 	function duplicar_cartas_seleccionadas(){
