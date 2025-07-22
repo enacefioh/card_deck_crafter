@@ -9,6 +9,8 @@ var orientacion_vertical = true;
 var autoconfigurada = false;
 var padding_pagina_top = 25;
 var padding_pagina_left = 25;
+var padding_pagina_right = 0;
+var padding_pagina_bottom = 0;
 
 
  $(document).ready(function(){ inicializar(); });
@@ -314,9 +316,13 @@ function cargarFuncionalidadMenuPrincipal(){
 
 		`);
 		
-		
+	
 		$('#contenedor_popup').append(`<table style='margin:auto; margin-bottom:20px;'>
 			<tr><td style='text-align:right;'>Cartas por página:<td><td style='text-align:left;'><input id='config_num_cartas_por_pag' style='width:30px;' type='number' value='`+num_cartas_por_pag+`'></td></tr>
+			<tr><td style='text-align:right;'>Márgen página superior:<td><td style='text-align:left;'><input id='config_margen_pag_superior' style='width:50px;' type='number' value='`+padding_pagina_top+`'>px.</td></tr>
+			<tr><td style='text-align:right;'>Márgen página derecho:<td><td style='text-align:left;'><input id='config_margen_pag_derecho' style='width:50px;' type='number' value='`+padding_pagina_right+`'>px.</td></tr>
+			<tr><td style='text-align:right;'>Márgen página inferior:<td><td style='text-align:left;'><input id='config_margen_pag_inferior' style='width:50px;' type='number' value='`+padding_pagina_bottom+`'>px.</td></tr>
+			<tr><td style='text-align:right;'>Márgen página izquierdo:<td><td style='text-align:left;'><input id='config_margen_pag_izquierdo' style='width:50px;' type='number' value='`+padding_pagina_left+`'>px.</td></tr>
 		</table>`);
 		$('#contenedor_popup').append("<div id='config_pag_aceptar' class='boton' style='background-color: #12a629;'>Aceptar</div><div id='config_pag_cancelar' class='boton' style='background-color: #c83902;'>Cancelar</div>");
 	
@@ -350,7 +356,20 @@ function cargarFuncionalidadMenuPrincipal(){
 				  height: 210mm;
 				}`;
 				document.head.appendChild(style);
+				
+				
 			}
+			
+			padding_pagina_top = $('#config_margen_pag_superior').val();
+			padding_pagina_left = $('#config_margen_pag_izquierdo').val();
+			padding_pagina_right = $('#config_margen_pag_derecho').val();
+			padding_pagina_bottom = $('#config_margen_pag_inferior').val();
+			
+			$('.pagina').css('margin-top', ""+padding_pagina_top+"px");
+			$('.pagina').css('margin-left', ""+padding_pagina_left+"px");
+			$('.pagina').css('margin-right', ""+padding_pagina_right+"px");
+			$('.pagina').css('margin-bottom', ""+padding_pagina_bottom+"px");
+			
 			//Núm cartas
 			num_cartas_por_pag = $('#config_num_cartas_por_pag').val();
 			reordenarCartas();
