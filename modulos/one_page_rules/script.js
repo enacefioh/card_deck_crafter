@@ -33,20 +33,20 @@ window.Plantillas["one_page_rules"] = {
 				<div data-id="carta_fondo" class="img carta_fondo" style='background-position: center center; background-size: cover;' >
 				<div style='position:absolute; width:100%; height:100%; top:0px;  border: 5px solid black; box-sizing: border-box; font-family: MerriweatherBold;'>
 					<div data-id="nombre_guerrero" class='texto_linea' style='width:90%; left:4%; top:5px; position:absolute; text-align:center; padding:2px;  border: 3px solid black; border-radius: 10px; font-weight:bold; background-color:#ffffffCC;'>Nombre</div>
-					<div style='width:45%; left:8%; top:32px; position:absolute; text-align:center; padding:2px;  border-radius:0px 0px 10px 10px; background-color:#000000; color:white; font-size: 11px;'>Models: <span class='texto_numero' data-id='número_minis' >1</span></div>
+					<div style='width:45%; left:8%; top:32px; position:absolute; text-align:center; padding:2px;  border-radius:0px 0px 10px 10px; background-color:#000000; color:white; font-size: 11px;'>Models: <span class='texto_numero' data-id='número_minis' >1</span>&nbsp; &nbsp; &nbsp; ♥ <span class='texto_numero' data-id='vidas' >1</span> </div>
 					<div style='width:20%; right:6%; top:32px; position:absolute; text-align:center; padding:2px;  border-radius:0px 0px 10px 10px; background-color:#000000; color:white; font-size: 11px;'> <span class='texto_numero' data-id='puntos' >10</span>pts.</div>
 					<div style='width:30px; height:20px; left:5px; top:18%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#ffffffCC;'>Q</div>
 					<div style='width:30px; height:20px; left:5px; top:30%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#ffffffCC;'>D</div>
 					<div style='width:24px; height:24px; left:8%; top:16%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#ffffff; font-weight:bold;'><span data-id="calidad" class='texto_numero'>3</span>+</div>
 					<div style='width:24px; height:24px; left:8%; top:28%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#ffffff;  font-weight:bold;'><span data-id="defensa" class='texto_numero'>3</span>+</div>
 					
-					<div style='position:absolute; bottom: 5px; width:90%; left:4%;'>
+					<div style='position:absolute; bottom: 5px; width:98%; left:1%;'>
 						<div style='position:relative; text-align:center; padding:2px; border: 3px solid black; border-radius:10px; background-color: #ffffffCC; font-size:12px;'><b><u>Reglas especiales</u></b><div data-id="reglas_especiales" class='texto_editable'> </div> </div>
 						<div class='menu_plantilla' data-id='add_arma' data-modulo='one_page_rules' data-plantilla='unidad' style='display:none;'></div>
 						<div style='position:relative; text-align:center; padding:2px; ; border: 3px solid black; border-radius:10px; background-color: #ffffffCC;'>
-							<table class='one_page_rules_tabla_armas' style='width:100%; font-size: 12px;'>
+							<table class='one_page_rules_tabla_armas' style='width:100%; font-size: 10px;'>
 								<tr><td>Arma</td><td>🧿</td><td>💥</td><td>AP</td><td>Tags.</td></tr>
-								<tr class='one_page_rules_arma titulo_seccion' data-indice='1' data-id='arma_1'><td data-id="nombre_arma1" class='texto_linea' ></td><td data-id="distancia_arma1" class='texto_numero'></td><td data-id="daño_arma1" class='texto_numero'></td><td data-id="penetracion_arma1" class='texto_numero'>0</td><td data-id="habilidades_arma1" class='texto_linea'>-</td></tr>					
+								<tr class='one_page_rules_arma titulo_seccion' data-indice='1' data-id='arma_1'><td data-id="nombre_arma1" class='texto_linea' ></td><td data-id="distancia_arma1" class='texto_numero'></td><td data-id="num_ataques_arma1" class='texto_numero'></td><td data-id="penetracion_arma1" class='texto_numero'>0</td><td data-id="habilidades_arma1" class='texto_linea'>-</td></tr>					
 							</table>
 						</div>
 					</div>
@@ -172,6 +172,13 @@ function ogfft2c(){
 			var partes_atrs = attrs_mini.split('|');
 			var habilidades = partes_atrs[partes_atrs.length-1];
 			guerrero.habilidades = habilidades.trim();
+			const match_vidas = habilidades.match(/Tough\((\d+)\)/);
+			if (match_vidas) {
+			  const x = parseInt(match_vidas[1], 10);
+			  guerrero.vidas = x;
+			} else {
+			  guerrero.vidas = 1;
+			}
 			var carta = anyadirCartaDesdePlantilla("one_page_rules", "unidad");		
 			carta.find("[data-id='nombre_guerrero']").html(guerrero.nombre);
 			
@@ -179,6 +186,8 @@ function ogfft2c(){
 			carta.find("[data-id='defensa']").html(guerrero.defensa);
 			carta.find("[data-id='reglas_especiales']").html(guerrero.habilidades);
 			carta.find("[data-id='número_minis']").html(guerrero.num_minis);
+			carta.find("[data-id='vidas']").html(guerrero.vidas);
+			
 			carta.find("[data-id='puntos']").html(guerrero.puntos);
 			
 			guerrero.armas = [];				
@@ -191,13 +200,8 @@ function ogfft2c(){
 					let arma = {};
 					guerrero.armas.push(arma);
 					num_armas++;
-					
-
-					
+		
 					var partes = str_armas[j].split('(')
-					
-					
-					
 					
 					var nombre_arma = partes[0];
 					arma.nombre = nombre_arma.trim();
