@@ -125,26 +125,7 @@ async function cargarPluginsYPlantillas(){
 	  document.body.appendChild(script);
 	  
 	}						
-	/*
-	for (var i = 0; i < lista_plugins.length; i++){
-	  let slug_plugin = lista_plugins[i];	
-	  const script = document.createElement('script');
-	  script.src = `plugins/${slug_plugin}/script.js`;
-	  script.onload = () => {
-		const plugin_ = window.Plugins[slug_plugin];
-		if (plugin_) {			
-			for (const key in plugin_.funciones) {
-			  const nombre = plugin_.funciones[key].nombre;
-			  const ejecutar = plugin_.funciones[key].funcion;
-			  $ul_lista_plugins.append("<li id='menu_plugin_"+key+"'>"+nombre+"</li>");
-			  $('#menu_plugin_'+key).click(function(){
-				  ejecutar();				  
-			  });			  
-			}		  
-		}
-	  };
-	  document.body.appendChild(script);
-	} */
+
 }
 function cargarFuncionalidadMenuPrincipal(){
 	//Archivo
@@ -408,7 +389,9 @@ function cargarBarraLateralGeneral(){
 			
 			
 			var img = carta.find('.carta_fondo');
-			img.attr('src', URL.createObjectURL(file));
+			img.css('background-image', 'url("'+URL.createObjectURL(file)+'")');
+			img.css('background-position', 'center');
+			img.css('background-size', 'cover');	
 		  
 		  
 		  //carta.css('background', 'url('+ URL.createObjectURL(file)+'');
@@ -506,8 +489,7 @@ function abrir_menu_plantillas(){
 
 
 //FUNCIONES
-	//CARTAS
-	
+	//CARTAS	
 	function anyadirCarta(width_mm, height_mm){
 		
 		if(num_cartas%num_cartas_por_pag == 0 && num_cartas>0){
@@ -543,7 +525,7 @@ function abrir_menu_plantillas(){
 		
 		var carta = getUltimaCarta();
 		
-		var img = $('<img>');
+		var img = $('<div>');
 				
 		carta.append(img);
 		img.attr('data-id', 'carta_fondo');
@@ -1029,10 +1011,10 @@ function abrir_menu_plantillas(){
 
 				// Cambiar el fondo en todas las cartas seleccionadas
 				
-				$('.carta_seleccionada [data-id='+id_objeto+']').each(function() {
-					if ($(this).is('img')) {
-						$(this).attr('src', imageDataUrl);
-					}
+				$('.carta_seleccionada [data-id='+id_objeto+']').each(function() {					
+					$(this).css('background-image', 'url("'+imageDataUrl+'")');
+					$(this).css('background-position', 'center');
+					$(this).css('background-size', 'cover');					
 				});
 			};
 
@@ -1042,6 +1024,7 @@ function abrir_menu_plantillas(){
 	function submenu_img_swap(id){
 		
 		var item = $('.carta_seleccionada * [data-id='+id+']');
+		
 		var num_opcs = item.attr('data-cantidad');
 		
 		var html_submenu_img = `
@@ -1059,12 +1042,19 @@ function abrir_menu_plantillas(){
 			
 		
 		 $('#menu_lateral').append(html_submenu_img);
+		 
+		 if (item.attr("data-seleccionado") !== undefined) {
+			  $('#select_'+id).val(item.attr("data-seleccionado"));
+		 }
+
 		
 		$('#select_'+id).on('change', function(event) {
 			var indice = $(this).val();
 			var img_base64 = item.attr('data-src'+indice);
-			item.attr('src', img_base64);
-		   
+			item.attr('data-seleccionado', indice);
+			item.css('background-image', 'url("'+img_base64+'")');
+			item.css('background-position', 'center');
+			item.css('background-size', 'cover');
 		}); 
 	}
 	function submenu_tintable(id){
@@ -1092,7 +1082,7 @@ function abrir_menu_plantillas(){
 		  const colorHex = $(this).val();
 		  const $img = $('.carta_seleccionada [data-id=' + id + ']');
 		  $img.attr('data-val-tintable', colorHex);
-		  var src = $img.attr('src');
+		  var src = $img.css('background-image');
 		  if($img.attr('data-original')!== undefined){
 			src = $img.attr('data-original');
 		  }else{
@@ -1101,7 +1091,7 @@ function abrir_menu_plantillas(){
 		  if (!src) return;
 
 		  const img = new Image();
-		  img.src = src;
+		  $(img).css('background-image',src);
 
 		  img.onload = function () {
 			const canvas = document.createElement('canvas');

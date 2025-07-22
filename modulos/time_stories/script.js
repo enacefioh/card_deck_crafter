@@ -32,7 +32,7 @@ window.Plantillas["time_stories"] = {
 				<div class='plantilla_time_stories time_stories_fondo_triangulos' style="position:absolute; width:100%; height:100%; top:0px;">
 					<div class='time_stories_biselado' style='position:absolute; background:#ffffffdd; margin:10px; width:calc(100% - 20px); height: calc(100% - 20px); text-align:center;' > 
 					</div>
-					<img class='img carta_fondo' data-id='logo' style='position:absolute;' />
+					<div class='img carta_fondo' data-id='logo' style='position:absolute; background-position: center center; background-size: cover;' > </div>
 					<div  style=' position:absolute; margin:10px; width:calc(100% - 20px); height: calc(100% - 20px);' > 
 						<div class='texto_linea' data-id='localización' style="position: absolute; text-align:right; font-weight:bold; bottom: 0px; left: 5px; width: 102mm; transform: rotate(-90deg); transform-origin: left top; white-space: nowrap; font-size: 28px; color: #0c98b7;" >BASE</div>
 						<div class='texto_linea' data-id='letras' style="position: absolute; text-align:center; font-weight:bold; bottom: 20px; left: 0px; width: 100%;  font-size: 22px; color: #0c98b7;" >A - B - C - D - E</div>
@@ -53,10 +53,10 @@ window.Plantillas["time_stories"] = {
 				<div class='plantilla_time_stories time_stories_fondo_triangulos' style="position:absolute; width:100%; height:100%; top:0px;">
 					<div class='time_stories_biselado' style='position:absolute; background:#ffffffdd; margin:10px; width:calc(100% - 20px); height: calc(100% - 20px); text-align:center;' > 
 					</div>
-					<img class='img carta_fondo' data-id='fondo' style='position:absolute;' />
+					<div class='img carta_fondo' data-id='fondo' style='position:absolute; background-position: center center; background-size: cover;' > </div>
 					<div  style=' position:absolute; margin:10px; width:calc(100% - 20px); height: calc(100% - 20px);' > 
 												
-						<img data-id='foto' class='img' style='position:absolute; width:110px; height:205px; top:8px; left:8px; border: 2px solid #ffffff; border-radius:10px;' />
+						<div data-id='foto' class='img' style='position:absolute; width:110px; height:205px; top:8px; left:8px; border: 2px solid #ffffff; border-radius:10px; background-position: center center; background-size: cover;' > </div>
 						<div style='position:absolute; width:65px; height:75px; top:30px; right:5px; '>
 							<div style='position:absolute; width:65px; height: 65px; top:0px; left:0px; text-align:center; background-color:#ffffffaa; border-radius: 40px; font-size: 40px; border: 2px solid #1a81d8;'>🛡️</div>
 							<div class='texto_numero' data-id='defensa' style='position:absolute; width:26px; height: 25px; top:55px; left:22px; font-weight:bold; font-size: 20px; text-align:center; background-color:#1a81d8; border-radius: 25px; color:white;'>2</div>
