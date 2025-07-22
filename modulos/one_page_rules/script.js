@@ -33,11 +33,12 @@ window.Plantillas["one_page_rules"] = {
 				<div data-id="carta_fondo" class="img carta_fondo" style='background-position: center center; background-size: cover;' >
 				<div style='position:absolute; width:100%; height:100%; top:0px;  border: 5px solid black; box-sizing: border-box; font-family: MerriweatherBold;'>
 					<div data-id="nombre_guerrero" class='texto_linea' style='width:90%; left:4%; top:5px; position:absolute; text-align:center; padding:2px;  border: 3px solid black; border-radius: 10px; font-weight:bold; background-color:#ffffffCC;'>Nombre</div>
-					<div style='width:50%; left:24%; top:32px; position:absolute; text-align:center; padding:2px;  border-radius:0px 0px 10px 10px; background-color:#000000; color:white; font-size: 11px;'>Models: <span class='texto_numero' data-id='número_minis' >1</span></div>
-					<div style='width:30px; height:20px; left:5px; top:17%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#ffffffCC;'>Q</div>
-					<div style='width:30px; height:20px; left:5px; top:29%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#ffffffCC;'>D</div>
-					<div style='width:24px; height:24px; left:8%; top:15%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#ffffff; font-weight:bold;'><span data-id="calidad" class='texto_numero'>3</span>+</div>
-					<div style='width:24px; height:24px; left:8%; top:27%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#ffffff;  font-weight:bold;'><span data-id="defensa" class='texto_numero'>3</span>+</div>
+					<div style='width:45%; left:8%; top:32px; position:absolute; text-align:center; padding:2px;  border-radius:0px 0px 10px 10px; background-color:#000000; color:white; font-size: 11px;'>Models: <span class='texto_numero' data-id='número_minis' >1</span></div>
+					<div style='width:20%; right:6%; top:32px; position:absolute; text-align:center; padding:2px;  border-radius:0px 0px 10px 10px; background-color:#000000; color:white; font-size: 11px;'> <span class='texto_numero' data-id='puntos' >10</span>pts.</div>
+					<div style='width:30px; height:20px; left:5px; top:18%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#ffffffCC;'>Q</div>
+					<div style='width:30px; height:20px; left:5px; top:30%; font-size:12px; position:absolute; text-align:center; text-align:left; padding:3px 0px 0px 4px; border-radius:30px 0px 0px 30px; background:#000; color:#ffffffCC;'>D</div>
+					<div style='width:24px; height:24px; left:8%; top:16%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#ffffff; font-weight:bold;'><span data-id="calidad" class='texto_numero'>3</span>+</div>
+					<div style='width:24px; height:24px; left:8%; top:28%; font-size:19px; position:absolute; text-align:center; padding:3px; border: 3px solid black; border-radius:30px; background:#ffffff;  font-weight:bold;'><span data-id="defensa" class='texto_numero'>3</span>+</div>
 					
 					<div style='position:absolute; bottom: 5px; width:90%; left:4%;'>
 						<div style='position:relative; text-align:center; padding:2px; border: 3px solid black; border-radius:10px; background-color: #ffffffCC; font-size:12px;'><b><u>Reglas especiales</u></b><div data-id="reglas_especiales" class='texto_editable'> </div> </div>
@@ -142,6 +143,9 @@ function ogfft2c(){
 			attrs_mini = lineas[0];
 			var nombre_partes = attrs_mini.split('[');
 			var nombre = nombre_partes[0].trim();
+			var nombre_partes = attrs_mini.split('|');
+			var puntos = nombre_partes[1].trim();
+			guerrero.puntos = parseInt(puntos);
 			
 			const num_minis_match  = lineas[0].match(/\[(\d+)\]/);
 			guerrero.num_minis = num_minis_match  ? parseInt(num_minis_match [1], 10) : null;
@@ -175,6 +179,7 @@ function ogfft2c(){
 			carta.find("[data-id='defensa']").html(guerrero.defensa);
 			carta.find("[data-id='reglas_especiales']").html(guerrero.habilidades);
 			carta.find("[data-id='número_minis']").html(guerrero.num_minis);
+			carta.find("[data-id='puntos']").html(guerrero.puntos);
 			
 			guerrero.armas = [];				
 			var num_armas = 0;
