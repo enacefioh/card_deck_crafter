@@ -385,7 +385,7 @@ function cargarBarraLateralGeneral(){
 
 	  Array.from(files).forEach(file => {
 		if (file.type.startsWith('image/')) {
-			var carta = anyadirCartaStandardVertical();
+			var carta = anyadirCarta(63,88);
 			
 			
 			var img = carta.find('.carta_fondo');
