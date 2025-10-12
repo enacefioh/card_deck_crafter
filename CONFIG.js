@@ -6,6 +6,7 @@ const modulos = [
 
 	'general'
 	,'time_stories'
+	,'investigacion'
 	,'one_page_rules'
 	,'warhammer_underworlds2'
 	
