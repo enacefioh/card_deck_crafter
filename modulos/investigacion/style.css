@@ -13,3 +13,11 @@
 .plantilla_apv_standard{
 	font-family: 'special_elite';
 }
+
+.plantilla_apv_bordes_difuminados{
+   -webkit-mask-image:
+    linear-gradient(to top, transparent 0%, black 20%, black 80%, transparent 100%),
+    linear-gradient(to left, transparent 0%, black 20%, black 80%, transparent 100%);
+  -webkit-mask-composite: intersect;
+  mask-composite: intersect; /* o 'add' según navegador */
+}

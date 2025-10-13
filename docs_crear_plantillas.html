@@ -4,6 +4,26 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		table {
+		  border-collapse: collapse; 
+		  min-width: 300px;
+		}
+
+		table,th,td{
+		  border: 1px solid black; /* color y grosor del borde */
+		}
+		
+		td:first-child{
+			text-align:right;
+			font-weight:bold;
+		}
+
+		th, td {
+		  padding: 2px;
+		  text-align: left;
+		}
+	</style>
 	</head>
   <body>
 	
@@ -21,9 +41,112 @@
 	<h2>Crear plantilla personalizada dentro del módulo:</h2>
 	
 		<h3>Componentes HTML para la plantilla:</h3>
+			<p> Todos los elementos que se describen a continuación son componentes HTML incluidos en la plantilla. Al incluir la clase especificada en cada uno de estos componentes, el editor lo interpretará de una manera y añadirá funciones específicas. </p>
+			<p><b>Todos los elementos deben inculir un atributo data-id que sea un slug descriptivo del propio elemento.</b></p>
+			<h4>Imagen</h4>
+				<table>
+					<tr><td>Clase:</td><td>img</td></tr>
+					<tr><td>Objeto DOM:</td><td>div (con un background-image)</td></tr>
+					<tr><td>Descripción:</td><td>Imagen plana, permite cambiarla por otro recurso desde el editor.</td></tr>
+					<tr><td>Parámetros:</td><td> - </td></tr>
+				</table>
+				
+			<h4>Línea de texto</h4>
+				<table>
+					<tr><td>Clase:</td><td>texto_linea</td></tr>
+					<tr><td>Objeto DOM:</td><td>div, span, b, i, s, h1, h2, etc...</td></tr>
+					<tr><td>Descripción:</td><td>Pensado para texto de una línea como títulos de cartas, tipos, nombres, etc..</td></tr>
+					<tr><td>Parámetros:</td><td> - </td></tr>
+				</table>
+			<h4>Texto Editable</h4>		
+				<table>
+					<tr><td>Clase:</td><td>texto_editable</td></tr>
+					<tr><td>Objeto DOM:</td><td>div, span, b, i, s, h1, h2, etc...</td></tr>
+					<tr><td>Descripción:</td><td>Pensado para texto de varias líneas, cajas de descripción textos largos, etc..</td></tr>
+					<tr><td>Parámetros:</td><td> - </td></tr>
+				</table>
+			<h4>Número</h4>
+				<table>
+					<tr><td>Clase:</td><td>texto_numero</td></tr>
+					<tr><td>Objeto DOM:</td><td>div, span, b, i, s, h1, h2, etc...</td></tr>
+					<tr><td>Descripción:</td><td>Pensado para números, costes de cartas numéricos, etc...</td></tr>
+					<tr><td>Parámetros:</td><td> - </td></tr>
+				</table>
+			<h4>Colección de imágenes</h4>
+				<table>
+					<tr><td>Clase:</td><td>img_swap</td></tr>
+					<tr><td>Objeto DOM:</td><td>div (con un background-image)</td></tr>
+					<tr><td>Descripción:</td><td>Iconos de una colección o iconos de facción, etc..</td></tr>
+					<tr><td>Parámetros:</td><td>
+						data-cantidad: Número de opciones <br />
+						data-nombreN: Nombre opción N <br />
+						data-srcN: Imagen en base64 (data:image/png;base64,iVBOR....ggg==)
+
+					</td></tr>
+				</table>
+			<h4>Título de sección</h4>
+				<table>
+					<tr><td>Clase:</td><td>titulo_seccion</td></tr>
+					<tr><td>Objeto DOM:</td><td>Cualquiera</td></tr>
+					<tr><td>Descripción:</td><td>No hace nada, solo añade un título en el menú de edición, para organizar el menú lateral.</td></tr>
+					<tr><td>Parámetros:</td><td> - </td></tr>
+				</table>
+			<h4>Parte eliniminable</h4>
+				<table>
+					<tr><td>Clase:</td><td>eliminable</td></tr>
+					<tr><td>Objeto DOM:</td><td>cualquiera</td></tr>
+					<tr><td>Descripción:</td><td>Hace que el elemento dom se pueda eliminar.</td></tr>
+					<tr><td>Parámetros:</td><td> - </td></tr>
+				</table>
+			<h4>Menú específico plantilla</h4>
+				<table>
+					<tr><td>Clase:</td><td>menu_plantilla</td></tr>
+					<tr><td>Objeto DOM:</td><td>cualquiera</td></tr>
+					<tr><td>Descripción:</td><td>Llama a una función específica de la plantilla para hacer algo.</td></tr>
+					<tr><td>Parámetros:</td><td>
+						data-modulo: slug exacto del módulo <br/>
+						data-plantilla: slug exacto de la plantilla
+					</td></tr>
+				</table>
+			
+			
+			
+			
+			
 		<h3>Crear funcionalidades específicas:</h3>
+			<h4>Crear botón en el menú de la carta:</h4>
+			<ul>
+				<li>Añadir en la carta un elemento sin tamaño para que invoque a la función definida en la plantilla con la clase .menu_plantilla:<br />
+					<xmp>
+<div class='menu_plantilla' data-id='slug_funcion' data-plantilla='slug_de_tu_plantilla' data-modulo='nombre_modulo' style='display:none;'></div>
+					</xmp>
+				</li>
+				<li>
+					Completar la función en el módulo mediante el valor de la clave "cargarOpcionesEnMenu". La función recibirá como parámetro el slug indicado en slug_función y podrá distinguir entre diferentes funcionalidades y llamar a diferentes funciones.
+					<xmp>
+cargarOpcionesEnMenu: function (slug) { cargarNuevoElementoEnCarta() }
+					</xmp>
+				</li>
+				<li>
+					Ejemplo de función que añade un elemento html al elemento ya existente en la plantilla .modulo_contenedor_secciones
+					<xmp>
+function cargarNuevaPista(){	
+	$('#menu_lateral').append("<div class='seccion_editable'><div id="plantilla_anyadir_seccion" class="submenu_botones_boton" title="+ Añadir info">Anyadir sección</div></div>");
+	$('#plantilla_anyadir_seccion').click(function(){		
+		var num_sec = parseInt($('.carta_seleccionada * .investigacion_contenedor_secciones').children().first().attr("data-indice"))+1;
+		var html_nueva_pista = `<div class='investigacion_seccion eliminable' data-id='eliminar_seccion`+num_sec+`' data-indice='`+num_sec+`'> <div class="texto_linea" data-id="texto`+num_pistas+`">Texto</div> </div>`;
+		$('.carta_seleccionada * .modulo_contenedor_secciones').prepend(html_nueva_pista);
+		cargarBarraLateralCartaSeleccionada();
+		
+	});
+}					
+					</xmp>		
+				</li>
+				
+			</ul>
   
 	<h2>Crear plugins en el módulo:</h2>
+	
   
   </body>
  </html>
