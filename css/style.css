@@ -352,3 +352,7 @@ body {
 .radio_orientacion_seleccionado div{
 	background-color:#8dc7f8;
 }	
+
+.img_swap{
+	background-size: 100% 100%;
+}
