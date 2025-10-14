@@ -994,10 +994,13 @@ function abrir_menu_plantillas(){
 	function submenu_img(id){
 		var html_submenu_img = `
 			<div style=" background-color:#eeeeee; width:90%; height:50px; margin:auto; margin-top: 10px; margin-bottom:10px;">
-					<div style="width: calc(90% - 40px); height:50px; left:10px; padding:15px; color: #999999; font-size: 15px; position:absolute; text-align:center; border: 1px dashed gray; box-sizing:border-box; overflow:hidden; text-overflow: ellipsis; white-space: nowrap;">🔄Cambiar imagen `+slugToTexto(id)+`</div>
+					<div style="width: calc(75% - 40px); height:50px; left:10px; padding:15px; color: #999999; font-size: 15px; position:absolute; text-align:center; border: 1px dashed gray; box-sizing:border-box; overflow:hidden; text-overflow: ellipsis; white-space: nowrap;">🔄Cambiar imagen `+slugToTexto(id)+`</div>
 					<input id="img_cambiar_input_`+id+`" data-id='`+id+`' accept="image/*" type="file"  style=" width: calc(90% - 40px); height: 50px; opacity: 0; position:absolute;"> 
 					<div style="width:12%; right:15px;  font-size: 25px; position:absolute; text-align:center;">
 						<div id='img_cambiar_eliminar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>❌</div>
+					</div>
+					<div style="width:12%; right:20%;  font-size: 25px; position:absolute; text-align:center;">
+						<div id='img_pegar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>📋</div>
 					</div>
 				</div>
 		`;
@@ -1029,6 +1032,22 @@ function abrir_menu_plantillas(){
 			};
 
 			reader.readAsDataURL(file); // Lee la imagen como DataURL para mostrarla directamente
+		});
+		
+		$('#img_pegar_'+id).click( function() {
+			var id_objeto = $(this).attr('data-id');
+			getImagenPortapapelesABase64().then(base64 => {
+			  if (base64) {
+				$('.carta_seleccionada [data-id='+id_objeto+']').each(function() {
+					$(this).css('background-image', 'url("'+base64+'")');
+					$(this).css('background-position', 'center');
+					$(this).css('background-size', 'cover');	
+				});
+			  } else {
+				alert("No hay imagen en el portapapeles.");
+			  }
+			});
+			
 		});
 	}
 	function submenu_img_swap(id){
@@ -1181,5 +1200,24 @@ function abrir_menu_plantillas(){
 function slugToTexto(slug){
 	return slug.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase());
 }
-
+async function getImagenPortapapelesABase64() {
+  try {
+    const items = await navigator.clipboard.read();
+    for (const item of items) {
+      for (const type of item.types) {
+        if (type.startsWith("image/")) {
+          const blob = await item.getType(type);
+          return await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("No se pudo leer el portapapeles:", err);
+  }
+  return "";
+}
 
