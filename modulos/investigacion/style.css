@@ -12,6 +12,7 @@
 
 .plantilla_apv_standard{
 	font-family: 'special_elite';
+	font-size: 10px;
 }
 
 .plantilla_apv_bordes_difuminados{
@@ -20,4 +21,24 @@
     linear-gradient(to left, transparent 0%, black 20%, black 80%, transparent 100%);
   -webkit-mask-composite: intersect;
   mask-composite: intersect; /* o 'add' según navegador */
+}
+
+.investigacion_contenedor_pistas{
+	border-bottom: 1px solid gray;
+}
+
+.investigacion_accion,
+.investigacion_pista
+{
+	border-top: 1px solid gray;
+	padding-top: 2px;
+	font-weight:bold;
+}
+
+.investigacion_texto_ambientacion{
+	border-top: 1px solid gray;
+	padding-top:4px;
+	padding-bottom:4px;
+	text-align:center;
+	color: gray;
 }
