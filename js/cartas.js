@@ -11,7 +11,7 @@ var padding_pagina_top = 25;
 var padding_pagina_left = 25;
 var padding_pagina_right = 0;
 var padding_pagina_bottom = 0;
-
+let hayCambiosPendientes = false;
 
  $(document).ready(function(){ inicializar(); });
 
@@ -26,6 +26,20 @@ function inicializar(){
 	$('#cerrar_popup').on('click', cerrarPopup);	
 	
 	funcionalidadBarraLateralRedimensionadora();
+	
+	
+
+	
+	// Avisar antes de salir:
+	window.addEventListener('beforeunload', (event) => {
+	  if (hayCambiosPendientes) {
+		event.preventDefault();
+		// Algunos navegadores requieren asignar returnValue:
+		event.returnValue = '';
+		// El texto personalizado ya no se muestra (seguridad), pero el diálogo sí aparece.
+	  }
+	});
+
 	
 	
 }
@@ -225,6 +239,7 @@ function cargarFuncionalidadMenuPrincipal(){
     enlace.href = URL.createObjectURL(blob);
     enlace.download = 'cartas.cdc';
     enlace.click();
+	hayCambiosPendientes = false;
 }
 	function exportar_cartas_seleccionadas() {
     const cartas = $('.carta_seleccionada');
@@ -491,7 +506,7 @@ function abrir_menu_plantillas(){
 //FUNCIONES
 	//CARTAS	
 	function anyadirCarta(width_mm, height_mm){
-		
+		hayCambiosPendientes = true;
 		if(num_cartas%num_cartas_por_pag == 0 && num_cartas>0){
 			anyadirPagina();
 		}
@@ -557,6 +572,7 @@ function abrir_menu_plantillas(){
 		return ultima_pagina.children().last();
 	}
 	function subir_cartas_seleccionadas() {
+		hayCambiosPendientes = true;
 		var cartas_seleccionadas = $('.carta_seleccionada');
 
 		if (cartas_seleccionadas.length !== 1) return;
@@ -584,6 +600,7 @@ function abrir_menu_plantillas(){
 		carta_actual.css('height', h_anterior);
 	}
 	function bajar_cartas_seleccionadas() {
+		hayCambiosPendientes = true;
 		var cartas_seleccionadas = $('.carta_seleccionada');
 
 		if (cartas_seleccionadas.length !== 1) return;
@@ -641,6 +658,7 @@ function abrir_menu_plantillas(){
 		}
 	} 
 	function duplicar_cartas_seleccionadas(){
+		hayCambiosPendientes = true;
 		var seleccionadas = $('.carta_seleccionada');
 
 		if (seleccionadas.length === 0) return;
@@ -713,8 +731,7 @@ function abrir_menu_plantillas(){
 		return Array.from(data_ids_comunes);
 	}
 	function anyadirCartaDesdePlantilla(slug_modulo, slug_plantilla) {
-		
-		 
+		hayCambiosPendientes = true;
 		const plantillas = window.Plantillas[slug_modulo];
 		for(var i = 0; i< plantillas.plantillas.length; i++){
 			if(plantillas.plantillas[i].slug == slug_plantilla){
@@ -783,9 +800,7 @@ function abrir_menu_plantillas(){
 		`;	
 		
 		$('#menu_lateral').append(html_submenu_texto_linea);
-		
-		
-
+	
 			
 	}
 	function submenu_texto_linea(id){
@@ -806,6 +821,7 @@ function abrir_menu_plantillas(){
 		
 		
 		$('#texto_linea_'+id).on('input', function(){
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());
 			
@@ -830,6 +846,7 @@ function abrir_menu_plantillas(){
 		
 		
 		$('#eliminar_elemento_'+id).click( function(){
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			$('.carta_seleccionada * [data-id='+id_objeto+']').remove();
 			cargarBarraLateralCartaSeleccionada();
@@ -855,6 +872,7 @@ function abrir_menu_plantillas(){
 		
 		
 		$('#texto_num_'+id).on('input', function(){
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());
 			
@@ -896,13 +914,16 @@ function abrir_menu_plantillas(){
 		});	
 		
 		$('#texto_editable_aumentar_'+id).click(function(){
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			var $texto = $('.carta_seleccionada * [data-id='+id_objeto+']');
 			var tam = parseInt($texto.css('font-size'), 10)+1;
 			$texto.css('font-size', tam );
+			
 		});	
 		
 		$('#texto_editable_reducir_'+id).click(function(){
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			var $texto = $('.carta_seleccionada * [data-id='+id_objeto+']');
 			var tam = parseInt($texto.css('font-size'), 10)-1;
@@ -910,6 +931,7 @@ function abrir_menu_plantillas(){
 		});	
 		
 		$('#texto_editable_negrita_'+id).click(function(){
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			var textarea = $('#texto_editable_'+id_objeto);
 			
@@ -935,6 +957,7 @@ function abrir_menu_plantillas(){
 		});	
 		
 		$('#texto_editable_cursiva_'+id).click(function(){
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			var textarea = $('#texto_editable_'+id_objeto);
 			
@@ -960,6 +983,7 @@ function abrir_menu_plantillas(){
 		});	
 		
 		$('#texto_editable_subrayado_'+id).click(function(){
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			var textarea = $('#texto_editable_'+id_objeto);
 			
@@ -985,6 +1009,7 @@ function abrir_menu_plantillas(){
 		});	
 		
 		$('#texto_editable_' + id).on('input', function () {
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			var texto_con_saltos = $(this).val().replace(/\n/g, '<br>');
 			$(".carta_seleccionada [data-id='" + id_objeto + "']").html(texto_con_saltos);
@@ -1007,6 +1032,7 @@ function abrir_menu_plantillas(){
 		$('#menu_lateral').append(html_submenu_img);
 		
 		$('#img_cambiar_eliminar_'+id).click( function() {
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			$('.carta_seleccionada [data-id='+id_objeto+']').each(function() {
 				$(this).css('background-image', '');
@@ -1014,6 +1040,7 @@ function abrir_menu_plantillas(){
 		});
 		
 		$('#img_cambiar_input_'+id).on('change', function(event) {
+			hayCambiosPendientes = true;
 		   const file = event.target.files[0];
 			if (!file) return;
 
@@ -1035,6 +1062,7 @@ function abrir_menu_plantillas(){
 		});
 		
 		$('#img_pegar_'+id).click( function() {
+			hayCambiosPendientes = true;
 			var id_objeto = $(this).attr('data-id');
 			getImagenPortapapelesABase64().then(base64 => {
 			  if (base64) {
@@ -1078,6 +1106,7 @@ function abrir_menu_plantillas(){
 
 		
 		$('#select_'+id).on('change', function(event) {
+			hayCambiosPendientes = true;
 			var indice = $(this).val();
 			var img_base64 = item.attr('data-src'+indice);
 			item.attr('data-seleccionado', indice);
@@ -1108,6 +1137,7 @@ function abrir_menu_plantillas(){
 		 
 		
 		$('#select_' + id).on('change', function (event) {
+			hayCambiosPendientes = true;
 		  const colorHex = $(this).val();
 		  const $img = $('.carta_seleccionada [data-id=' + id + ']');
 		  $img.attr('data-val-tintable', colorHex);
