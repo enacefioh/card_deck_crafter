@@ -193,6 +193,11 @@ function cargarFuncionalidadMenuPrincipal(){
                 // Asignar variables globales
                 window.num_cartas = datos.num_cartas;
                 window.num_pags = datos.num_pags;
+                window.num_cartas_por_pag = datos.num_cartas_por_pag;
+                window.padding_pagina_top = datos.padding_pagina_top;
+                window.padding_pagina_left = datos.padding_pagina_left;
+                window.padding_pagina_right = datos.padding_pagina_right;
+                window.padding_pagina_bottom = datos.padding_pagina_bottom;
 
                 // Insertar HTML en el contenedor
                 document.getElementById('contenedor_paginas').innerHTML = datos.contenido_html;
@@ -230,6 +235,11 @@ function cargarFuncionalidadMenuPrincipal(){
         version: version,
         num_cartas: num_cartas,
         num_pags: num_pags,
+		num_cartas_por_pags: num_cartas_por_pag,
+		padding_pagina_top: padding_pagina_top,
+		padding_pagina_left: padding_pagina_left,
+		padding_pagina_right: padding_pagina_right,
+		padding_pagina_bottom: padding_pagina_bottom,
         contenido_html: contenido_html
     };
 
