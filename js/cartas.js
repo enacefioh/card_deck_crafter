@@ -1031,11 +1031,11 @@ function abrir_menu_plantillas(){
 			<div style=" background-color:#eeeeee; width:90%; height:50px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 					<div style="width: calc(75% - 40px); height:50px; left:10px; padding:15px; color: #999999; font-size: 15px; position:absolute; text-align:center; border: 1px dashed gray; box-sizing:border-box; overflow:hidden; text-overflow: ellipsis; white-space: nowrap;">🔄Cambiar imagen `+slugToTexto(id)+`</div>
 					<input id="img_cambiar_input_`+id+`" data-id='`+id+`' accept="image/*" type="file"  style=" width: calc(90% - 40px); height: 50px; opacity: 0; position:absolute;"> 
-					<div style="width:12%; right:15px;  font-size: 25px; position:absolute; text-align:center;">
-						<div id='img_cambiar_eliminar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>❌</div>
-					</div>
-					<div style="width:12%; right:20%;  font-size: 25px; position:absolute; text-align:center;">
-						<div id='img_pegar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>📋</div>
+					<div style='width:25%; font-size:18px; text-align:center; float:right;'>
+					
+						<span id='img_cambiar_eliminar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>❌</span>					
+						<span id='img_pegar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>📋</span>					
+						<span id='img_abrir_menu_edicion_`+id+`' data-id='`+id+`' class="submenu_botones_boton_img" title="Abrir controles">🔽</span>
 					</div>
 				</div>
 		`;
