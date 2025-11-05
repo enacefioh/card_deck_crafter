@@ -179,18 +179,18 @@ window.Plantillas["investigacion"] = {
 function cargarNuevaPista(){
 	
 			var html_submenu_info = `
-				<div class='seccion_editable'>
-						<div id="anyadir_interaccion" class="submenu_botones_boton"  style='font-size:16px; margin: 5px auto; width:80%; display:block; '> + Interacción ℹ️ </div>
-						<div id="anyadir_info" class="submenu_botones_boton" style='font-size:16px; margin: 5px auto; width:80%; display:block; '> + Ambientación </div>
-						&nbsp;&nbsp;Añadir Imágen:<br />
+				<tr>
+						<td colspan=2><div id="anyadir_interaccion" class="submenu_botones_boton"  style='font-size:16px; margin: 5px auto; width:80%; display:block; '> + Interacción ℹ️ </div></tr>
+						<td colspan=2><div id="anyadir_info" class="submenu_botones_boton" style='font-size:16px; margin: 5px auto; width:80%; display:block; '> + Ambientación </div></tr>
+						<td colspan=2>&nbsp;&nbsp;Añadir Imágen: <br />
 						<div id="anyadir_img_cuadrada" class="submenu_botones_boton" style='padding:5px; margin: 5px; display:block; float:left; aspect-ratio:1; '> <div style='border: 2px solid black; width: 20px; height:20px; '> </div> </div>
 						<div id="anyadir_img_horizontal" class="submenu_botones_boton" style='padding:5px; margin: 5px ; display:block; float:left; aspect-ratio:1; '> <div style='border: 2px solid black; width: 20px; height:12px; margin-top:4px; '> </div> </div>
-						<div id="anyadir_img_vertical" class="submenu_botones_boton" style='padding:5px; margin: 5px ; display:block; float:left; aspect-ratio:1; '> <div style='border: 2px solid black; width: 12px; height:20px; margin-left:4px;'> </div> </div>
-						
+						<div id="anyadir_img_vertical" class="submenu_botones_boton" style='padding:5px; margin: 5px ; display:block; float:left; aspect-ratio:1; '> <div style='border: 2px solid black; width: 12px; height:20px; margin-left:4px;'> </div> </div></td>
 						<div style='clear:both;'> </div>
-				</div>
+						
+				</tr>
 			`;
-			$('#menu_lateral').append(html_submenu_info);
+			$('#tabla_atributos').append(html_submenu_info);
 			$('#anyadir_interaccion').click(function(){
 				//var num_armas = $('.carta_seleccionada * .wu_fighter_contenedor_armas').children().length+1;
 				var num_pistas = parseInt($('.carta_seleccionada * .investigacion_contenedor_pistas').children().first().attr("data-indice"))+1;

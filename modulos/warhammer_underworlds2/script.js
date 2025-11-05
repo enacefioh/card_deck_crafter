@@ -63,11 +63,11 @@ window.Plantillas["warhammer_underworlds2"] = {
 		`,
 	  cargarOpcionesEnMenu: function (funcion) {
 		  var html_submenu_img = `
-				<div class='seccion_editable'>
-						<div id="anyadir_arma" class="submenu_botones_boton" title="+ Añadir arma" style='font-size:16px; margin: 5px auto; width:80%; display:block; '> + Añadir Arma ⚔️ </div>
-				</div>
+				<tr class='seccion_editable'>
+					<td colspan=2>	<div id="anyadir_arma" class="submenu_botones_boton" title="+ Añadir arma" style='font-size:16px; margin: 5px auto; width:80%; display:block; '> + Añadir Arma ⚔️ </div></td>
+				</tr>
 			`;
-			$('#menu_lateral').append(html_submenu_img);
+			$('#tabla_atributos').append(html_submenu_img);
 			$('#anyadir_arma').click(function(){
 				//var num_armas = $('.carta_seleccionada * .wu_fighter_contenedor_armas').children().length+1;
 				var num_armas = parseInt($('.carta_seleccionada * .wu_fighter_contenedor_armas').children().last().attr("data-indice"))+1;

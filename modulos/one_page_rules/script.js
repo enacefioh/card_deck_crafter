@@ -55,11 +55,11 @@ window.Plantillas["one_page_rules"] = {
 			`,
 		  cargarOpcionesEnMenu: function (container) {
 			  var html_submenu_img = `
-					<div class='seccion_editable'>
-							<div id="anyadir_arma" class="submenu_botones_boton" title="+ Añadir arma" style='font-size:16px; margin: 5px auto; width:80%; display:block; '> + Añadir Arma ⚔️ </div>
-					</div>
+					<tr class='seccion_editable'>
+						<td colspan=2>	<div id="anyadir_arma" class="submenu_botones_boton" title="+ Añadir arma" style='font-size:16px; margin: 5px auto; width:80%; display:block; '> + Añadir Arma ⚔️ </div> </td>
+					</tr>
 				`;
-				$('#menu_lateral').append(html_submenu_img);
+				$('#tabla_atributos').append(html_submenu_img);
 				
 				$('#anyadir_arma').click(function(){
 					var carta_seleccionada = $('.carta_seleccionada');

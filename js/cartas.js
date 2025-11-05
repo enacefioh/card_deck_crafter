@@ -61,8 +61,8 @@ function funcionalidadBarraLateralRedimensionadora(){
 		if (!isResizing) return;
 
 		let newWidth = e.clientX;
-		const minWidth = 150;
-		const maxWidth = 500;
+		const minWidth = 450;
+		const maxWidth = 800;
 		newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
 
 		panel.style.width = newWidth + 'px';
@@ -395,15 +395,17 @@ function cargarFuncionalidadMenuPrincipal(){
 function cargarBarraLateralGeneral(){
 	
 	var html_barra_lateral_general = `
-		 <div id="add_carta_plantilla" style="border: 1px solid gray; background-color:#eeeeee; width:88%; margin:auto; margin-top: 10px; margin-bottom:10px; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;"> + Añadir Carta</div>
-			<div style="border: 1px dashed gray; background-color:#eeeeee; width:90%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
-				<div style="width:90%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">+ Importar imágenes</div>
+		 <tr><td colspan=2 id="add_carta_plantilla" style="border: 1px solid gray; background-color:#eeeeee; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;"> + Añadir Carta</td></tr>
+		 <tr><td colspan=2>	<div style="border: 1px dashed gray; background-color:#eeeeee; width:100%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
+				<div style="width:100%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">+ Importar imágenes</div>
 				<input id="importar_imagenes" type="file" multiple="multiple" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
 			</div>
+		</td></tr>	
 	`;
 	
-	$('#menu_lateral').empty();
-	$('#menu_lateral').html(html_barra_lateral_general);
+	
+	vaciarTablaAtributos();
+	$('#tabla_atributos').append(html_barra_lateral_general);
 	
 	$('#importar_imagenes').on('change', function(event) {
 	  const files = event.target.files;
@@ -432,17 +434,17 @@ function cargarBarraLateralGeneral(){
 function cargarBarraLateralCartaSeleccionada(){
 	
 	var html_barra_lateral_carta = `
-		<div id='carta_seleccionada_controles_basicos' class='submenu_botones' >
+		<tr><td colspan=2 id='carta_seleccionada_controles_basicos' class='submenu_botones' >
 			<div id='subir_carta_seleccionada' class='submenu_botones_boton' title='Subir carta seleccionada'> ⬆️ </div>
 			<div id='bajar_carta_seleccionada' class='submenu_botones_boton' title='Bajar carta seleccionada'> ⬇️ </div>
 			<div id='eliminar_cartas_seleccionadas' class='submenu_botones_boton' title='Eliminar cartas seleccionadas'> ❌ </div>
 			<div id='duplicar_carta_seleccionada' class='submenu_botones_boton' title='Duplicar carta seleccionada'> 📄‍↔️📄 </div>
 			<div id='exportar_cartas_seleccionadas' class='submenu_botones_boton' title='Exportar cartas seleccionadas'> 💾 </div>
-		</div>
+		</td></tr>	
 	`;
 	
-	$('#menu_lateral').empty();
-	$('#menu_lateral').html(html_barra_lateral_carta);
+	vaciarTablaAtributos();
+	$('#tabla_atributos').append(html_barra_lateral_carta);
 	var cartas = $('.carta_seleccionada');
 	
 	$('#subir_carta_seleccionada').click(function(){ subir_cartas_seleccionadas() });
@@ -481,6 +483,10 @@ function cargarBarraLateralCartaSeleccionada(){
 		
 	});
 	
+}
+function vaciarTablaAtributos(){
+	$('#tabla_atributos').empty();
+	$('#tabla_atributos').html('<colgroup> <col class="col1"> <col class="col2"> </colgroup>');
 }
 
 //+Carta vacía: MENÚ SUPERIOR > anyadirCartaStandardVertical()
@@ -805,11 +811,13 @@ function abrir_menu_plantillas(){
 			texto = $('.carta_seleccionada * [data-id='+id+']').html();
 		}
 		var html_submenu_texto_linea = `
-			<u class='seccion_editable' style='idth: 100%; display: block; text-align: center; padding-top: 8px;'>
+			<tr><td colspan=2><u class='seccion_editable' style='idth: 100%; display: block; text-align: center; padding-top: 8px;'>
 				`+slugToTexto(id)+`</u>
+			</td></tr>	
 		`;	
 		
-		$('#menu_lateral').append(html_submenu_texto_linea);
+		
+		$('#tabla_atributos').append(html_submenu_texto_linea);
 	
 			
 	}
@@ -819,15 +827,14 @@ function abrir_menu_plantillas(){
 			texto = $('.carta_seleccionada * [data-id='+id+']').html();
 		}
 		var html_submenu_texto_linea = `
-			<div class='seccion_editable'>
-				<div class='seccion_texto'>
-					<div class='etiqueta_submenu'>`+slugToTexto(id)+`: </div>
-					<input type='text' id='texto_linea_`+id+`' data-id='`+id+`' style='max-width:45%; margin-right: 5%; float:right;' value='`+texto+`' />
-				</div>
-			</div>
+			<tr class='seccion_editable'>
+					<td class='etiqueta_submenu'>`+slugToTexto(id)+`: </td>
+					<td><input type='text' id='texto_linea_`+id+`' data-id='`+id+`' style='max-width:45%; margin-right: 5%; float:right;' value='`+texto+`' /></td>
+				
+			</tr>
 		`;	
 		
-		$('#menu_lateral').append(html_submenu_texto_linea);
+		$('#tabla_atributos').append(html_submenu_texto_linea);
 		
 		
 		$('#texto_linea_'+id).on('input', function(){
@@ -844,15 +851,13 @@ function abrir_menu_plantillas(){
 			texto = $('.carta_seleccionada * [data-id='+id+']').html();
 		}
 		var html_submenu_texto_eliminar_elemento = `
-			<div class='seccion_editable'>
-				<div class='seccion_texto'>
-					<div class='etiqueta_submenu'>Eliminar `+slugToTexto(id)+`: </div>
-					<span id='eliminar_elemento_`+id+`' data-id='`+id+`' style='cursor:pointer; color:red;' >❌</span>
-				</div>
-			</div>
+			<tr class='seccion_editable'>				
+					<td class='etiqueta_submenu'>Eliminar `+slugToTexto(id)+`: </td>
+					<td><span id='eliminar_elemento_`+id+`' data-id='`+id+`' style='cursor:pointer; color:red;' >❌</span></td>
+			</tr>
 		`;	
 		
-		$('#menu_lateral').append(html_submenu_texto_eliminar_elemento);
+		$('#tabla_atributos').append(html_submenu_texto_eliminar_elemento);
 		
 		
 		$('#eliminar_elemento_'+id).click( function(){
@@ -870,15 +875,15 @@ function abrir_menu_plantillas(){
 			texto = $('.carta_seleccionada * [data-id='+id+']').html();
 		}
 		var html_submenu_texto_linea = `
-			<div class='seccion_editable'>
-				<div class='seccion_num'>
-					<div class='etiqueta_submenu'>`+slugToTexto(id)+`: </div>
-					<input type='number' step='1' id='texto_num_`+id+`' data-id='`+id+`' style='max-width:45%; margin-right: 5%; float:right;' value='`+texto+`' />
-				</div>
-			</div>
+			<tr class='seccion_editable'>
+				
+					<td class='etiqueta_submenu'>`+slugToTexto(id)+`: </td>
+					<td><input type='number' step='1' id='texto_num_`+id+`' data-id='`+id+`' style='max-width:45%; margin-right: 5%; float:right;' value='`+texto+`' /></td>
+				
+			</tr>
 		`;	
 		
-		$('#menu_lateral').append(html_submenu_texto_linea);
+		$('#tabla_atributos').append(html_submenu_texto_linea);
 		
 		
 		$('#texto_num_'+id).on('input', function(){
@@ -895,23 +900,27 @@ function abrir_menu_plantillas(){
 			texto = $('.carta_seleccionada * [data-id='+id+']').html().replace(/<br\s*\/?>/gi, '\n');
 		}
 		var html_submenu_texto_editable = `
-			<div class='seccion_editable'>
-				<div style='width:90%; margin-left: 5%; text-align:center;'>
+			<tr class='seccion_editable'>
+				<td style='text-align:center;'>
 					<div style='display:inline-block; float:left;'>`+slugToTexto(id)+`: </div>
 					<div id='texto_editable_abrir_menu_edicion_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Abrir controles">🔽</div>
-				</div>
-				<div id='texto_editable_menu_edicion_`+id+`' style='width:90%; margin-left: 5%; text-align:center; display:none; clear:both;'>
+				</td>
+				
+				<td><textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:90%; height:50px; margin-left: 5%;'>`+texto+`</textarea></td>
+				</tr>
+				<tr id='texto_editable_menu_edicion_`+id+`' style='margin-left: 5%; text-align:center; display:none; clear:both;'>
+				 <td colspan=2>
 					<div id='texto_editable_aumentar_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>+</b></div>
 					<div id='texto_editable_reducir_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>-</b></div>
 					<div id='texto_editable_negrita_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>B</b></div>
 					<div id='texto_editable_cursiva_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Cursiva"><i>I</i></div>
 					<div id='texto_editable_subrayado_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Subrayado"><u>U</u></div>
-				</div>
-				<textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:90%; height:50px; margin-left: 5%;'>`+texto+`</textarea>
-			</div>
+				 </td>	
+				</tr>
+			</tr>
 		`;	
 		
-		$('#menu_lateral').append(html_submenu_texto_editable);
+		$('#tabla_atributos').append(html_submenu_texto_editable);
 		
 		$('#texto_editable_abrir_menu_edicion_'+id).click(function(){
 			if($('#texto_editable_menu_edicion_'+id).css('display') == 'none'){
@@ -1028,6 +1037,7 @@ function abrir_menu_plantillas(){
 	}
 	function submenu_img(id){
 		var html_submenu_img = `
+			<tr><td colspan=2>
 			<div style=" background-color:#eeeeee; width:90%; height:50px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 					<div style="width: calc(75% - 40px); height:50px; left:10px; padding:15px; color: #999999; font-size: 15px; position:absolute; text-align:center; border: 1px dashed gray; box-sizing:border-box; overflow:hidden; text-overflow: ellipsis; white-space: nowrap;">🔄Cambiar imagen `+slugToTexto(id)+`</div>
 					<input id="img_cambiar_input_`+id+`" data-id='`+id+`' accept="image/*" type="file"  style=" width: calc(90% - 40px); height: 50px; opacity: 0; position:absolute;"> 
@@ -1038,8 +1048,9 @@ function abrir_menu_plantillas(){
 						<span id='img_abrir_menu_edicion_`+id+`' data-id='`+id+`' class="submenu_botones_boton_img" title="Abrir controles">🔽</span>
 					</div>
 				</div>
+			</td></tr>	
 		`;
-		$('#menu_lateral').append(html_submenu_img);
+		$('#tabla_atributos').append(html_submenu_img);
 		
 		$('#img_cambiar_eliminar_'+id).click( function() {
 			hayCambiosPendientes = true;
@@ -1095,9 +1106,9 @@ function abrir_menu_plantillas(){
 		var num_opcs = item.attr('data-cantidad');
 		
 		var html_submenu_img = `
-			<div class='seccion_editable' style='padding-bottom:3px;'>
-			<div class='etiqueta_submenu'>`+slugToTexto(id)+`: </div>
-			<select style='width:49%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' name="select_`+id+`" id="select_`+id+`">
+			<tr class='seccion_editable' style='padding-bottom:3px;'>
+			<td class='etiqueta_submenu'>`+slugToTexto(id)+`: </td>
+			<td><select style='width:100%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' name="select_`+id+`" id="select_`+id+`">
 			`;
 		for(i=1; i<=num_opcs;i++){
 			var num_titulo = item.attr('data-nombre'+i);
@@ -1105,10 +1116,10 @@ function abrir_menu_plantillas(){
 		}		
 			
 			
-			html_submenu_img += '</select> </div>';
+			html_submenu_img += '</select> </td></tr>';
 			
 		
-		 $('#menu_lateral').append(html_submenu_img);
+		 $('#tabla_atributos').append(html_submenu_img);
 		 
 		 if (item.attr("data-seleccionado") !== undefined) {
 			  $('#select_'+id).val(item.attr("data-seleccionado"));
@@ -1130,14 +1141,13 @@ function abrir_menu_plantillas(){
 		var item = $('.carta_seleccionada * [data-id='+id+']');
 		
 		var html_submenu_tintado = `
-			<div class='seccion_editable' style='padding-bottom:3px;'>
-			<div class='etiqueta_submenu'>Color `+slugToTexto(id)+`: </div>
-			
-
-			<input style='width:49%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' type="color" name="select_`+id+`" id="select_`+id+`" value="#ffffff">
+			<tr class='seccion_editable' style='padding-bottom:3px;'>
+			<td class='etiqueta_submenu'>Color `+slugToTexto(id)+`: </td>
+			<td><input style='width:100%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' type="color" name="select_`+id+`" id="select_`+id+`" value="#ffffff"></td>
+			</tr>
 			`;
 		
-		 $('#menu_lateral').append(html_submenu_tintado);
+		 $('#tabla_atributos').append(html_submenu_tintado);
 		
 		 if( $('.carta_seleccionada [data-id=' + id + ']').attr('data-val-tintable')!== undefined){
 			 const color_sugerido = $('.carta_seleccionada [data-id=' + id + ']').attr('data-val-tintable');
