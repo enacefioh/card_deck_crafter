@@ -192,8 +192,15 @@ function cargarNuevaPista(){
 			`;
 			$('#tabla_atributos').append(html_submenu_info);
 			$('#anyadir_interaccion').click(function(){
-				//var num_armas = $('.carta_seleccionada * .wu_fighter_contenedor_armas').children().length+1;
-				var num_pistas = parseInt($('.carta_seleccionada * .investigacion_contenedor_pistas').children().first().attr("data-indice"))+1;
+				
+				const indices = $('.carta_seleccionada .investigacion_contenedor_pistas')
+				  .children()
+				  .map(function () { return Number($(this).attr('data-indice')); })
+				  .get()
+				  .filter(n => Number.isFinite(n));
+
+				const num_pistas = (indices.length ? Math.max(...indices) : -1) + 1;
+
 				var html_nueva_pista = getHTMLNuevaPista(num_pistas);
 				
 				$('.carta_seleccionada * .investigacion_contenedor_pistas').prepend(html_nueva_pista);
@@ -201,14 +208,25 @@ function cargarNuevaPista(){
 				
 			});
 			$('#anyadir_info').click(function(){
-				var num_pistas = parseInt($('.carta_seleccionada * .investigacion_contenedor_pistas').children().first().attr("data-indice"))+1;
+				const indices = $('.carta_seleccionada .investigacion_contenedor_pistas')
+				  .children()
+				  .map(function () { return Number($(this).attr('data-indice')); })
+				  .get()
+				  .filter(n => Number.isFinite(n));
+
+				const num_pistas = (indices.length ? Math.max(...indices) : -1) + 1;
 				var html_nuevo_texto = getHTMLTextoAmbientacion(num_pistas);
 				$('.carta_seleccionada * .investigacion_contenedor_pistas').prepend(html_nuevo_texto);
 				cargarBarraLateralCartaSeleccionada();
 			});				
 			$('#anyadir_img_cuadrada').click(function(){
-				//var num_armas = $('.carta_seleccionada * .wu_fighter_contenedor_armas').children().length+1;
-				var num_pistas = parseInt($('.carta_seleccionada * .investigacion_contenedor_pistas').children().first().attr("data-indice"))+1;
+				const indices = $('.carta_seleccionada .investigacion_contenedor_pistas')
+				  .children()
+				  .map(function () { return Number($(this).attr('data-indice')); })
+				  .get()
+				  .filter(n => Number.isFinite(n));
+
+				const num_pistas = (indices.length ? Math.max(...indices) : -1) + 1;
 				var html_nuevo_texto = getHTMLImagenCuadrada(num_pistas);
 				
 				$('.carta_seleccionada * .investigacion_contenedor_pistas').prepend(html_nuevo_texto);
@@ -216,8 +234,13 @@ function cargarNuevaPista(){
 				
 			});		
 			$('#anyadir_img_horizontal').click(function(){
-				//var num_armas = $('.carta_seleccionada * .wu_fighter_contenedor_armas').children().length+1;
-				var num_pistas = parseInt($('.carta_seleccionada * .investigacion_contenedor_pistas').children().first().attr("data-indice"))+1;
+				const indices = $('.carta_seleccionada .investigacion_contenedor_pistas')
+				  .children()
+				  .map(function () { return Number($(this).attr('data-indice')); })
+				  .get()
+				  .filter(n => Number.isFinite(n));
+
+				const num_pistas = (indices.length ? Math.max(...indices) : -1) + 1;
 				var html_nuevo_texto = getHTMLImagenHorizontal(num_pistas);
 				
 				$('.carta_seleccionada * .investigacion_contenedor_pistas').prepend(html_nuevo_texto);
@@ -225,8 +248,13 @@ function cargarNuevaPista(){
 				
 			});			
 			$('#anyadir_img_vertical').click(function(){
-				//var num_armas = $('.carta_seleccionada * .wu_fighter_contenedor_armas').children().length+1;
-				var num_pistas = parseInt($('.carta_seleccionada * .investigacion_contenedor_pistas').children().first().attr("data-indice"))+1;
+				const indices = $('.carta_seleccionada .investigacion_contenedor_pistas')
+				  .children()
+				  .map(function () { return Number($(this).attr('data-indice')); })
+				  .get()
+				  .filter(n => Number.isFinite(n));
+
+				const num_pistas = (indices.length ? Math.max(...indices) : -1) + 1;
 				var html_nuevo_texto = getHTMLImagenVertical(num_pistas);
 				
 				$('.carta_seleccionada * .investigacion_contenedor_pistas').prepend(html_nuevo_texto);
@@ -237,7 +265,7 @@ function cargarNuevaPista(){
 }
 
 function getHTMLNuevaPista(num_pistas){ // Devuelve html elemento de línea de pista con índice indicado
-	return `<div class='investigacion_pista eliminable' data-id='eliminar_pista`+num_pistas+`' data-indice='`+num_pistas+`' > 
+	return `<div class='titulo_seccion investigacion_pista eliminable desplazable ' data-id='interaccion`+num_pistas+`' data-indice='`+num_pistas+`' > 
 							<div class="img_swap" data-id="icono`+num_pistas+`" style="height:5mm; width:5mm; float:left; background-image:url('`+b64_flecha+`')"
 								data-cantidad="7" 
 								data-nombre1='Acción' data-src1='`+b64_flecha+`'
@@ -258,25 +286,25 @@ function getHTMLNuevaPista(num_pistas){ // Devuelve html elemento de línea de p
 
 
 function getHTMLTextoAmbientacion(num_pistas){ // Devuelve html elemento de línea de pista con índice indicado
-	return `<div class='investigacion_texto_ambientacion eliminable' data-id='eliminar_pista`+num_pistas+`' data-indice='`+num_pistas+`' > 
+	return `<div class='titulo_seccion investigacion_texto_ambientacion eliminable desplazable' data-id='ambientacion`+num_pistas+`' data-indice='`+num_pistas+`' > 
 			   <i class="texto_editable" data-id="texto`+num_pistas+`" style=" width:100%; padding-top:3px;">Texto ambientación</i>
 			</div>`;
 }
 
 function getHTMLImagenCuadrada(num_pistas){ // Devuelve html elemento de línea de pista con índice indicado
-	return `<div class='investigacion_img eliminable' data-id='eliminar_pista`+num_pistas+`' data-indice='`+num_pistas+`' > 
+	return `<div class='titulo_seccion investigacion_img eliminable desplazable' data-id='ilustracion`+num_pistas+`' data-indice='`+num_pistas+`' > 
 			   <div  data-id="imagen`+num_pistas+`" style="width:90%; aspect-ratio:1;  background-position: center center;background-size: cover;border-radius:15px; margin-left: 11px;bottom: 10px; background-image: url('`+img_img+`');" class="img plantilla_apv_bordes_difuminados"></div>
 			</div>`;
 }
 
 function getHTMLImagenHorizontal(num_pistas){ // Devuelve html elemento de línea de pista con índice indicado
-	return `<div class='investigacion_img eliminable' data-id='eliminar_pista`+num_pistas+`' data-indice='`+num_pistas+`' > 
+	return `<div class='titulo_seccion investigacion_img eliminable desplazable' data-id='ilustracion`+num_pistas+`' data-indice='`+num_pistas+`' > 
 			   <div data-id="imagen`+num_pistas+`" style="width:90%; aspect-ratio:1.5;  background-position: center center;background-size: cover;border-radius:15px; margin-left: 11px;bottom: 10px; background-image: url('`+img_img+`');" class="img plantilla_apv_bordes_difuminados"></div>
 			</div>`;
 }
 
 function getHTMLImagenVertical(num_pistas){ // Devuelve html elemento de línea de pista con índice indicado
-	return `<div class='investigacion_img eliminable' data-id='eliminar_pista`+num_pistas+`' data-indice='`+num_pistas+`' > 
+	return `<div class='titulo_seccion investigacion_img eliminable desplazable' data-id='ilustracion`+num_pistas+`' data-indice='`+num_pistas+`' > 
 			   <div  data-id="imagen`+num_pistas+`" style="width:90%; aspect-ratio:0.6;  background-position: center center;background-size: cover;border-radius:15px; margin-left: 11px;bottom: 10px; background-image: url('`+img_img+`');" class="img plantilla_apv_bordes_difuminados"></div>
 			</div>`;
 }
