@@ -27,9 +27,6 @@ function inicializar(){
 	
 	funcionalidadBarraLateralRedimensionadora();
 	
-	
-
-	
 	// Avisar antes de salir:
 	window.addEventListener('beforeunload', (event) => {
 	  if (hayCambiosPendientes) {
@@ -176,53 +173,19 @@ function cargarFuncionalidadMenuPrincipal(){
 //MENU SUPERIOR
 	// Archivo
 	function importarProyectoCDC() {
+		 if (hayCambiosPendientes) {
+			  if (!confirm("Hay cambios pendientes. ¿Descartar los cambios?")) {return;}
+		 }
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.cdc'; 
 
     input.onchange = (event) => {
         const archivo = event.target.files[0];
-        if (!archivo) return;
-
-        const lector = new FileReader();
-
-        lector.onload = (e) => {
-            try {
-                const datos = JSON.parse(e.target.result);
-
-                // Asignar variables globales
-                window.num_cartas = datos.num_cartas;
-                window.num_pags = datos.num_pags;
-                window.num_cartas_por_pag = datos.num_cartas_por_pag;
-                window.padding_pagina_top = datos.padding_pagina_top;
-                window.padding_pagina_left = datos.padding_pagina_left;
-                window.padding_pagina_right = datos.padding_pagina_right;
-                window.padding_pagina_bottom = datos.padding_pagina_bottom;
-
-                // Insertar HTML en el contenedor
-                document.getElementById('contenedor_paginas').innerHTML = datos.contenido_html;
-				$(".carta").each( function(){
-					$(this).click(function(event){ 
-						if (!event.ctrlKey) {
-							desseleccionarCartas();
-						}			
-						var id = $(this).attr('data-id'); 
-						seleccionarCarta(id) 
-						event.stopPropagation();
-					});
-				});
-
-                console.log('Proyecto cargado:', datos);
-            } catch (error) {
-                alert('Error al leer el archivo. ¿Es un archivo válido .cdc?');
-                console.error(error);
-            }
-        };
-
-        lector.readAsText(archivo);
+        abrirCDC(archivo);
     };
 
-    input.click(); // simula el click del usuario
+    //input.click(); // simula el click del usuario
 }
 	function exportarProyectoCDC() {
     // Datos base
@@ -396,9 +359,14 @@ function cargarBarraLateralGeneral(){
 	
 	var html_barra_lateral_general = `
 		 <tr><td colspan=2 id="add_carta_plantilla" style="border: 1px solid gray; background-color:#eeeeee; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;"> + Añadir Carta</td></tr>
-		 <tr><td colspan=2>	<div style="border: 1px dashed gray; background-color:#eeeeee; width:100%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
+		 <tr><td colspan=2>	<div style="border: 1px dashed gray; background-color:#eeeeee; width:98%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 				<div style="width:100%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">+ Importar imágenes</div>
 				<input id="importar_imagenes" type="file" multiple="multiple" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
+			</div>
+		</td></tr>	
+		<tr><td colspan=2>	<div style="border: 1px dashed gray; background-color:#eeeeee; width:98%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
+				<div style="width:100%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">Abrir CDC</div>
+				<input id="importar_cdc" type="file" multiple="multiple" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
 			</div>
 		</td></tr>	
 	`;
@@ -426,6 +394,24 @@ function cargarBarraLateralGeneral(){
 		}
 	  });
 	});
+	
+	$('#importar_cdc').on('change', function(event) {
+		 if (hayCambiosPendientes) {
+			  if (!confirm("Hay cambios pendientes. ¿Descartar los cambios?")) {return;}
+		 }
+		  const files = event.target.files;
+
+		  Array.from(files).forEach(file => {
+			if (file.name.toLowerCase().endsWith(".cdc")) {
+			  abrirCDC(file); // Llama a tu función de importación
+			} else {
+			  alert("Por favor, arrastra un archivo .cdc válido.");
+			}
+		
+			
+		  });
+	  });
+	
 	
 	$('#add_carta_vacia').click(function(){ anyadirCartaStandardVertical(); });
 	$('#add_carta_plantilla').click(function(){ abrir_menu_plantillas(); });
@@ -829,7 +815,7 @@ function abrir_menu_plantillas(){
 		var html_submenu_texto_linea = `
 			<tr class='seccion_editable'>
 					<td class='etiqueta_submenu'>`+slugToTexto(id)+`: </td>
-					<td><input type='text' id='texto_linea_`+id+`' data-id='`+id+`' style='max-width:45%; margin-right: 5%; float:right;' value='`+texto+`' /></td>
+					<td><input type='text' id='texto_linea_`+id+`' data-id='`+id+`' style='width:95♠♦;%;' value='`+texto+`' /></td>
 				
 			</tr>
 		`;	
@@ -1040,7 +1026,7 @@ function abrir_menu_plantillas(){
 			<tr><td colspan=2>
 			<div style=" background-color:#eeeeee; width:90%; height:50px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 					<div style="width: calc(75% - 40px); height:50px; left:10px; padding:15px; color: #999999; font-size: 15px; position:absolute; text-align:center; border: 1px dashed gray; box-sizing:border-box; overflow:hidden; text-overflow: ellipsis; white-space: nowrap;">🔄Cambiar imagen `+slugToTexto(id)+`</div>
-					<input id="img_cambiar_input_`+id+`" data-id='`+id+`' accept="image/*" type="file"  style=" width: calc(90% - 40px); height: 50px; opacity: 0; position:absolute;"> 
+					<input id="img_cambiar_input_`+id+`" data-id='`+id+`' accept="image/*" type="file"  style="height: 50px; opacity: 0; position:absolute;"> 
 					<div style='width:25%; font-size:18px; text-align:center; float:right;'>
 					
 						<span id='img_cambiar_eliminar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>❌</span>					
@@ -1270,4 +1256,43 @@ async function getImagenPortapapelesABase64() {
   }
   return "";
 }
+function abrirCDC(archivo){
+	if (!archivo) return;
 
+        const lector = new FileReader();
+
+        lector.onload = (e) => {
+            try {
+                const datos = JSON.parse(e.target.result);
+
+                // Asignar variables globales
+                window.num_cartas = datos.num_cartas;
+                window.num_pags = datos.num_pags;
+                window.num_cartas_por_pag = datos.num_cartas_por_pag;
+                window.padding_pagina_top = datos.padding_pagina_top;
+                window.padding_pagina_left = datos.padding_pagina_left;
+                window.padding_pagina_right = datos.padding_pagina_right;
+                window.padding_pagina_bottom = datos.padding_pagina_bottom;
+
+                // Insertar HTML en el contenedor
+                document.getElementById('contenedor_paginas').innerHTML = datos.contenido_html;
+				$(".carta").each( function(){
+					$(this).click(function(event){ 
+						if (!event.ctrlKey) {
+							desseleccionarCartas();
+						}			
+						var id = $(this).attr('data-id'); 
+						seleccionarCarta(id) 
+						event.stopPropagation();
+					});
+				});
+
+                console.log('Proyecto cargado:', datos);
+            } catch (error) {
+                alert('Error al leer el archivo. ¿Es un archivo válido .cdc?');
+                console.error(error);
+            }
+        };
+
+        lector.readAsText(archivo);
+}
