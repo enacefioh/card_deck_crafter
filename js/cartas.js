@@ -913,27 +913,28 @@ function abrir_menu_plantillas(){
 		}
 		var html_submenu_texto_editable = `
 			<tr class='seccion_editable'>
-				<td style='text-align:center;'>
-					<span id='texto_editable_abrir_menu_edicion_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Abrir controles">🔽</span>`+slugToTexto(id)+`:
+				<td>
+					<span id='texto_editable_abrir_menu_edicion_`+id+`' data-id='`+id+`' style='cursor:pointer;' title="Abrir controles">🔽</span>`+slugToTexto(id)+`:
 					
 				</td>
 				
-				<td><textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:98%; min-height:50px;'>`+texto+`</textarea></td>
+				<td><textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:98%; min-height:50px; max-height:150px; field-sizing: content; resize:none;'>`+texto+`</textarea></td>
 				</tr>
 				<tr id='texto_editable_menu_edicion_`+id+`' style='text-align:center; display:none;'>
 				 <td></td>
-				 <td>
-					<span id='texto_editable_aumentar_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Aumentar Tamaño"><b>+</b></span>
-					<span id='texto_editable_reducir_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Reducir Tamaño"><b>-</b></span>
-					<span id='texto_editable_negrita_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>B</b></span>
-					<span id='texto_editable_cursiva_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Cursiva"><i>I</i></span>
-					<span id='texto_editable_subrayado_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Subrayado"><u>U</u></span>
+				 <td class='submenu_edicion'>
+					<span id='texto_editable_aumentar_`+id+`' data-id='`+id+`' class="submenu_boton" title="Aumentar Tamaño"><b>+</b></span>
+					<span id='texto_editable_reducir_`+id+`' data-id='`+id+`' class="submenu_boton" title="Reducir Tamaño"><b>-</b></span>
+					<span id='texto_editable_negrita_`+id+`' data-id='`+id+`' class="submenu_boton" title="Negrita"><b>B</b></span>
+					<span id='texto_editable_cursiva_`+id+`' data-id='`+id+`' class="submenu_boton" title="Cursiva"><i>I</i></span>
+					<span id='texto_editable_subrayado_`+id+`' data-id='`+id+`' class="submenu_boton" title="Subrayado"><u>U</u></span>
 				 </td>	
 				</tr>
 			</tr>
 		`;	
 		
 		$('#tabla_atributos').append(html_submenu_texto_editable);
+		
 		
 		$('#texto_editable_abrir_menu_edicion_'+id).click(function(){
 			if($('#texto_editable_menu_edicion_'+id).css('display') == 'none'){
@@ -1050,20 +1051,46 @@ function abrir_menu_plantillas(){
 	}
 	function submenu_img(id){
 		var html_submenu_img = `
-			<tr><td colspan=2>
-			<div style=" background-color:#eeeeee; width:90%; height:50px; margin:auto; margin-top: 10px; margin-bottom:10px;">
-					<div style="width: calc(75% - 40px); height:50px; left:10px; padding:15px; color: #999999; font-size: 15px; position:absolute; text-align:center; border: 1px dashed gray; box-sizing:border-box; overflow:hidden; text-overflow: ellipsis; white-space: nowrap;">🔄Cambiar imagen `+slugToTexto(id)+`</div>
+			<tr><td>
+				<span id='img_abrir_menu_edicion_`+id+`' data-id='`+id+`'  style='cursor:pointer;' title="Abrir controles">🔽</span>
+				`+slugToTexto(id)+`
+			</td>
+			<td>
+				<div style="cursor:pointer; background-color:#eeeeee; width:98%; height:50px; margin:auto; margin-top: 10px; margin-bottom:10px; position:relative;cursor:pointer;">
+					<div style="width: 100%; height:50px; color: #999999; padding-top:14px; cursor:pointer; font-size: 15px; text-align:center; border: 1px dashed gray; box-sizing:border-box; overflow:hidden; text-overflow: ellipsis; white-space: nowrap; position:absolute;">🔄 Arrastrar o buscar</div>
 					<input id="img_cambiar_input_`+id+`" data-id='`+id+`' accept="image/*" type="file"  style="height: 50px; opacity: 0; position:absolute;"> 
-					<div style='width:25%; font-size:18px; text-align:center; float:right;'>
 					
-						<span id='img_cambiar_eliminar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>❌</span>					
-						<span id='img_pegar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>📋</span>					
-						<span id='img_abrir_menu_edicion_`+id+`' data-id='`+id+`' class="submenu_botones_boton_img" title="Abrir controles">🔽</span>
-					</div>
 				</div>
-			</td></tr>	
+			</td>
+			</tr>
+			
+			
+			<tr id='img_menu_edicion_`+id+`' style='text-align:center; display:none;'>
+			<td>
+			</td>
+			<td class='submenu_edicion'>
+				<span class='submenu_boton' id='img_cambiar_eliminar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>❌</span>					
+				<span class='submenu_boton' id='img_pegar_`+id+`' data-id='`+id+`' style='cursor:pointer;'>📋</span>			
+				<span class='submenu_boton' id='img_add_height`+id+`' data-id='`+id+`' style='cursor:pointer;'>+↕️</span>			
+				<span class='submenu_boton' id='img_sub_height`+id+`' data-id='`+id+`' style='cursor:pointer;'>-↕️</span>			
+				<span class='submenu_boton' id='img_add_width`+id+`' data-id='`+id+`' style='cursor:pointer;'>+↔️</span>			
+				<span class='submenu_boton' id='img_sub_width`+id+`' data-id='`+id+`' style='cursor:pointer;'>-↔️</span>			
+			</td>
+			</tr>
+				
 		`;
 		$('#tabla_atributos').append(html_submenu_img);
+		
+		$('#img_abrir_menu_edicion_'+id).click(function(){
+			if($('#img_menu_edicion_'+id).css('display') == 'none'){
+				$('#img_menu_edicion_'+id).css('display', 'table-row');
+				$(this).html("🔼");
+			}else{
+				$('#img_menu_edicion_'+id).css('display', 'none');
+				$(this).html("🔽");
+			}
+		});	
+		
 		
 		$('#img_cambiar_eliminar_'+id).click( function() {
 			hayCambiosPendientes = true;
@@ -1111,6 +1138,36 @@ function abrir_menu_plantillas(){
 			});
 			
 		});
+		
+		$('#img_add_height'+id).click( function() {
+			hayCambiosPendientes = true;
+			var id_objeto = $(this).attr('data-id');
+			var elemento = $('.carta_seleccionada [data-id='+id_objeto+']');
+			$(elemento).height($(elemento).height() + 10);
+			
+		});
+		$('#img_sub_height'+id).click( function() {
+			hayCambiosPendientes = true;
+			var id_objeto = $(this).attr('data-id');
+			var elemento = $('.carta_seleccionada [data-id='+id_objeto+']');
+			$(elemento).height($(elemento).height() - 10);
+			
+		});
+		$('#img_add_width'+id).click( function() {
+			hayCambiosPendientes = true;
+			var id_objeto = $(this).attr('data-id');
+			var elemento = $('.carta_seleccionada [data-id='+id_objeto+']');
+			$(elemento).width($(elemento).width() + 10);
+			
+		});
+		$('#img_sub_width'+id).click( function() {
+			hayCambiosPendientes = true;
+			var id_objeto = $(this).attr('data-id');
+			var elemento = $('.carta_seleccionada [data-id='+id_objeto+']');
+			$(elemento).width($(elemento).width() - 10);
+			
+		});
+		
 	}
 	function submenu_img_swap(id){
 		

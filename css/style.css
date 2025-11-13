@@ -242,11 +242,11 @@ body {
 	margin: 2px;
 }
 
-.submenu_botones_boton_texto_editable{
+.submenu_boton{
 	display: inline-block;
     font-size: 15px;
-	width: 18px;
-	height: 18px;
+	min-width: 18px;
+	height: 20px;
     cursor: pointer;
     border-radius: 5px 5px 5px 5px;
     padding: 3px;
@@ -365,5 +365,10 @@ body {
   width: 70% !important;
 }
 
+#tabla_atributos td:nth-child(1) {
+  vertical-align:top;
+}
+
 #tabla_atributos col.col1 { width: 30%; }
 #tabla_atributos col.col2 { width: 70%; }
+
