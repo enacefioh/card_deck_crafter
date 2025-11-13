@@ -245,17 +245,15 @@ body {
 .submenu_botones_boton_texto_editable{
 	display: inline-block;
     font-size: 15px;
+	width: 18px;
+	height: 18px;
     cursor: pointer;
-    /* border: 2px solid #DDD; */
-    border-radius: 5px 5px 0px 0px;
+    border-radius: 5px 5px 5px 5px;
     padding: 3px;
     background: #ddd;
-    min-width: 16px;
     text-align: center;
     margin: 1px;
-    margin-bottom: 0px;
-	float:right;
-	
+    margin-bottom: 0px;	
 }
 
 .seccion_editable{

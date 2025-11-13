@@ -784,29 +784,77 @@ function abrir_menu_plantillas(){
 			case "titulo_seccion":
 				submenu_titulo_seccion(id);
 				break;	
-			case "eliminable":
-				submenu_eliminable(id);
-				break;
-			case "desplazable":
-				submenu_desplazable(id);
-				break;
 			default:
 				console.log("Clase no reconocida");
 		}
 	}
 	function submenu_titulo_seccion(id){
 		var texto = "";
+		var elemento = $('.carta_seleccionada * [data-id='+id+']');
 		if($('.carta_seleccionada').length == 1){
-			texto = $('.carta_seleccionada * [data-id='+id+']').html();
+			texto = elemento.html();
 		}
 		var html_submenu_texto_linea = `
-			<tr style='border-top: 2px solid #999;'><td colspan=2><b class='seccion_editable' style='width: 98%; text-align: center; padding-top: 10px;'>
+			<tr style='border-top: 2px solid #999;'><td><b class='seccion_editable' style='width: 98%; text-align: center; padding-top: 10px;'>
 				`+slugToTexto(id)+`</b>
-			</td></tr>	
+			</td>
+			<td>`;
+			
+			if(elemento.hasClass('eliminable')){
+				html_submenu_texto_linea += `
+				<span id='eliminar_elemento_`+id+`' title='Eliminar' data-id='`+id+`' style='cursor:pointer; color:red;' >❌</span>
+				`;
+			}
+			
+			if(elemento.hasClass('desplazable')){
+				html_submenu_texto_linea += `
+				<span id='subir_elemento_`+id+`' title='subir' data-id='`+id+`' style='cursor:pointer;' >⬆️</span>
+				<span id='bajar_elemento_`+id+`' title='bajar' data-id='`+id+`' style='cursor:pointer;' >⬇️</span>
+				`;
+			}
+			//anyadir más opciones
+			
+		html_submenu_texto_linea += `</td>
+			</tr>	
 		`;	
 		
 		
 		$('#tabla_atributos').append(html_submenu_texto_linea);
+		
+		//FUNCIONALIDADES EXTRAS
+		if(elemento.hasClass('eliminable')){
+			$('#eliminar_elemento_'+id).click( function(){
+				hayCambiosPendientes = true;
+				var id_objeto = $(this).attr('data-id');
+				$('.carta_seleccionada * [data-id='+id_objeto+']').remove();
+				cargarBarraLateralCartaSeleccionada();
+				
+			});
+		}
+		
+		if(elemento.hasClass('desplazable')){
+			$('#subir_elemento_'+id).click( function(){
+				hayCambiosPendientes = true;
+				var id_objeto = $(this).attr('data-id');
+				var elemento = $('.carta_seleccionada * [data-id='+id_objeto+']');
+				const prev = elemento.prev();
+				if (prev) {
+					elemento[0].parentNode.insertBefore(elemento[0], prev[0]);
+				}
+				cargarBarraLateralCartaSeleccionada();
+			});
+			$('#bajar_elemento_'+id).click( function(){
+				hayCambiosPendientes = true;
+				var id_objeto = $(this).attr('data-id');
+				var elemento = $('.carta_seleccionada * [data-id='+id_objeto+']');
+				const next = elemento.next();
+				  if (next) {
+					elemento[0].parentNode.insertBefore(next[0], elemento[0]);
+				  }
+				cargarBarraLateralCartaSeleccionada();
+			});
+		}
+		
 	
 			
 	}
@@ -819,7 +867,6 @@ function abrir_menu_plantillas(){
 			<tr class='seccion_editable'>
 					<td class='etiqueta_submenu'>`+slugToTexto(id)+`: </td>
 					<td><input type='text' id='texto_linea_`+id+`' data-id='`+id+`' style='width:98%;' value='`+texto+`' /></td>
-				
 			</tr>
 		`;	
 		
@@ -831,68 +878,6 @@ function abrir_menu_plantillas(){
 			var id_objeto = $(this).attr('data-id');
 			$('.carta_seleccionada * [data-id='+id_objeto+']').html($(this).val());
 			
-		});
-			
-	}
-	function submenu_eliminable(id){
-		var texto = "";
-		if($('.carta_seleccionada').length == 1){
-			texto = $('.carta_seleccionada * [data-id='+id+']').html();
-		}
-		var html_submenu_texto_eliminar_elemento = `
-			<tr class='seccion_editable'>				
-					<td class='etiqueta_submenu'>Eliminar `+slugToTexto(id)+`: </td>
-					<td><span id='eliminar_elemento_`+id+`' data-id='`+id+`' style='cursor:pointer; color:red;' >❌</span></td>
-			</tr>
-		`;	
-		
-		$('#tabla_atributos').append(html_submenu_texto_eliminar_elemento);
-		
-		
-		$('#eliminar_elemento_'+id).click( function(){
-			hayCambiosPendientes = true;
-			var id_objeto = $(this).attr('data-id');
-			$('.carta_seleccionada * [data-id='+id_objeto+']').remove();
-			cargarBarraLateralCartaSeleccionada();
-			
-		});
-			
-	}
-	function submenu_desplazable(id){
-		var texto = "";
-		if($('.carta_seleccionada').length == 1){
-			texto = $('.carta_seleccionada * [data-id='+id+']').html();
-		}
-		var html_submenu_texto_desplazar_elemento = `
-			<tr class='seccion_editable'>				
-					<td class='etiqueta_submenu'>Desplazar `+slugToTexto(id)+`: </td>
-					<td><span id='subir_elemento_`+id+`' data-id='`+id+`' style='cursor:pointer; color:red;' >⬆️</span>
-					<span id='bajar_elemento_`+id+`' data-id='`+id+`' style='cursor:pointer; color:red;' >⬇️</span></td>
-			</tr>
-		`;	
-		
-		$('#tabla_atributos').append(html_submenu_texto_desplazar_elemento);
-		
-		
-		$('#subir_elemento_'+id).click( function(){
-			hayCambiosPendientes = true;
-			var id_objeto = $(this).attr('data-id');
-			var elemento = $('.carta_seleccionada * [data-id='+id_objeto+']');
-			const prev = elemento.prev();
-			if (prev) {
-				elemento[0].parentNode.insertBefore(elemento[0], prev[0]);
-			}
-			cargarBarraLateralCartaSeleccionada();
-		});
-		$('#bajar_elemento_'+id).click( function(){
-			hayCambiosPendientes = true;
-			var id_objeto = $(this).attr('data-id');
-			var elemento = $('.carta_seleccionada * [data-id='+id_objeto+']');
-			const next = elemento.next();
-			  if (next) {
-				elemento[0].parentNode.insertBefore(next[0], elemento[0]);
-			  }
-			cargarBarraLateralCartaSeleccionada();
 		});
 			
 	}
@@ -929,19 +914,20 @@ function abrir_menu_plantillas(){
 		var html_submenu_texto_editable = `
 			<tr class='seccion_editable'>
 				<td style='text-align:center;'>
-					<div style='display:inline-block; float:left;'>`+slugToTexto(id)+`: </div>
-					<div id='texto_editable_abrir_menu_edicion_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Abrir controles">🔽</div>
+					<span id='texto_editable_abrir_menu_edicion_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Abrir controles">🔽</span>`+slugToTexto(id)+`:
+					
 				</td>
 				
-				<td><textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:90%; height:50px; margin-left: 5%;'>`+texto+`</textarea></td>
+				<td><textarea id='texto_editable_`+id+`' data-id='`+id+`' style='width:98%; min-height:50px;'>`+texto+`</textarea></td>
 				</tr>
-				<tr id='texto_editable_menu_edicion_`+id+`' style='margin-left: 5%; text-align:center; display:none; clear:both;'>
-				 <td colspan=2>
-					<div id='texto_editable_aumentar_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>+</b></div>
-					<div id='texto_editable_reducir_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>-</b></div>
-					<div id='texto_editable_negrita_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>B</b></div>
-					<div id='texto_editable_cursiva_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Cursiva"><i>I</i></div>
-					<div id='texto_editable_subrayado_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Subrayado"><u>U</u></div>
+				<tr id='texto_editable_menu_edicion_`+id+`' style='text-align:center; display:none;'>
+				 <td></td>
+				 <td>
+					<span id='texto_editable_aumentar_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Aumentar Tamaño"><b>+</b></span>
+					<span id='texto_editable_reducir_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Reducir Tamaño"><b>-</b></span>
+					<span id='texto_editable_negrita_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Negrita"><b>B</b></span>
+					<span id='texto_editable_cursiva_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Cursiva"><i>I</i></span>
+					<span id='texto_editable_subrayado_`+id+`' data-id='`+id+`' class="submenu_botones_boton_texto_editable" title="Subrayado"><u>U</u></span>
 				 </td>	
 				</tr>
 			</tr>
@@ -951,7 +937,7 @@ function abrir_menu_plantillas(){
 		
 		$('#texto_editable_abrir_menu_edicion_'+id).click(function(){
 			if($('#texto_editable_menu_edicion_'+id).css('display') == 'none'){
-				$('#texto_editable_menu_edicion_'+id).css('display', 'block');
+				$('#texto_editable_menu_edicion_'+id).css('display', 'table-row');
 				$(this).html("🔼");
 			}else{
 				$('#texto_editable_menu_edicion_'+id).css('display', 'none');
