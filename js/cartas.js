@@ -800,8 +800,8 @@ function abrir_menu_plantillas(){
 			texto = $('.carta_seleccionada * [data-id='+id+']').html();
 		}
 		var html_submenu_texto_linea = `
-			<tr><td colspan=2><u class='seccion_editable' style='idth: 100%; display: block; text-align: center; padding-top: 8px;'>
-				`+slugToTexto(id)+`</u>
+			<tr style='border-top: 2px solid #999;'><td colspan=2><b class='seccion_editable' style='width: 98%; text-align: center; padding-top: 10px;'>
+				`+slugToTexto(id)+`</b>
 			</td></tr>	
 		`;	
 		
@@ -818,7 +818,7 @@ function abrir_menu_plantillas(){
 		var html_submenu_texto_linea = `
 			<tr class='seccion_editable'>
 					<td class='etiqueta_submenu'>`+slugToTexto(id)+`: </td>
-					<td><input type='text' id='texto_linea_`+id+`' data-id='`+id+`' style='width:95♠♦;%;' value='`+texto+`' /></td>
+					<td><input type='text' id='texto_linea_`+id+`' data-id='`+id+`' style='width:98%;' value='`+texto+`' /></td>
 				
 			</tr>
 		`;	
@@ -905,7 +905,7 @@ function abrir_menu_plantillas(){
 			<tr class='seccion_editable'>
 				
 					<td class='etiqueta_submenu'>`+slugToTexto(id)+`: </td>
-					<td><input type='number' step='1' id='texto_num_`+id+`' data-id='`+id+`' style='max-width:45%; margin-right: 5%; float:right;' value='`+texto+`' /></td>
+					<td><input type='number' step='1' id='texto_num_`+id+`' data-id='`+id+`' style='width:98%;' value='`+texto+`' /></td>
 				
 			</tr>
 		`;	
@@ -1133,9 +1133,9 @@ function abrir_menu_plantillas(){
 		var num_opcs = item.attr('data-cantidad');
 		
 		var html_submenu_img = `
-			<tr class='seccion_editable' style='padding-bottom:3px;'>
+			<tr class='seccion_editable' >
 			<td class='etiqueta_submenu'>`+slugToTexto(id)+`: </td>
-			<td><select style='width:100%; margin-bottom:3px; display:inline-block; float:right; margin-right:5%;' name="select_`+id+`" id="select_`+id+`">
+			<td><select style='width:100%;' name="select_`+id+`" id="select_`+id+`">
 			`;
 		for(i=1; i<=num_opcs;i++){
 			var num_titulo = item.attr('data-nombre'+i);

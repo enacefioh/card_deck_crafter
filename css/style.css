@@ -259,10 +259,8 @@ body {
 }
 
 .seccion_editable{
-	border-bottom: 1px solid #999;
 	margin-bottom:3px;
 	min-height:24px;
-	clear:both;
 }
 
 .submenu_botones{
