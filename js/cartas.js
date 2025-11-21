@@ -1294,7 +1294,8 @@ function abrir_menu_plantillas(){
 		padding_pagina_top = (h_pag - h_carta*filas)/2;
 		if(padding_pagina_left<25){  columnas--; padding_pagina_left = (w_pag - w_carta*columnas)/2;}
 		if(padding_pagina_top<25){  filas--; padding_pagina_top = (h_pag - h_carta*filas)/2;}
-		num_cartas_por_pag = filas*columnas;
+		if (num_cartas_por_pag == null || Number.isNaN(num_cartas_por_pag))
+			num_cartas_por_pag = filas*columnas;
 		
 		pagina.css('paddingLeft', ''+padding_pagina_left+"px");
 		pagina.css('paddingTop', ''+padding_pagina_top+"px");
