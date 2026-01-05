@@ -141,7 +141,8 @@ async function cargarPluginsYPlantillas(){
 function cargarFuncionalidadMenuPrincipal(){
 	//Archivo
 	$('#menu_archivo_nuevo').click(function(){ location.reload(); });
-	$('#importar_cdc').click(function(){ importarProyectoCDC(); });
+	$('#importar_cdc').click(function(){ importarProyectoCDC(true); });
+	$('#importar_cdc_menu').click(function(){ importarProyectoCDC(); });
 	$('#guardar_cdc').click(function(){ exportarProyectoCDC(); });
 	$('#exportar_cartas_png').click(function(){ $(".carta").addClass('carta_seleccionada'); exportar_cartas_seleccionadas(); });
 	$('#configurar_pagina').click(function(){ configurarPagina(); });
@@ -172,7 +173,7 @@ function cargarFuncionalidadMenuPrincipal(){
 
 //MENU SUPERIOR
 	// Archivo
-	function importarProyectoCDC() {
+	function importarProyectoCDC(activar=false) {
 		 if (hayCambiosPendientes) {
 			  if (!confirm("Hay cambios pendientes. ¿Descartar los cambios?")) {return;}
 		 }
@@ -185,7 +186,8 @@ function cargarFuncionalidadMenuPrincipal(){
         abrirCDC(archivo);
     };
 
-    //input.click(); // simula el click del usuario
+	if(activar)
+		input.click(); // simula el click del usuario
 }
 	function exportarProyectoCDC() {
     // Datos base
@@ -366,7 +368,7 @@ function cargarBarraLateralGeneral(){
 		</td></tr>	
 		<tr><td colspan=2>	<div style="border: 1px dashed gray; background-color:#eeeeee; width:98%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 				<div style="width:100%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">Abrir CDC</div>
-				<input id="importar_cdc" type="file" multiple="multiple" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
+				<input id="importar_cdc_menu" type="file" multiple="multiple" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
 			</div>
 		</td></tr>	
 	`;
@@ -395,7 +397,7 @@ function cargarBarraLateralGeneral(){
 	  });
 	});
 	
-	$('#importar_cdc').on('change', function(event) {
+	$('#importar_cdc_menu').on('change', function(event) {
 		 if (hayCambiosPendientes) {
 			  if (!confirm("Hay cambios pendientes. ¿Descartar los cambios?")) {return;}
 		 }
