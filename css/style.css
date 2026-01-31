@@ -152,6 +152,15 @@ body {
    -webkit-user-select: none;
    -moz-user-select: none;
 }
+
+.carta_impresion {
+    border-radius: 0px !important;
+    border: 0px;
+    margin: 0px;
+}
+
+
+
 @media print {
 	.pagina{
 		margin-top: 0 !important;

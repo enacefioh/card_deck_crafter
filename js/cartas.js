@@ -151,6 +151,9 @@ function cargarFuncionalidadMenuPrincipal(){
 		//Seleccionar
 		$('#menu_edicion_seleccionar_todo').click(function(){ $(".carta").addClass('carta_seleccionada'); });
 		$('#menu_edicion_seleccionar_nada').click(function(){ $(".carta_seleccionada").removeClass('carta_seleccionada'); });
+		//modo
+		$('#menu_edicion_modo_clasico').click(function(){ $(".carta").removeClass('carta_impresion'); });
+		$('#menu_edicion_modo_impresion').click(function(){ $(".carta").addClass('carta_impresion'); });
 	
 	//Anyadir
 		//Vacía
