@@ -13,6 +13,9 @@ var padding_pagina_right = 0;
 var padding_pagina_bottom = 0;
 let hayCambiosPendientes = false;
 
+//Operativa
+var modo_edicion = "clasico"; // clasico | impresion
+
  $(document).ready(function(){ inicializar(); });
 
 
@@ -152,8 +155,8 @@ function cargarFuncionalidadMenuPrincipal(){
 		$('#menu_edicion_seleccionar_todo').click(function(){ $(".carta").addClass('carta_seleccionada'); });
 		$('#menu_edicion_seleccionar_nada').click(function(){ $(".carta_seleccionada").removeClass('carta_seleccionada'); });
 		//modo
-		$('#menu_edicion_modo_clasico').click(function(){ $(".carta").removeClass('carta_impresion'); });
-		$('#menu_edicion_modo_impresion').click(function(){ $(".carta").addClass('carta_impresion'); });
+		$('#menu_edicion_modo_clasico').click(function(){ cambiarModoEdicion("clasico");  });
+		$('#menu_edicion_modo_impresion').click(function(){ cambiarModoEdicion("impresion"); });
 	
 	//Anyadir
 		//Vacía
@@ -754,6 +757,61 @@ function abrir_menu_plantillas(){
 			}	  
 		}
 		return anyadirCarta(63,88);	
+	}
+	function cambiarModoEdicion(modo){
+		if(modo == modo_edicion){ return; }
+		//Desseleccionar botones
+		$('#menu_edicion_modo_clasico').html($('#menu_edicion_modo_clasico').html().replace("✅",""));
+		$('#menu_edicion_modo_impresion').html($('#menu_edicion_modo_impresion').html().replace("✅",""));
+	
+		var margenes = mmToPx(3);
+
+		if(modo == "impresion"){
+			$(".carta").addClass('carta_impresion');
+			$('#menu_edicion_modo_impresion').prepend("✅");
+			$('.carta_impresion').each(function(){
+				var carta = $(this);
+				var w = parseInt(carta.css('width'));
+				var h = parseInt(carta.css('height'));
+				var wsrt = ""+Math.round(w+margenes)+"px";
+				var hsrt = ""+Math.round(h+margenes)+"px";
+				carta.css('width', wsrt);
+				carta.css('height', hsrt);
+			});
+			$('.pagina').each(function(){
+				var pagina = $(this);
+				var l = parseInt(pagina.css('padding-left'));
+				var t = parseInt(pagina.css('padding-top'));
+				var lsrt = ""+Math.round(l-margenes)+"px";
+				var tsrt = ""+Math.round(t-margenes)+"px";
+				pagina.css('padding-left', lsrt);
+				pagina.css('padding-top', tsrt);
+			});			
+		}else{
+			$(".carta").removeClass('carta_impresion'); 
+			$('#menu_edicion_modo_clasico').prepend("✅");
+			$('.carta').each(function(){
+				var carta = $(this);
+				var w = parseInt(carta.css('width'));
+				var h = parseInt(carta.css('height'));
+				var wsrt = ""+Math.round(w-margenes)+"px";
+				var hsrt = ""+Math.round(h-margenes)+"px";
+				carta.css('width', wsrt);
+				carta.css('height', hsrt);
+			});		
+			$('.pagina').each(function(){
+				var pagina = $(this);
+				var l = parseInt(pagina.css('padding-left'));
+				var t = parseInt(pagina.css('padding-top'));
+				var lsrt = ""+Math.round(l+margenes)+"px";
+				var tsrt = ""+Math.round(t+margenes)+"px";
+				pagina.css('padding-left', lsrt);
+				pagina.css('padding-top', tsrt);
+			});			 
+		}
+		
+
+		modo_edicion = modo;
 	}
 
 	//PARTES CARTA EDITABLES
@@ -1385,4 +1443,14 @@ function abrirCDC(archivo){
         };
 
         lector.readAsText(archivo);
+}
+
+function mmToPx(mm) {
+  const div = document.createElement('div');
+  div.style.width = '1mm';
+  div.style.position = 'absolute';
+  document.body.appendChild(div);
+  const pxPerMm = div.getBoundingClientRect().width;
+  document.body.removeChild(div);
+  return Math.round(mm * pxPerMm);
 }
