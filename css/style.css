@@ -1,6 +1,10 @@
 :root{
   --borde_mm: 4mm;
   --borde_color: #000000;
+  --pag_padding_top: 25px;
+  --pag_padding_bottom: 25px;
+  --pag_padding_left: 25px;
+  --pag_padding_right: 25px;
 }
 
 body {
@@ -141,7 +145,11 @@ body {
 	background-color: white;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 	page-break-after: always;
-	margin-top: 10px;
+	padding-top: var(--pag_padding_top);
+  padding-bottom: var(--pag_padding_bottom);
+  padding-left: var(--pag_padding_left);
+  padding-right: var(--pag_padding_right);
+  margin-top: 10px;
 	overflow: hidden;
 }
 .carta{

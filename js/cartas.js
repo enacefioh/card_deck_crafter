@@ -11,8 +11,8 @@ var borde_cartas_color = "#000000"; //2mm
 var autoconfigurada = false;
 var padding_pagina_top = 25;
 var padding_pagina_left = 25;
-var padding_pagina_right = 0;
-var padding_pagina_bottom = 0;
+var padding_pagina_right = 25;
+var padding_pagina_bottom = 25;
 let hayCambiosPendientes = false;
 
 //Operativa
@@ -347,10 +347,10 @@ function cargarFuncionalidadMenuPrincipal(){
 			padding_pagina_right = $('#config_margen_pag_derecho').val();
 			padding_pagina_bottom = $('#config_margen_pag_inferior').val();
 			
-			$('.pagina').css('margin-top', ""+padding_pagina_top+"px");
-			$('.pagina').css('margin-left', ""+padding_pagina_left+"px");
-			$('.pagina').css('margin-right', ""+padding_pagina_right+"px");
-			$('.pagina').css('margin-bottom', ""+padding_pagina_bottom+"px");
+			document.documentElement.style.setProperty('--pag_padding_top', padding_pagina_top+"px");
+			document.documentElement.style.setProperty('--pag_padding_bottom', padding_pagina_bottom+"px");
+			document.documentElement.style.setProperty('--pag_padding_left', padding_pagina_left+"px");
+			document.documentElement.style.setProperty('--pag_padding_right', padding_pagina_right+"px");
 
 			borde_cartas_mm = $('#config_borde_cartas_mm').val();
 			borde_cartas_color = $('#config_borde_cartas_color').val();
@@ -580,6 +580,10 @@ function abrir_menu_plantillas(){
 		const y0 = pos.top+2;
 		const x1 = x0+width-3;
 		const y1 = y0+height-3;
+		 $('#izq'+num_cartas).remove();
+		 $('#der'+num_cartas).remove();
+		 $('#sup'+num_cartas).remove();
+		 $('#inf'+num_cartas).remove();
 		 pagina.prepend("<div class='linea_vertical' id='izq"+num_cartas+"' style='left:"+x0+"px;' />");
 		 pagina.prepend("<div class='linea_vertical' id='der"+num_cartas+"' style='left:"+x1+"px;' />");
 		 pagina.prepend("<div class='linea_horizontal' id='sup"+num_cartas+"' style='top:"+y0+"px;' />");
@@ -1311,7 +1315,7 @@ function abrir_menu_plantillas(){
 
 	//PÁGINAS
 	function anyadirPagina(){
-		var p = $('#contenedor_paginas').append("<div class='pagina' style='padding-left:"+padding_pagina_left+"px; padding-top:"+padding_pagina_top+"px; '> </div>");
+		var p = $('#contenedor_paginas').append("<div class='pagina'> </div>");
 		num_pags++;
 		return p;
 	}
@@ -1334,8 +1338,10 @@ function abrir_menu_plantillas(){
 		if (num_cartas_por_pag == null || Number.isNaN(num_cartas_por_pag))
 			num_cartas_por_pag = filas*columnas;
 		
-		pagina.css('paddingLeft', ''+padding_pagina_left+"px");
-		pagina.css('paddingTop', ''+padding_pagina_top+"px");
+		document.documentElement.style.setProperty('--pag_padding_top', padding_pagina_top+"px");
+		document.documentElement.style.setProperty('--pag_padding_bottom', padding_pagina_bottom+"px");
+		document.documentElement.style.setProperty('--pag_padding_left', padding_pagina_left+"px");
+		document.documentElement.style.setProperty('--pag_padding_right', padding_pagina_right+"px");
 	}
 
 	//FUNCIONALIDAD POPUP
@@ -1398,10 +1404,22 @@ function abrirCDC(archivo){
 				borde_cartas_mm = window.borde_cartas_mm = datos.borde_cartas_mm ?? 4;
 				borde_cartas_color = window.borde_cartas_color = datos.borde_cartas_color ?? "#000000";
 
+
+
                 // Insertar HTML en el contenedor
                 document.getElementById('contenedor_paginas').innerHTML = datos.contenido_html;
 				document.documentElement.style.setProperty('--borde_mm', borde_cartas_mm+"mm");
 				document.documentElement.style.setProperty('--borde_color', borde_cartas_color);
+				document.documentElement.style.setProperty('--pag_padding_top', ""+padding_pagina_top+"px");
+				document.documentElement.style.setProperty('--pag_padding_bottom', ""+padding_pagina_bottom+"px");
+				document.documentElement.style.setProperty('--pag_padding_left', ""+padding_pagina_left+"px");
+				document.documentElement.style.setProperty('--pag_padding_right', ""+padding_pagina_right+"px");
+
+				if ('padding_pagina_left' in datos && 'padding_pagina_right' in datos) {
+					autoconfigurada = true;
+				}
+				
+				
 				$(".carta").each( function(){
 					$(this).click(function(event){ 
 						if (!event.ctrlKey) {
