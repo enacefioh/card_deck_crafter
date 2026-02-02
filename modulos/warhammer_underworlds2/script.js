@@ -49,22 +49,22 @@ window.Plantillas["warhammer_underworlds2"] = {
 				<div style=' position:absolute; width:90%; height:5%; top:4%; left:5%; text-align:center;'>
 					<span data-id="nombre_guerrero" class='texto_linea' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>Nombre</span>
 				</div>
-				<div style='position:absolute; width:10%; height:5%; top:15%; left:5%; text-align:center;'>
+				<div style='position:absolute; width:10%; height:5%; top:14.5%; left:4.5%; text-align:center;'>
 					<span data-id="movimiento" class='texto_numero' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>3</span>
 				</div>
-				<div style='position:absolute; width:10%; height:5%; top:24%; left:5%; text-align:center;'>
+				<div style='position:absolute; width:10%; height:5%; top:24%; left:4.5%; text-align:center;'>
 					<div style='width:10px; height:16px; display:inline-block; background-position: center center; background-size: cover; background-image:url("`+img_icono_esquiva+`");' data-id='icono_defensa' class='img_swap' data-cantidad='2' data-nombre1='Esquiva' data-nombre2='Escudo' data-src1='`+img_icono_esquiva+`' data-src2='`+img_icono_defensa+`'></div><span data-id='defensa' class='texto_linea' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>1</span>
 				</div>
 				<div style='position:absolute; width:10%; height:5%; top:33%; left:5%; text-align:center;'>
 					<span data-id="vida" class='texto_numero' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>3</span>
 				</div>
-				<div style='position:absolute; width:10%; height:5%; top:43%; left:5%; text-align:center;'>
+				<div style='position:absolute; width:10%; height:5%; top:43%; left:4.5%; text-align:center;'>
 					<span data-id="pv" class='texto_numero' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>1</span>
 				</div>
 				<div class='menu_plantilla' data-id='add_arma' data-plantilla='guerrero' data-modulo='warhammer_underworlds2' style='display:none;'></div>
 				<div class='wu_fighter_contenedor_armas' style='width:80%; bottom:2%; position:absolute; left:10%;'>
 					<div class='uw_fighter_arma titulo_seccion eliminable desplazable' data-indice='1' data-id='arma_1' style='width:100%; position:relative;'>
-						<div style='position:absolute; width:36px; height:31px; top:0px; right:1%; text-align:center; background-position: center center; background-size: cover; background-image: 
+						<div style='position:absolute; width:36px; height:31px; top:0px; right:-5%; text-align:center; background-position: center center; background-size: cover; background-image: 
 							url("`+img_habilidad_vacio+`");' data-id='habilidad1' class='img_swap' data-cantidad='10' data-nombre1='Sin Habilidad' data-nombre2='Apresar' data-nombre3='Brutal' data-nombre4='Doloroso' data-nombre5='Forcejeo' data-nombre6='Oro' data-nombre7='Romper' data-nombre8='Tambalear' data-nombre9='Crítico Doloroso' data-nombre10='Romper + Doloroso' 
 							data-src1='`+img_habilidad_vacio+`' 
 							data-src2='`+img_habilidad_apresar+`' 
@@ -80,17 +80,17 @@ window.Plantillas["warhammer_underworlds2"] = {
 							background-image:url("`+img_icono_arma_combate+`");' data-id='arma1' class='img_swap' data-cantidad='2' data-nombre1='Arma de combate' data-nombre2='Arma a distancia' 
 							data-src1='`+img_icono_arma_combate+`' 
 							data-src2='`+img_icono_arma_distancia+`' > </div>
-						<div style='position:absolute; width:10%; height:100%; top:16%; left:31%; text-align:center;'>
+						<div style='position:absolute; width:10%; height:100%; top:17%; left:33%; text-align:center;'>
 							<span data-id="alcance_arma1" class='texto_numero' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>1</span>
 						</div>
-						<div style='position:absolute; width:16px; height:16px; top:22%; left:42.5%; text-align:center; background-position: center center; background-size: cover; 
+						<div style='position:absolute; width:16px; height:16px; top:23%; left:45%; text-align:center; background-position: center center; background-size: cover; 
 						background-image: url("`+img_icono_espadas+`");' data-id='icono_dado1' class='img_swap' data-cantidad='2' data-nombre1='Espadas' data-nombre2='Martillos' 
 						data-src1='`+img_icono_espadas+`' 
 						data-src2='`+img_icono_martillos+`' > </div>
-						<div style='position:absolute; width:10%; height:100%; top:16%; left:51%; text-align:center;'>
+						<div style='position:absolute; width:10%; height:100%; top:17%; left:53%; text-align:center;'>
 							<span data-id="dados_arma1" class='texto_numero' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>2</span>
 						</div>
-						<div style='position:absolute; width:10%; height:100%; top:16%; left:69%; text-align:center;'>
+						<div style='position:absolute; width:10%; height:100%; top:16%; left:73%; text-align:center;'>
 							<span data-id="danyo_arma1" class='texto_numero' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>3</span>
 						</div>
 					</div>
@@ -110,7 +110,7 @@ window.Plantillas["warhammer_underworlds2"] = {
 				//var num_armas = $('.carta_seleccionada * .wu_fighter_contenedor_armas').children().length+1;
 				var num_armas = parseInt($('.carta_seleccionada * .wu_fighter_contenedor_armas').children().last().attr("data-indice"))+1;
 				var html_wu_fighter_arma = `<div class='uw_fighter_arma titulo_seccion eliminable desplazable' data-indice='`+num_armas+`' data-id='arma_`+num_armas+`' style='width:100%; position:relative;'>
-												<div style='position:absolute; width:36px; height:31px; top:0px; right:1%; text-align:center; background-position: center center; background-size: cover; background-image: 
+												<div style='position:absolute; width:36px; height:31px; top:0px; right:-5%; text-align:center; background-position: center center; background-size: cover; background-image: 
 													url("`+img_habilidad_vacio+`");' data-id='habilidad`+num_armas+`' class='img_swap' data-cantidad='10' data-nombre1='Sin Habilidad' data-nombre2='Apresar' data-nombre3='Brutal' data-nombre4='Doloroso' data-nombre5='Forcejeo' data-nombre6='Oro' data-nombre7='Romper' data-nombre8='Tambalear' data-nombre9='Crítico Doloroso' data-nombre10='Romper + Doloroso' 
 													data-src1='`+img_habilidad_vacio+`' 
 													data-src2='`+img_habilidad_apresar+`' 
@@ -126,17 +126,17 @@ window.Plantillas["warhammer_underworlds2"] = {
 												background-image:url("`+img_icono_arma_combate+`");' data-id='arma`+num_armas+`' class='img_swap' data-cantidad='2' data-nombre1='Arma de combate' data-nombre2='Arma a distancia' 
 												data-src1='`+img_icono_arma_combate+`' 
 												data-src2='`+img_icono_arma_distancia+`' > </div>
-												<div style='position:absolute; width:10%; height:100%; top:16%; left:31%; text-align:center;'>
+												<div style='position:absolute; width:10%; height:100%; top:17%; left:33%; text-align:center;'>
 													<span data-id="alcance_arma`+num_armas+`" class='texto_numero' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>1</span>
 												</div>
-												<div style='position:absolute; width:16px; height:16px; top:22%; left:42.5%; text-align:center; background-position: center center; background-size: cover; 
+												<div style='position:absolute; width:16px; height:16px; top:23%; left:45%; text-align:center; background-position: center center; background-size: cover; 
 													background-image: url("`+img_icono_espadas+`");' data-id='icono_dado`+num_armas+`' class='img_swap' data-cantidad='2' data-nombre1='Espadas' data-nombre2='Martillos' 
 													data-src1='`+img_icono_espadas+`' 
 													data-src2='`+img_icono_martillos+`' > </div>
-												<div style='position:absolute; width:10%; height:100%; top:16%; left:51%; text-align:center;'>
+												<div style='position:absolute; width:10%; height:100%; top:17%; left:53%; text-align:center;'>
 													<span data-id="dados_arma`+num_armas+`" class='texto_numero' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>2</span>
 												</div>
-												<div style='position:absolute; width:10%; height:100%; top:16%; left:69%; text-align:center;'>
+												<div style='position:absolute; width:10%; height:100%; top:17%; left:73%; text-align:center;'>
 													<span data-id="danyo_arma`+num_armas+`" class='texto_numero' style='width:100%; font-size:16px; font-family: MerriweatherBold; color:#fff; text-align:center;'>3</span>
 												</div>
 											</div>`;

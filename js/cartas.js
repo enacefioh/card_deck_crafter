@@ -1,9 +1,12 @@
-var version = "1.0.250721";
+var version = "1.0.260201";
 var num_cartas = 0;
 var num_pags = 1;
 var num_cartas_por_pag = 9;
 var ultima_carta_seleccionada = -1;
 var orientacion_vertical = true;
+
+//Constantes
+const MARGEN_IMPRESION = 2; //2mm
 
 //Página
 var autoconfigurada = false;
@@ -388,7 +391,7 @@ function cargarBarraLateralGeneral(){
 
 	  Array.from(files).forEach(file => {
 		if (file.type.startsWith('image/')) {
-			var carta = anyadirCarta(63,88);
+			var carta = anyadirCarta(65,90);
 			
 			
 			var img = carta.find('.carta_fondo');
@@ -516,6 +519,8 @@ function abrir_menu_plantillas(){
 //FUNCIONES
 	//CARTAS	
 	function anyadirCarta(width_mm, height_mm){
+		width_mm = parseFloat(width_mm);
+		height_mm = parseFloat(height_mm);
 		hayCambiosPendientes = true;
 		if(num_cartas%num_cartas_por_pag == 0 && num_cartas>0){
 			anyadirPagina();
@@ -558,7 +563,24 @@ function abrir_menu_plantillas(){
 		if(num_cartas <= 1 && !autoconfigurada){
 			autoConfigurarPagina(pagina, carta);
 		}
+
+		//Cargar líneas
+	  	const pos = carta.position(); // respecto al padre con position != static
+		const width  = mmToPx(width_mm); //carta.outerWidth();
+		const height = mmToPx(height_mm); //carta.outerHeight();
+
+		const x0 = pos.left+2;
+		const y0 = pos.top+2;
+		const x1 = x0+width-3;
+		const y1 = y0+height-3;
+		 pagina.prepend("<div class='linea_vertical' id='izq"+num_cartas+"' style='left:"+x0+"px;' />");
+		 pagina.prepend("<div class='linea_vertical' id='der"+num_cartas+"' style='left:"+x1+"px;' />");
+		 pagina.prepend("<div class='linea_horizontal' id='sup"+num_cartas+"' style='top:"+y0+"px;' />");
+		 pagina.prepend("<div class='linea_horizontal' id='inf"+num_cartas+"' style='top:"+y1+"px;' />");
+
 		return carta;
+
+		
 	}
 	function seleccionarCarta(n){
 
@@ -656,9 +678,9 @@ function abrir_menu_plantillas(){
 		anyadirPagina();
 
 		for (var i = 0; i < cartas_guardadas.length; i++) {
-			var nueva_carta = anyadirCarta(1,1); // esta función debe devolver el nuevo div.carta insertado
-			nueva_carta.css('width', cartas_guardadas[i].css('width'));
-			nueva_carta.css('height', cartas_guardadas[i].css('height'));
+			var nueva_carta = anyadirCarta(cartas_guardadas[i].css('width'),cartas_guardadas[i].css('height')); // esta función debe devolver el nuevo div.carta insertado
+			//nueva_carta.css('width', cartas_guardadas[i].css('width'));
+			//nueva_carta.css('height', cartas_guardadas[i].css('height'));
 			nueva_carta.html(cartas_guardadas[i].html());
 			$(nueva_carta).attr("class", $(cartas_guardadas[i]).attr('class'));
 			w_guardada = cartas_guardadas[i].css('width');
@@ -745,73 +767,18 @@ function abrir_menu_plantillas(){
 		const plantillas = window.Plantillas[slug_modulo];
 		for(var i = 0; i< plantillas.plantillas.length; i++){
 			if(plantillas.plantillas[i].slug == slug_plantilla){
-				var w = 63;
-				var h = 88;
+				var w = 65;
+				var h = 90;
 				if(plantillas.plantillas[i].width)
-					w = plantillas.plantillas[i].width;
+					w = plantillas.plantillas[i].width+MARGEN_IMPRESION;
 				if(plantillas.plantillas[i].height)
-					h = plantillas.plantillas[i].height;
+					h = plantillas.plantillas[i].height+MARGEN_IMPRESION;
 				const carta = anyadirCarta(w,h);
 				carta.html(plantillas.plantillas[i].html);
 				return carta;
 			}	  
 		}
 		return anyadirCarta(63,88);	
-	}
-	function cambiarModoEdicion(modo){
-		if(modo == modo_edicion){ return; }
-		//Desseleccionar botones
-		$('#menu_edicion_modo_clasico').html($('#menu_edicion_modo_clasico').html().replace("✅",""));
-		$('#menu_edicion_modo_impresion').html($('#menu_edicion_modo_impresion').html().replace("✅",""));
-	
-		var margenes = mmToPx(3);
-
-		if(modo == "impresion"){
-			$(".carta").addClass('carta_impresion');
-			$('#menu_edicion_modo_impresion').prepend("✅");
-			$('.carta_impresion').each(function(){
-				var carta = $(this);
-				var w = parseInt(carta.css('width'));
-				var h = parseInt(carta.css('height'));
-				var wsrt = ""+Math.round(w+margenes)+"px";
-				var hsrt = ""+Math.round(h+margenes)+"px";
-				carta.css('width', wsrt);
-				carta.css('height', hsrt);
-			});
-			$('.pagina').each(function(){
-				var pagina = $(this);
-				var l = parseInt(pagina.css('padding-left'));
-				var t = parseInt(pagina.css('padding-top'));
-				var lsrt = ""+Math.round(l-margenes)+"px";
-				var tsrt = ""+Math.round(t-margenes)+"px";
-				pagina.css('padding-left', lsrt);
-				pagina.css('padding-top', tsrt);
-			});			
-		}else{
-			$(".carta").removeClass('carta_impresion'); 
-			$('#menu_edicion_modo_clasico').prepend("✅");
-			$('.carta').each(function(){
-				var carta = $(this);
-				var w = parseInt(carta.css('width'));
-				var h = parseInt(carta.css('height'));
-				var wsrt = ""+Math.round(w-margenes)+"px";
-				var hsrt = ""+Math.round(h-margenes)+"px";
-				carta.css('width', wsrt);
-				carta.css('height', hsrt);
-			});		
-			$('.pagina').each(function(){
-				var pagina = $(this);
-				var l = parseInt(pagina.css('padding-left'));
-				var t = parseInt(pagina.css('padding-top'));
-				var lsrt = ""+Math.round(l+margenes)+"px";
-				var tsrt = ""+Math.round(t+margenes)+"px";
-				pagina.css('padding-left', lsrt);
-				pagina.css('padding-top', tsrt);
-			});			 
-		}
-		
-
-		modo_edicion = modo;
 	}
 
 	//PARTES CARTA EDITABLES
@@ -1347,10 +1314,10 @@ function abrir_menu_plantillas(){
 	function autoConfigurarPagina(pagina, carta){
 		if(autoconfigurada) return;
 		autoconfigurada = true;
-		const w_pag = parseInt(pagina.css("width"))- parseInt(pagina.css("paddingLeft")) - parseInt(pagina.css("paddingRight"));
-		const h_pag = parseInt(pagina.css("height"))- parseInt(pagina.css("paddingTop")) - parseInt(pagina.css("paddingBottom"));
-		const w_carta = parseInt(carta.css("width"))- parseInt(carta.css("marginLeft")) - parseInt(carta.css("marginRight"));
-		const h_carta = parseInt(carta.css("height"))- parseInt(carta.css("marginTop")) - parseInt(carta.css("marginBottom"));
+		const w_pag = parseInt(pagina.css("width"));//- parseInt(pagina.css("paddingLeft")) - parseInt(pagina.css("paddingRight"));
+		const h_pag = parseInt(pagina.css("height"));//- parseInt(pagina.css("paddingTop")) - parseInt(pagina.css("paddingBottom"));
+		const w_carta = parseInt(carta.css("width"))+1;
+		const h_carta = parseInt(carta.css("height"))+1;
 		var columnas = parseInt(w_pag/w_carta);
 		var filas = parseInt(h_pag/h_carta);		
 		padding_pagina_left = (w_pag - w_carta*columnas)/2;

@@ -131,7 +131,7 @@ body {
 	width: 210mm; /* Ancho de una página A4 */
 	height: 290mm; /* Alto de una página A4 */
 	transform: translateX(150px);
-	padding: 5mm 0 0 7mm;
+/*	padding: 5mm 0 0 7mm; */
 	box-sizing: border-box;
 	background-color: white;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -140,12 +140,11 @@ body {
 	overflow: hidden;
 }
 .carta{
-	
-	border: 2px solid #CCC; 
-	margin-top:1mm;
-	margin-left:1mm;
+	border: 2mm solid black;
+  box-sizing: border-box;
+	margin-top:1px;
+	margin-left:1px;
 	position:relative;
-	border-radius:3mm;
 	float: left;
 	overflow: hidden;
 	user-select: none;
@@ -169,7 +168,7 @@ body {
 		margin-right: 0 !important;
 		box-shadow: none;
 		transform: translateX(0px);
-		height:auto;
+		/*height:auto; */
 	}
 	
 	 #contenedor, #contenedor_paginas{
@@ -230,7 +229,7 @@ body {
 }
 
 .carta_seleccionada{
-	border: 2px solid #C00; 
+	border-color: #ff0000;
 }
 
 .carta_seleccionada_exportar{
@@ -349,6 +348,21 @@ body {
 
 .img_swap{
 	background-size: 100% 100%;
+}
+
+.linea_vertical{
+  position: absolute;
+  top: -0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(99,99,99,1);
+}
+.linea_horizontal{
+  position: absolute;
+  left: -0;
+  right: 0;
+  height: 1px;
+  background: rgba(99,99,99,1);
 }
 
 #tabla_atributos{
