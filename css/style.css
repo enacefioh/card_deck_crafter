@@ -1,3 +1,8 @@
+:root{
+  --borde_mm: 4mm;
+  --borde_color: #000000;
+}
+
 body {
 	font-family: Arial, sans-serif;
 	margin: 0;
@@ -140,7 +145,8 @@ body {
 	overflow: hidden;
 }
 .carta{
-	border: 2mm solid black;
+  
+	border: var(--borde_mm) solid var(--borde_color);
   box-sizing: border-box;
 	margin-top:1px;
 	margin-left:1px;
