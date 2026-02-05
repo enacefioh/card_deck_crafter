@@ -6,6 +6,7 @@ var ultima_carta_seleccionada = -1;
 var orientacion_vertical = true;
 var borde_cartas_mm = 4; //2mm
 var borde_cartas_color = "#000000"; //2mm
+var zoom = 1;
 
 //Página
 var autoconfigurada = false;
@@ -156,9 +157,12 @@ function cargarFuncionalidadMenuPrincipal(){
 		//Seleccionar
 		$('#menu_edicion_seleccionar_todo').click(function(){ $(".carta").addClass('carta_seleccionada'); });
 		$('#menu_edicion_seleccionar_nada').click(function(){ $(".carta_seleccionada").removeClass('carta_seleccionada'); });
-		//modo
-		$('#menu_edicion_modo_clasico').click(function(){ cambiarModoEdicion("clasico");  });
-		$('#menu_edicion_modo_impresion').click(function(){ cambiarModoEdicion("impresion"); });
+		//zoom
+		$('#menu_edicion_zoom_100').click(function(){ setZoom(1); });
+		$('#menu_edicion_zoom_50').click(function(){ setZoom(0.5); });
+		$('#menu_edicion_zoom_150').click(function(){ setZoom(1.5); });
+		$('#menu_edicion_zoom_mas').click(function(){ setZoom(zoom*1.1); });
+		$('#menu_edicion_zoom_menos').click(function(){ setZoom(zoom*0.9); });
 	
 	//Anyadir
 		//Vacía
@@ -376,6 +380,7 @@ function cargarFuncionalidadMenuPrincipal(){
 function cargarBarraLateralGeneral(){
 	
 	var html_barra_lateral_general = `
+		 <tr><td colspan=2 style='padding-bottom:10px;'>Zoom:  <button id='zoom_reducir'>-</button> <input id='zoom_personalizado' type='number' style='width:40px; text-align:center;' value='100'  /> <button id='zoom_aumentar'>+</button>  </tr>
 		 <tr><td colspan=2 id="add_carta_plantilla" style="border: 1px solid gray; background-color:#eeeeee; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;"> + Añadir Carta</td></tr>
 		 <tr><td colspan=2>	<div style="border: 1px dashed gray; background-color:#eeeeee; width:98%; height:100px; margin:auto; margin-top: 10px; margin-bottom:10px;">
 				<div style="width:100%; margin:auto; margin-top: 40px; color: #999999; font-size: 15px; position:absolute; text-align:center;">+ Importar imágenes</div>
@@ -430,6 +435,16 @@ function cargarBarraLateralGeneral(){
 		  });
 	  });
 	
+	  $('#zoom_personalizado').on('change', function(event) {
+		 var z = parseFloat($(this).val()/100);
+		 setZoom(z);
+	  });
+	  $('#zoom_aumentar').click(function(){
+		setZoom(zoom*1.1);
+	  });
+	  $('#zoom_reducir').click(function(){
+		setZoom(zoom*0.9);
+	  });
 	
 	$('#add_carta_vacia').click(function(){ anyadirCartaStandardVertical(); });
 	$('#add_carta_plantilla').click(function(){ abrir_menu_plantillas(); });
@@ -492,6 +507,17 @@ function vaciarTablaAtributos(){
 	$('#tabla_atributos').empty();
 	$('#tabla_atributos').html('<colgroup> <col class="col1"> <col class="col2"> </colgroup>');
 }
+
+function setZoom(z){
+	if(z<0.1) z = 0.1;
+	if(z>10) z = 10;
+	zoom = z; 
+	document.documentElement.style.setProperty('--zoom', zoom);
+	if ($('#zoom_personalizado').length) {
+		$('#zoom_personalizado').val(''+parseInt(zoom*100));
+	}
+}
+
 
 //+Carta vacía: MENÚ SUPERIOR > anyadirCartaStandardVertical()
 function abrir_menu_plantillas(){

@@ -47,8 +47,8 @@ window.Plantillas["investigacion"] = {
 		  height: 88,
 		  html: `
 				<div class='plantilla_apv_standard' style="position:absolute; width:100%; height:100%; top:0px;">
-					<div data-id="nombre_pj" class="texto_linea" style="font-size:13px; width:75%; left:4%; top:7px; position:absolute; text-align:center; padding:4px 2px 2px 35px;  border: 3px solid black; border-radius: 10px; font-weight:bold; background-color:#ffffffCC;">Nombre</div>
-					<div style="width:30px; height:25px; left:3px; top:1%; font-size:15px; position:absolute; text-align:center; text-align:left; padding:10px 0px 0px 5px; border-radius:30px 0px 0px 30px; background:#000; color:#ffffffCC; font-weight:bold;">P</div>
+					<div data-id="nombre_pj" class="texto_linea" style="font-size:125%; width:65%; left:4%; top:3%; position:absolute; text-align:center; padding:2% 1% 1% 25%;  border: 3px solid black; border-radius: 10px; font-weight:bold; background-color:#ffffffCC;">Nombre</div>
+					<div style="width:12%; height:15%; left:2%; top:1%; font-size:170%; position:absolute; text-align:center; text-align:left; padding:7% 0px 0px 4%; border-radius:99px 0px 0px 99px; background:#000; color:#ffffffCC; font-weight:bold;">P</div>
 					<div style="width:24px; height:19px; left:8%; top:1%; font-size:19px; position:absolute; text-align:center; padding:8px 3px 3px 3px; border: 3px solid black; border-radius:30px; background:#ffffff; font-weight:bold;"><span data-id="indice_pj" class="texto_numero">1</span></div>
 					<div class='menu_plantilla' data-id='add_pista' data-plantilla='apv_investigacion_pj_ini' data-modulo='investigacion' style='display:none;'></div>
 					<div class="investigacion_contenedor_pistas" style="width:59mm; bottom:35mm; position:absolute; left:2mm; ">
