@@ -1,11 +1,13 @@
-var version = "1.0.260201";
+var version = "1.0.260205";
 var num_cartas = 0;
 var num_pags = 1;
+var width_pag = 210; //mm
+var height_pag = 297; //mm
 var num_cartas_por_pag = 9;
 var ultima_carta_seleccionada = -1;
 var orientacion_vertical = true;
-var borde_cartas_mm = 4; //2mm
-var borde_cartas_color = "#000000"; //2mm
+var borde_cartas_mm = 4; 
+var borde_cartas_color = "#000000";
 var zoom = 1;
 
 //Página
@@ -278,7 +280,7 @@ function cargarFuncionalidadMenuPrincipal(){
 		abrirPopup();
 		
 		$('#contenedor_popup').append("<h2 style='text-align:center;'>Configuración de la página</h2>");
-		$('#contenedor_popup').append(`
+		/*$('#contenedor_popup').append(`
 			<div style="display: flex; gap: 20px; justify-content: center; align-items: center; margin: 20px 0;">
   
 		  <!-- Opción Vertical -->
@@ -299,10 +301,11 @@ function cargarFuncionalidadMenuPrincipal(){
 
 		</div>
 
-		`);
+		`); */
 		
 	
 		$('#contenedor_popup').append(`<table style='margin:auto; margin-bottom:20px;'>
+			<tr><td style='text-align:right;'>Tamaño página:<td><td style='text-align:left;'><input id='width_pag' style='width:50px;' type='number' value='`+width_pag+`'>x<input id='height_pag' style='width:50px;' type='number' value='`+height_pag+`'> mm. <button id='config_pag_a3'>A3</button><button id='config_pag_a4'>A4</button><button id='config_pag_a5'>A5</button><span id='config_pag_rotate' style='font-size:18px; cursor:pointer;'>🔄</span></td></tr>
 			<tr><td style='text-align:right;'>Cartas por página:<td><td style='text-align:left;'><input id='config_num_cartas_por_pag' style='width:30px;' type='number' value='`+num_cartas_por_pag+`'></td></tr>
 			<tr><td style='text-align:right;'>Borde cartas:<td><td style='text-align:left;'><input id='config_borde_cartas_mm' style='width:30px;' type='number' value='`+borde_cartas_mm+`'> mm <input  id='config_borde_cartas_color' type="color" value="`+borde_cartas_color+`" /></td></tr>
 			<tr><td style='text-align:right;'>Márgen página superior:<td><td style='text-align:left;'><input id='config_margen_pag_superior' style='width:50px;' type='number' value='`+padding_pagina_top+`'>px.</td></tr>
@@ -312,17 +315,22 @@ function cargarFuncionalidadMenuPrincipal(){
 		</table>`);
 		$('#contenedor_popup').append("<div id='config_pag_aceptar' class='boton' style='background-color: #12a629;'>Aceptar</div><div id='config_pag_cancelar' class='boton' style='background-color: #c83902;'>Cancelar</div>");
 	
-		if(!orientacion_vertical){
+		/* if(!orientacion_vertical){
 			$("#radio_orientacion_vertical input").prop("checked", false);
 			$("#radio_orientacion_horizontal input").prop("checked", true);
 			$("#radio_orientacion_vertical").removeClass("radio_orientacion_seleccionado");
 			$("#radio_orientacion_horizontal").addClass("radio_orientacion_seleccionado");
-		}
+		}*/
 		
+		$('#config_pag_a3').click(function(){  $('#width_pag').val(420); $('#height_pag').val(297); });
+		$('#config_pag_a4').click(function(){  $('#width_pag').val(210); $('#height_pag').val(297); });
+		$('#config_pag_a5').click(function(){  $('#width_pag').val(148); $('#height_pag').val(210); });
+		$('#config_pag_rotate').click(function(){ var t =  $('#width_pag').val();  $('#width_pag').val( $('#height_pag').val());  $('#height_pag').val(t); });
+
 		$('#config_pag_cancelar').click(function(){ cerrarPopup() });
 		$('#config_pag_aceptar').click(function(){ 
 			//Orientación
-			if($("#radio_orientacion_vertical input").prop("checked")){
+			/*if($("#radio_orientacion_vertical input").prop("checked")){
 				orientacion_vertical = true;
 				//$('.pagina').css('height', '290mm');
 				//$('.pagina').css('width', '210mm');
@@ -344,8 +352,10 @@ function cargarFuncionalidadMenuPrincipal(){
 				document.head.appendChild(style);
 				
 				
-			}
+			} */
 			
+			width_pag = $('#width_pag').val();
+			height_pag = $('#height_pag').val();
 			padding_pagina_top = $('#config_margen_pag_superior').val();
 			padding_pagina_left = $('#config_margen_pag_izquierdo').val();
 			padding_pagina_right = $('#config_margen_pag_derecho').val();
@@ -355,6 +365,8 @@ function cargarFuncionalidadMenuPrincipal(){
 			document.documentElement.style.setProperty('--pag_padding_bottom', padding_pagina_bottom+"px");
 			document.documentElement.style.setProperty('--pag_padding_left', padding_pagina_left+"px");
 			document.documentElement.style.setProperty('--pag_padding_right', padding_pagina_right+"px");
+			document.documentElement.style.setProperty('--width_pag', width_pag+"mm");
+			document.documentElement.style.setProperty('--height_pag', height_pag+"mm");
 
 			borde_cartas_mm = $('#config_borde_cartas_mm').val();
 			borde_cartas_color = $('#config_borde_cartas_color').val();
@@ -1368,6 +1380,8 @@ function abrir_menu_plantillas(){
 		document.documentElement.style.setProperty('--pag_padding_bottom', padding_pagina_bottom+"px");
 		document.documentElement.style.setProperty('--pag_padding_left', padding_pagina_left+"px");
 		document.documentElement.style.setProperty('--pag_padding_right', padding_pagina_right+"px");
+		document.documentElement.style.setProperty('--width_pag', width_pag+"mm");
+		document.documentElement.style.setProperty('--height_pag', height_pag+"mm");
 	}
 
 	//FUNCIONALIDAD POPUP
@@ -1422,6 +1436,8 @@ function abrirCDC(archivo){
                 // Asignar variables globales
                 num_cartas = window.num_cartas = datos.num_cartas ?? 0;
                 num_pags = window.num_pags = datos.num_pags ?? 1;
+				width_pag = window.width_pag = datos.width_pag ?? 210;
+				height_pag = window.height_pag = datos.height_pag ?? 297;
                 num_cartas_por_pag = window.num_cartas_por_pag = datos.num_cartas_por_pags ?? 9;
                 padding_pagina_top = window.padding_pagina_top = datos.padding_pagina_top ?? 25;
                 padding_pagina_left = window.padding_pagina_left = datos.padding_pagina_left ?? 25;
@@ -1440,6 +1456,8 @@ function abrirCDC(archivo){
 				document.documentElement.style.setProperty('--pag_padding_bottom', ""+padding_pagina_bottom+"px");
 				document.documentElement.style.setProperty('--pag_padding_left', ""+padding_pagina_left+"px");
 				document.documentElement.style.setProperty('--pag_padding_right', ""+padding_pagina_right+"px");
+				document.documentElement.style.setProperty('--width_pag', width_pag+"mm");
+				document.documentElement.style.setProperty('--height_pag', height_pag+"mm");
 
 				if ('padding_pagina_left' in datos && 'padding_pagina_right' in datos) {
 					autoconfigurada = true;

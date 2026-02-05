@@ -1,5 +1,7 @@
 :root{
   --zoom: 1;
+  --width_pag: 210mm;
+  --height_pag: 297mm;
   --borde_mm: 4mm;
   --borde_color: #000000;
   --pag_padding_top: 25px;
@@ -138,8 +140,8 @@ body {
 /* FIN MENU SUPERIOR */
 
 .pagina {
-	width: 210mm; /* Ancho de una página A4 */
-	height: 290mm; /* Alto de una página A4 */
+	width: var(--width_pag);
+	height: var(--height_pag);
 	box-sizing: border-box;
 	background-color: white;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -157,8 +159,6 @@ body {
   
 	border: var(--borde_mm) solid var(--borde_color);
   box-sizing: border-box;
-	margin-top:1px;
-	margin-left:1px;
 	position:relative;
 	float: left;
 	overflow: hidden;
