@@ -280,79 +280,49 @@ function cargarFuncionalidadMenuPrincipal(){
 		abrirPopup();
 		
 		$('#contenedor_popup').append("<h2 style='text-align:center;'>Configuración de la página</h2>");
-		/*$('#contenedor_popup').append(`
-			<div style="display: flex; gap: 20px; justify-content: center; align-items: center; margin: 20px 0;">
-  
-		  <!-- Opción Vertical -->
-		  <label id='radio_orientacion_vertical' class='radio_orientacion_seleccionado' style="cursor: pointer; text-align: center;">
-			<input type="radio"  name="orientacion_folio" value="vertical" checked
-				   style="display: none;" onchange="this.parentElement.classList.add('radio_orientacion_seleccionado'); this.parentElement.nextElementSibling.classList.remove('radio_orientacion_seleccionado');">
-			<div style="width: 40px; height: 60px; border: 2px solid gray; margin-bottom: 5px; box-sizing: border-box;"></div>
-			<span style="display: block; font-size: 12px;">Vertical</span>
-		  </label>
-
-		  <!-- Opción Horizontal -->
-		  <label id='radio_orientacion_horizontal' style="cursor: pointer; text-align: center;">
-			<input  type="radio" name="orientacion_folio" value="horizontal"
-				   style="display: none;" onchange="this.parentElement.classList.add('radio_orientacion_seleccionado'); this.parentElement.previousElementSibling.classList.remove('radio_orientacion_seleccionado');">
-			<div class='' style="width: 60px; height: 40px; border: 2px solid gray; margin-bottom: 5px; box-sizing: border-box;"></div>
-			<span style="display: block; font-size: 12px;">Apaisada</span>
-		  </label>
-
-		</div>
-
-		`); */
 		
 	
 		$('#contenedor_popup').append(`<table style='margin:auto; margin-bottom:20px;'>
 			<tr><td style='text-align:right;'>Tamaño página:<td><td style='text-align:left;'><input id='width_pag' style='width:50px;' type='number' value='`+width_pag+`'>x<input id='height_pag' style='width:50px;' type='number' value='`+height_pag+`'> mm. <button id='config_pag_a3'>A3</button><button id='config_pag_a4'>A4</button><button id='config_pag_a5'>A5</button><span id='config_pag_rotate' style='font-size:18px; cursor:pointer;'>🔄</span></td></tr>
-			<tr><td style='text-align:right;'>Cartas por página:<td><td style='text-align:left;'><input id='config_num_cartas_por_pag' style='width:30px;' type='number' value='`+num_cartas_por_pag+`'></td></tr>
+			<tr><td style='text-align:right;'>Cartas por página:<td><td style='text-align:left;'><input id='config_num_cartas_por_pag' style='width:30px;' type='number' value='`+num_cartas_por_pag+`'> <button id='autoconfigurar_margenes' title='La autoconfiguración se hace en base a la primera carta insertada, si la hay.'>Autoconfigurar</button> </td></tr>
 			<tr><td style='text-align:right;'>Borde cartas:<td><td style='text-align:left;'><input id='config_borde_cartas_mm' style='width:30px;' type='number' value='`+borde_cartas_mm+`'> mm <input  id='config_borde_cartas_color' type="color" value="`+borde_cartas_color+`" /></td></tr>
-			<tr><td style='text-align:right;'>Márgen página superior:<td><td style='text-align:left;'><input id='config_margen_pag_superior' style='width:50px;' type='number' value='`+padding_pagina_top+`'>px.</td></tr>
+			<tr><td style='text-align:right;'>Márgen página superior:<td><td style='text-align:left;'><input id='config_margen_pag_superior' style='width:50px;' type='number' value='`+padding_pagina_top+`'>px. </td></tr>
 			<tr><td style='text-align:right;'>Márgen página derecho:<td><td style='text-align:left;'><input id='config_margen_pag_derecho' style='width:50px;' type='number' value='`+padding_pagina_right+`'>px.</td></tr>
 			<tr><td style='text-align:right;'>Márgen página inferior:<td><td style='text-align:left;'><input id='config_margen_pag_inferior' style='width:50px;' type='number' value='`+padding_pagina_bottom+`'>px.</td></tr>
 			<tr><td style='text-align:right;'>Márgen página izquierdo:<td><td style='text-align:left;'><input id='config_margen_pag_izquierdo' style='width:50px;' type='number' value='`+padding_pagina_left+`'>px.</td></tr>
 		</table>`);
 		$('#contenedor_popup').append("<div id='config_pag_aceptar' class='boton' style='background-color: #12a629;'>Aceptar</div><div id='config_pag_cancelar' class='boton' style='background-color: #c83902;'>Cancelar</div>");
 	
-		/* if(!orientacion_vertical){
-			$("#radio_orientacion_vertical input").prop("checked", false);
-			$("#radio_orientacion_horizontal input").prop("checked", true);
-			$("#radio_orientacion_vertical").removeClass("radio_orientacion_seleccionado");
-			$("#radio_orientacion_horizontal").addClass("radio_orientacion_seleccionado");
-		}*/
 		
 		$('#config_pag_a3').click(function(){  $('#width_pag').val(420); $('#height_pag').val(297); });
 		$('#config_pag_a4').click(function(){  $('#width_pag').val(210); $('#height_pag').val(297); });
 		$('#config_pag_a5').click(function(){  $('#width_pag').val(148); $('#height_pag').val(210); });
 		$('#config_pag_rotate').click(function(){ var t =  $('#width_pag').val();  $('#width_pag').val( $('#height_pag').val());  $('#height_pag').val(t); });
+		$('#autoconfigurar_margenes').click(function(){
+			if($(".carta").length<=0) return;
+			var carta = $(".carta").first();
+			var w_carta = parseInt(carta.css('width'));
+			var h_carta = parseInt(carta.css('height'));
+			var w_pag = mmToPx($('#width_pag').val());
+			var h_pag = mmToPx($('#height_pag').val());
+			var columnas = parseInt(w_pag/w_carta);
+			var filas = parseInt(h_pag/h_carta);		
+			var pad_pagina_left = parseInt((w_pag - w_carta*columnas)/2);
+			var pad_pagina_top = parseInt((h_pag - h_carta*filas)/2);
+			if(pad_pagina_left<25){  columnas--; pad_pagina_left = parseInt((w_pag - w_carta*columnas)/2);}
+			if(pad_pagina_top<25){  filas--; pad_pagina_top = parseInt((h_pag - h_carta*filas)/2);}
+			var n_cartas_por_pag = filas*columnas;
+			$('#config_num_cartas_por_pag').val(n_cartas_por_pag);
+			$('#config_margen_pag_superior').val(pad_pagina_top);
+			$('#config_margen_pag_inferior').val(0);
+			$('#config_margen_pag_derecho').val(0);
+			$('#config_margen_pag_izquierdo').val(pad_pagina_left);
+
+
+		});
 
 		$('#config_pag_cancelar').click(function(){ cerrarPopup() });
 		$('#config_pag_aceptar').click(function(){ 
-			//Orientación
-			/*if($("#radio_orientacion_vertical input").prop("checked")){
-				orientacion_vertical = true;
-				//$('.pagina').css('height', '290mm');
-				//$('.pagina').css('width', '210mm');
-				const style = document.createElement('style');
-				style.textContent = `.pagina {
-				  width: 210mm;
-				  height: 290mm;
-				}`;
-				document.head.appendChild(style);
-			}else{
-				orientacion_vertical = false;				
-				//$('.pagina').css('width', '290mm');
-				//$('.pagina').css('height', '210mm');
-				const style = document.createElement('style');
-				style.textContent = `.pagina {
-				  width: 290mm;
-				  height: 210mm;
-				}`;
-				document.head.appendChild(style);
-				
-				
-			} */
 			
 			width_pag = $('#width_pag').val();
 			height_pag = $('#height_pag').val();
