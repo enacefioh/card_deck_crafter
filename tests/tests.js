@@ -63,11 +63,11 @@ function testCore() {
     console.log("Testeando Core...");
     if (typeof mmToPx === "function") {
         const px = mmToPx(1);
-        assertOk(px > 3 && px < 5, "mmToPx convierte correctamente mm a píxeles");
+        assertOk(px > 3 && px < 5, "[Core Test]: mmToPx convierte correctamente mm a píxeles");
     } else {
         renderResult(false, "ERROR: mmToPx no definido");
     }
-    assertOk(typeof version === "string" && version.startsWith("1.0"), "La versión del software es 1.0.x");
+    assertOk(typeof version === "string" && version.startsWith("1.0"), "[Core Test]: La versión del software es 1.0.x");
 }
 
 // 2. Integration Tests para cdc-cards.js
@@ -84,9 +84,9 @@ function testCardsIntegration() {
 
     if (typeof anyadirCarta === "function") {
         anyadirCarta(63, 88);
-        assertEquals(num_cartas, 1, "Añadir una carta incrementa el contador num_cartas");
+        assertEquals(num_cartas, 1, "[Integration Test]: Añadir una carta incrementa el contador num_cartas");
         const cartaElem = document.querySelector('.carta');
-        assertOk(cartaElem !== null, "El elemento .carta se ha creado en el DOM");
+        assertOk(cartaElem !== null, "[Integration Test]: El elemento .carta se ha creado en el DOM");
     } else {
         renderResult(false, "ERROR: anyadirCarta no definido");
     }
@@ -116,24 +116,61 @@ function testPageOverflow() {
         const firstPage = anyadirPagina();
 
         for (let i = 0; i < num_cartas_a_anyadir; i++) {
-            carta = anyadirCarta(w_carta_mm, h_carta_mm);
+            anyadirCarta(w_carta_mm, h_carta_mm);
         }
 
         const totalPags = $('.pagina').length;
         const cartasEnUltima = $('.pagina').last().find('.carta').length;
 
-        assertEquals(totalPags, paginas_esperadas, `${nombre}: Se han creado ${paginas_esperadas} páginas`);
-        assertEquals(cartasEnUltima, cartas_en_ultima_esperadas, `${nombre}: La última página tiene ${cartas_en_ultima_esperadas} cartas`);
+        assertEquals(totalPags, paginas_esperadas, `[Overflow Test]: ${nombre}: Se han creado ${paginas_esperadas} páginas`);
+        assertEquals(cartasEnUltima, cartas_en_ultima_esperadas, `[Overflow Test]: ${nombre}: La última página tiene ${cartas_en_ultima_esperadas} cartas`);
     }
 
     // Escenario 1: 22 cartas (63x88mm) en A4 (210x297mm)
     runOverflowTest("A4 Vertical (22 cartas)", 210, 297, 63, 88, 22, 3, 4);
 
     // Escenario 2: 25 cartas en A3 Horizontal (420x297mm)
-    runOverflowTest("A3 Horizontal (19 cartas)", 420, 297, 63, 88, 25, 2, 7);
+    runOverflowTest("A3 Horizontal (25 cartas)", 420, 297, 63, 88, 25, 2, 7);
 
-    // Escenario 3: 15 cartas en A4 Horizontal (148mmx210)
+    // Escenario 3: 15 cartas en A5 Horizontal (148mmx210)
     runOverflowTest("A5 Horizontal (15 cartas)", 148, 210, 63, 88, 15, 4, 3);
+}
+
+// 4. Deletion and Reordering Tests
+function testCardDeletion() {
+    console.log("Testeando Eliminación y Reordenación...");
+
+    // Setup: A4 con 19 cartas (deberían ser 3 páginas: 9 + 9 + 1)
+    $('#contenedor_paginas').empty();
+    num_cartas = 0;
+    num_pags = 0;
+    autoconfigurada = false;
+    num_cartas_por_pag = null;
+
+    window.width_pag = 210;
+    window.height_pag = 297;
+    document.documentElement.style.setProperty('--width_pag', "210mm");
+    document.documentElement.style.setProperty('--height_pag', "297mm");
+
+    anyadirPagina();
+    for (let i = 0; i < 19; i++) {
+        anyadirCarta(63, 88);
+    }
+
+    assertEquals($('.pagina').length, 3, "[Deletion Test]: Setup: 19 cartas generan 3 páginas");
+    assertEquals($('.carta').length, 19, "[Deletion Test]: Setup: Hay 19 cartas en total");
+
+    // Seleccionar la primera carta y eliminar
+    $('.carta').first().addClass('carta_seleccionada');
+
+    if (typeof eliminar_cartas_seleccionadas === "function") {
+        eliminar_cartas_seleccionadas();
+
+        assertEquals($('.carta').length, 18, "[Deletion Test]: Después de eliminar, quedan 18 cartas");
+        assertEquals($('.pagina').length, 2, "[Deletion Test]: Después de eliminar, quedan 2 páginas (9+9)");
+    } else {
+        renderResult(false, "ERROR: eliminar_cartas_seleccionadas no definido");
+    }
 }
 
 // Ejecutar todo
@@ -143,6 +180,7 @@ try {
         testCore();
         testCardsIntegration();
         testPageOverflow();
+        testCardDeletion();
     }, 500);
 } catch (error) {
     if (typeof renderResult === "function") {
