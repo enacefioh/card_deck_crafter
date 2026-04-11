@@ -92,12 +92,57 @@ function testCardsIntegration() {
     }
 }
 
+// 3. Overflow Tests (A4, A3, A5)
+function testPageOverflow() {
+    console.log("Testeando Desbordamiento de Páginas...");
+
+    function runOverflowTest(nombre, w_pag_mm, h_pag_mm, w_carta_mm, h_carta_mm, num_cartas_a_anyadir, paginas_esperadas, cartas_en_ultima_esperadas) {
+        console.log(`Ejecutando: ${nombre}`);
+
+        // Reset ambiental
+        $('#contenedor_paginas').empty();
+        num_cartas = 0;
+        num_pags = 0;
+        autoconfigurada = false;
+        num_cartas_por_pag = null;
+
+        // Simular tamaño de página (el CSS controla las dimensiones físicas)
+        // Actualizamos variables globales y CSS como hace configurarPagina()
+        window.width_pag = w_pag_mm;
+        window.height_pag = h_pag_mm;
+        document.documentElement.style.setProperty('--width_pag', w_pag_mm + "mm");
+        document.documentElement.style.setProperty('--height_pag', h_pag_mm + "mm");
+
+        const firstPage = anyadirPagina();
+
+        for (let i = 0; i < num_cartas_a_anyadir; i++) {
+            carta = anyadirCarta(w_carta_mm, h_carta_mm);
+        }
+
+        const totalPags = $('.pagina').length;
+        const cartasEnUltima = $('.pagina').last().find('.carta').length;
+
+        assertEquals(totalPags, paginas_esperadas, `${nombre}: Se han creado ${paginas_esperadas} páginas`);
+        assertEquals(cartasEnUltima, cartas_en_ultima_esperadas, `${nombre}: La última página tiene ${cartas_en_ultima_esperadas} cartas`);
+    }
+
+    // Escenario 1: 22 cartas (63x88mm) en A4 (210x297mm)
+    runOverflowTest("A4 Vertical (22 cartas)", 210, 297, 63, 88, 22, 3, 4);
+
+    // Escenario 2: 25 cartas en A3 Horizontal (420x297mm)
+    runOverflowTest("A3 Horizontal (19 cartas)", 420, 297, 63, 88, 25, 2, 7);
+
+    // Escenario 3: 15 cartas en A4 Horizontal (148mmx210)
+    runOverflowTest("A5 Horizontal (15 cartas)", 148, 210, 63, 88, 15, 4, 3);
+}
+
 // Ejecutar todo
 try {
     // Esperar un momento para asegurar que cartas.js e inicializar() hayan terminado (async)
     setTimeout(() => {
         testCore();
         testCardsIntegration();
+        testPageOverflow();
     }, 500);
 } catch (error) {
     if (typeof renderResult === "function") {
