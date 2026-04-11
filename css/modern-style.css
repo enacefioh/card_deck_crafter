@@ -1,0 +1,182 @@
+/* 
+ * MODERN STYLE - Premium Design System for Card Deck Crafter
+ */
+
+:root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-glass: rgba(30, 41, 59, 0.7);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-color: #38bdf8;
+    --accent-hover: #0ea5e9;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    
+    /* Pautas de página (sobrescritas por JS) */
+    --pag_padding_top: 25px;
+    --pag_padding_bottom: 25px;
+    --pag_padding_left: 25px;
+    --pag_padding_right: 25px;
+    --width_pag: 210mm;
+    --height_pag: 297mm;
+    --zoom: 1;
+    --borde_mm: 4mm;
+    --borde_color: #000;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+#contenedor {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar Styling */
+#menu_lateral_padre {
+    width: 450px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    z-index: 10;
+    transition: width 0.3s ease;
+}
+
+#menu_lateral {
+    padding: 20px;
+}
+
+#tabla_atributos {
+    width: 100%;
+}
+
+.etiqueta_submenu {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    padding: 8px 0;
+}
+
+input[type="text"], input[type="number"], textarea, select {
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--accent-color);
+}
+
+/* Page Area Styling */
+#contenedor_paginas {
+    flex-grow: 1;
+    background: var(--bg-primary);
+    overflow: auto;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.pagina {
+    background: white;
+    width: var(--width_pag);
+    height: var(--height_pag);
+    padding: var(--pag_padding_top) var(--pag_padding_right) var(--pag_padding_bottom) var(--pag_padding_left);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    position: relative;
+    transform: scale(var(--zoom));
+    transform-origin: top center;
+    box-sizing: border-box;
+}
+
+/* Top Menu Styling */
+#menu_superior {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 48px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu-principal {
+    list-style: none;
+    display: flex;
+    padding: 0 20px;
+    margin: 0;
+}
+
+.menu-principal > li {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.menu-principal > li:hover {
+    color: var(--accent-color);
+}
+
+/* Submenu glassmorphism */
+.submenu {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    padding: 8px 0;
+}
+
+/* Card Selection Styling */
+.carta {
+    position: relative;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.carta:hover {
+    transform: translateY(-2px);
+}
+
+.carta_seleccionada {
+    outline: 2px solid var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-color);
+}
+
+/* Buttons */
+.boton, .submenu_botones_boton {
+    background: var(--accent-color);
+    color: var(--bg-primary);
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s;
+}
+
+.boton:hover, .submenu_botones_boton:hover {
+    background: var(--accent-hover);
+}
