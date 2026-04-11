@@ -182,6 +182,13 @@ function cargarFuncionalidadMenuPrincipal() {
 
     cargarPluginsYPlantillas();
 
+    $('#toggle_traseras').change(function() {
+        if(this.checked) {
+            $('body').addClass('mostrar_traseras');
+        } else {
+            $('body').removeClass('mostrar_traseras');
+        }
+    });
 
 }
 
@@ -542,9 +549,11 @@ function anyadirCarta(width_mm, height_mm) {
         anyadirPagina();
     }
     pagina = getUltimaPagina();
+    var pagina_trasera = $('#contenedor_paginas').children('.pagina_traseras').last();
     num_cartas++;
 
     pagina.append("<div id='carta_" + num_cartas + "' style='width:" + width_mm + "mm; height:" + height_mm + "mm' class='carta' data-id='" + num_cartas + "'> </div>");
+    pagina_trasera.append("<div id='carta_trasera_" + num_cartas + "' style='width:" + width_mm + "mm; height:" + height_mm + "mm' class='carta_trasera' data-id='" + num_cartas + "'> </div>");
 
     $("#carta_" + num_cartas).click(function (event) {
         var id = $(this).attr('data-id');
@@ -693,7 +702,9 @@ function reordenarCartas() { // Quita todas las cartas y páginas y las vuelve a
     });
 
     $('.carta').remove();
+    $('.carta_trasera').remove();
     $('.pagina').remove();
+    $('.pagina_traseras').remove();
     num_pags = 0;
     num_cartas = 0;
     anyadirPagina();
@@ -1326,11 +1337,12 @@ function submenu_tintable(id) {
 //PÁGINAS
 function anyadirPagina() {
     var p = $('#contenedor_paginas').append("<div class='pagina'> </div>");
+    $('#contenedor_paginas').append("<div class='pagina_traseras'> </div>");
     num_pags++;
     return p;
 }
 function getUltimaPagina() {
-    return $('#contenedor_paginas').children().last();
+    return $('#contenedor_paginas').children('.pagina').last();
 }
 function autoConfigurarPagina(pagina, carta) {
     if (autoconfigurada) return;

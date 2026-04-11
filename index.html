@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-	<title>Enacefio - Card Deck Crafter</title>
-	<meta name="description" content="Card Deck Crafter - Crea, edita y exporta fácilmente cartas personalizadas para tus juegos de mesa y wargames.">
-	<meta name="keywords" content="cartas, editor de cartas, wargame, juego de mesa, cdc, card deck, creador de cartas, deck builder">
-	<meta name="author" content="Enacefio">
+
+<head>
+    <title>Enacefio - Card Deck Crafter</title>
+    <meta name="description"
+        content="Card Deck Crafter - Crea, edita y exporta fácilmente cartas personalizadas para tus juegos de mesa y wargames.">
+    <meta name="keywords"
+        content="cartas, editor de cartas, wargame, juego de mesa, cdc, card deck, creador de cartas, deck builder">
+    <meta name="author" content="Enacefio">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="icon" href="css/logo_cartas.png" type="image/x-icon">
-	<script type='text/javascript' src="CONFIG.js" ></script>
-	<script type='text/javascript' src="js/jquery-3.7.1.min.js" ></script>
-	<script type='text/javascript' src="js/cartas.js" ></script>
-	<script type='text/javascript' src="js/html2canvas.min.js" ></script>
-	<script type='text/javascript' src="js/jszip.min.js" ></script>
-	
-	
-	</head>
-  <body>
-	<div id="contenedor">
-		<div id='contenedor_paginas'>
-			<div class='pagina'>
-				
-				
-			</div>
-		</div>
-		<div id='menu_lateral_padre'>
-			<div id='menu_lateral' style='padding-bottom:50px;'>
-				<table id='tabla_atributos'>
-					<colgroup>
-						<col class="col1">
-						<col class="col2">
-					  </colgroup>
-					<!-- <tr><td colspan=2>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="css/logo_cartas.png" type="image/x-icon">
+    <script type='text/javascript' src="CONFIG.js"></script>
+    <script type='text/javascript' src="js/jquery-3.7.1.min.js"></script>
+    <script type='text/javascript' src="js/cartas.js"></script>
+    <script type='text/javascript' src="js/html2canvas.min.js"></script>
+    <script type='text/javascript' src="js/jszip.min.js"></script>
+
+
+</head>
+
+<body>
+    <div id="contenedor">
+        <div id='contenedor_paginas'>
+            <div class='pagina'>
+            </div>
+            <div class='pagina_traseras'>
+            </div>
+        </div>
+        <div id='menu_lateral_padre'>
+            <div id='menu_lateral' style='padding-bottom:50px;'>
+                <table id='tabla_atributos'>
+                    <colgroup>
+                        <col class="col1">
+                        <col class="col2">
+                    </colgroup>
+                    <!-- <tr><td colspan=2>
 						<div id="add_carta_vacia" style="border: 1px solid gray; background-color:#eeeeee; width:88%; margin:auto; margin-top: 10px; margin-bottom:10px; text-align:center; color: #999999; font-size: 15px; padding: 1%; cursor:pointer;">
 							+ Carta Vacía
 						</div>
@@ -44,89 +48,95 @@
 							<input id='importar_imagenes' type="file" multiple="multiple" id="imgs" style=" width: 100%; height: 100px; opacity: 0; position:absolute;"> 
 						</div>
 					</td></tr> -->
-				</table>
-				
-				
-			</div>
-		</div>
-		<div id="resizer"></div>
-		<div id='menu_superior'>
-			<ul class="menu-principal" style='float:left;'>
-				<li>
-				  Archivo
-				  <ul class="submenu">
-					<li id='menu_archivo_nuevo' >Nuevo</li>
-					<li id='importar_cdc' >Abrir (.CDC)</li>
-					<li id='guardar_cdc' >Guardar (.CDC)</li>
-					<li id='exportar_cartas_png' >Exportar cartas (.PNG)</li>
-					<li id='configurar_pagina' >Configurar Página</li>
-				  </ul>
-				</li>
-				<li>
-				  Edición
-				  <ul class="submenu">
-					<li>
-					  Seleccionar
-					  <ul class="submenu">
-						<li id='menu_edicion_seleccionar_todo'>Todo</li>
-						<li id='menu_edicion_seleccionar_nada'>Nada</li>
-					  </ul>
-					</li>
-					<li>
-					  Zoom
-					  <ul class="submenu">
-						<li id='menu_edicion_zoom_100'>100%</li>
-						<li id='menu_edicion_zoom_50'>50%</li>
-						<li id='menu_edicion_zoom_150'>150%</li>
-						<li id='menu_edicion_zoom_mas'>Aumentar</li>
-						<li id='menu_edicion_zoom_menos'>Reducir</li>
-					  </ul>
-					</li>
-				  </ul>
-				</li>
-				<li>
-				  Añadir
-				  <ul class="submenu"  id='submenu_plantillas'>
-					<li>
-					 Vacía
-					 <ul class="submenu">
-						<li onclick="anyadirCarta(65,90);"> Standard Vertical (63mm x 88mm) </li>
-						<li onclick="anyadirCarta(65,90);" > Standard Horizontal (88mm x 63mm) </li>
-						<li onclick="anyadirCarta(72,122);" > Tarot Vertical (70mm x 120mm) </li>
-						<li onclick="anyadirCarta(122,72);" > Tarot Horizontal (120mm x 70mm) </li>
-					 </ul>
-					</li>
-						
-					
-				  </ul>
-				</li>
-				<li>
-				  Plugins
-				  <ul class="submenu" id='submenu_plugins'>
-					
-				  </ul>
-				</li>
-				<li>
-				  Ayuda
-				  <ul class="submenu">
-					<li id='app_version'>
-					 Card Deck Editor v ?
-					</li>
-				  </ul>
-				</li>
-				
-			</ul>
-			<img src='css/logo_pequenyo.png' style='float:right; margin-right: 25px; height:25px; padding:2px;' title='Card Deck Crafter' />
-		</div>
-		
-		<div id="fondo_popup" class="popup_fondo" style="display: none;">
-		  <div class="popup_ventana">
-			<div class="popup_cerrar" id="cerrar_popup">✖</div>
-			<div id="contenedor_popup"></div>
-		  </div>
-		</div>
-		
-	</div>	
-		
-  </body>
-  </head>
+                </table>
+
+
+            </div>
+        </div>
+        <div id="resizer"></div>
+        <div id='menu_superior'>
+            <ul class="menu-principal" style='float:left;'>
+                <li>
+                    Archivo
+                    <ul class="submenu">
+                        <li id='menu_archivo_nuevo'>Nuevo</li>
+                        <li id='importar_cdc'>Abrir (.CDC)</li>
+                        <li id='guardar_cdc'>Guardar (.CDC)</li>
+                        <li id='exportar_cartas_png'>Exportar cartas (.PNG)</li>
+                        <li id='configurar_pagina'>Configurar Página</li>
+                    </ul>
+                </li>
+                <li>
+                    Edición
+                    <ul class="submenu">
+                        <li>
+                            Seleccionar
+                            <ul class="submenu">
+                                <li id='menu_edicion_seleccionar_todo'>Todo</li>
+                                <li id='menu_edicion_seleccionar_nada'>Nada</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Zoom
+                            <ul class="submenu">
+                                <li id='menu_edicion_zoom_100'>100%</li>
+                                <li id='menu_edicion_zoom_50'>50%</li>
+                                <li id='menu_edicion_zoom_150'>150%</li>
+                                <li id='menu_edicion_zoom_mas'>Aumentar</li>
+                                <li id='menu_edicion_zoom_menos'>Reducir</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Añadir
+                    <ul class="submenu" id='submenu_plantillas'>
+                        <li>
+                            Vacía
+                            <ul class="submenu">
+                                <li onclick="anyadirCarta(65,90);"> Standard Vertical (63mm x 88mm) </li>
+                                <li onclick="anyadirCarta(65,90);"> Standard Horizontal (88mm x 63mm) </li>
+                                <li onclick="anyadirCarta(72,122);"> Tarot Vertical (70mm x 120mm) </li>
+                                <li onclick="anyadirCarta(122,72);"> Tarot Horizontal (120mm x 70mm) </li>
+                            </ul>
+                        </li>
+
+
+                    </ul>
+                </li>
+                <li>
+                    Plugins
+                    <ul class="submenu" id='submenu_plugins'>
+
+                    </ul>
+                </li>
+                <li>
+                    Ayuda
+                    <ul class="submenu">
+                        <li id='app_version'>
+                            Card Deck Editor v ?
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+
+            <img src='css/logo_pequenyo.png' style='float:right; margin-right: 25px; height:25px; padding:2px;'
+                title='Card Deck Crafter' />
+            <div style='float:right; margin-right: 20px; margin-top: 8px; color:black; float:right;'>
+                <input type="checkbox" id="toggle_traseras" style="cursor:pointer;"> <label for="toggle_traseras"
+                    style="cursor:pointer; user-select:none;">Mostrar Traseras</label>
+            </div>
+        </div>
+
+        <div id="fondo_popup" class="popup_fondo" style="display: none;">
+            <div class="popup_ventana">
+                <div class="popup_cerrar" id="cerrar_popup">✖</div>
+                <div id="contenedor_popup"></div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</head>

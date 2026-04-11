@@ -173,6 +173,46 @@ function testCardDeletion() {
     }
 }
 
+// 5. Dual Face Tests
+function testDualFace() {
+    console.log("Testeando Cartas Doble Cara...");
+
+    $('#contenedor_paginas').empty();
+    num_cartas = 0;
+    num_pags = 0;
+    autoconfigurada = false;
+    num_cartas_por_pag = null;
+    
+    window.width_pag = 210;
+    window.height_pag = 297;
+    document.documentElement.style.setProperty('--width_pag', "210mm");
+    document.documentElement.style.setProperty('--height_pag', "297mm");
+
+    anyadirPagina();
+
+    for (let i = 0; i < 12; i++) {
+        anyadirCarta(63, 88);
+    }
+
+    const paginasFrontales = $('.pagina');
+    const paginasTraseras = $('.pagina_traseras');
+    
+    assertEquals(paginasFrontales.length, 2, "[Dual-Face Test]: Hay 2 páginas frontales");
+    assertEquals(paginasTraseras.length, 2, "[Dual-Face Test]: Hay 2 páginas traseras");
+    
+    const cartasFrontales = $('.carta');
+    const cartasTraseras = $('.carta_trasera');
+
+    assertEquals(cartasFrontales.length, 12, "[Dual-Face Test]: Hay 12 cartas frontales");
+    assertEquals(cartasTraseras.length, 12, "[Dual-Face Test]: Hay 12 cartas traseras");
+
+    const cartasEnUltimaFrontal = paginasFrontales.last().find('.carta').length;
+    const cartasEnUltimaTrasera = paginasTraseras.last().find('.carta_trasera').length;
+
+    assertEquals(cartasEnUltimaFrontal, 3, "[Dual-Face Test]: La última página frontal tiene 3 cartas");
+    assertEquals(cartasEnUltimaTrasera, 3, "[Dual-Face Test]: La última página trasera tiene 3 cartas");
+}
+
 // Ejecutar todo
 try {
     // Esperar un momento para asegurar que cartas.js e inicializar() hayan terminado (async)
@@ -181,6 +221,7 @@ try {
         testCardsIntegration();
         testPageOverflow();
         testCardDeletion();
+        testDualFace();
     }, 500);
 } catch (error) {
     if (typeof renderResult === "function") {
