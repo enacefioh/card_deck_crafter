@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'playwrite_regular';
+  src: url('playwrite_regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'special_elite';
+  src: url('SpecialElite-Regular.ttf') format('truetype');
+}
+
+
+
+.plantilla_apv_standard{
+	font-family: 'special_elite';
+}

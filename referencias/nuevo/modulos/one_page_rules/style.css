@@ -1,0 +1,12 @@
+
+@font-face {
+  font-family: 'MerriweatherBold';
+  src: url('Merriweather_120pt-Bold.ttf') format('truetype');
+}
+	
+	
+#one_page_rules_tabla_armas tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+					
+			

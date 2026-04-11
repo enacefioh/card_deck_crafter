@@ -55,7 +55,7 @@ function funcionalidadBarraLateralRedimensionadora(){
 	  const contenido = document.getElementById('contenedor_paginas');
 	  let isResizing = false;
 
-	  if (!resizer || !panel || !contenido) return;
+	
 	
 	  resizer.addEventListener('mousedown', function () {
 		isResizing = true;
@@ -90,15 +90,14 @@ async function cargarPluginsYPlantillas(){
 	
 	for (var i = 0; i < modulos.length; i++){
 	  let slug_modulo = modulos[i];	
-	  let prefijo = window.location.pathname.includes('/tests/') ? '../' : '';
 	  
 	  let link = document.createElement('link');
 	  link.rel = 'stylesheet';
-	  link.href = prefijo + 'modulos/'+slug_modulo+'/style.css';
+	  link.href = 'modulos/'+slug_modulo+'/style.css';
 	  document.head.appendChild(link);
 	  
 	  const script = document.createElement('script');
-	  script.src = prefijo + `modulos/${slug_modulo}/script.js`;
+	  script.src = `modulos/${slug_modulo}/script.js`;
 	  script.onload = () => {
 		 const plantillas = window.Plantillas[slug_modulo];
 		 $ul_lista_modulos.append("<li  data-plantilla='"+slug_modulo+"'>"+plantillas.nombre+"<ul class='submenu' id='menu_modulo_plantillas_"+slug_modulo+"' ></ul></li>");
@@ -582,7 +581,6 @@ function abrir_menu_plantillas(){
 
 		//Cargar líneas
 	  	const pos = carta.position(); // respecto al padre con position != static
-        if (!pos) return carta; // Evitar error si no se puede obtener posición (ej: tests ocultos)
 		const width  = mmToPx(width_mm); //carta.outerWidth();
 		const height = mmToPx(height_mm); //carta.outerHeight();
 
