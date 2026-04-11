@@ -12,6 +12,10 @@ function anyadirCarta(width_mm, height_mm) {
     }
     
     var pagina = getUltimaPagina();
+    if (pagina.length == 0) {
+        pagina = anyadirPagina();
+    }
+    
     num_cartas++;
 
     pagina.append("<div id='carta_" + num_cartas + "' style='width:" + width_mm + "mm; height:" + height_mm + "mm' class='carta' data-id='" + num_cartas + "'> </div>");
@@ -46,6 +50,8 @@ function anyadirCarta(width_mm, height_mm) {
 
     // Dibujar líneas de corte/guía (opcional, traído de cartas.js)
     const pos = carta.position();
+    if (!pos) return carta; // Evitar error si no se puede obtener posición (ej: tests ocultos)
+
     const width = mmToPx(width_mm);
     const height = mmToPx(height_mm);
     const x0 = pos.left + 2;
