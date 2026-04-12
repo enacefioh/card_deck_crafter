@@ -158,8 +158,21 @@ function cargarFuncionalidadMenuPrincipal() {
 
     //Edición
     //Seleccionar
-    $('#menu_edicion_seleccionar_todo').click(function () { $(".carta").addClass('carta_seleccionada'); });
-    $('#menu_edicion_seleccionar_nada').click(function () { $(".carta_seleccionada").removeClass('carta_seleccionada'); });
+    $('#menu_edicion_seleccionar_todo').click(function () { 
+        $(".carta, .carta_trasera").addClass('carta_seleccionada');
+        cargarBarraLateralCartaSeleccionada();
+    });
+    $('#menu_edicion_seleccionar_todo_frontales').click(function () { 
+        $(".carta").addClass('carta_seleccionada');
+        cargarBarraLateralCartaSeleccionada();
+    });
+    $('#menu_edicion_seleccionar_todo_traseras').click(function () { 
+        $(".carta_trasera").addClass('carta_seleccionada');
+        cargarBarraLateralCartaSeleccionada();
+    });
+    $('#menu_edicion_seleccionar_nada').click(function () { 
+        desseleccionarCartas();
+    });
     //zoom
     $('#menu_edicion_zoom_100').click(function () { setZoom(1); });
     $('#menu_edicion_zoom_50').click(function () { setZoom(0.5); });
@@ -517,7 +530,11 @@ function cargarBarraLateralCartaSeleccionada() {
 			<div id='eliminar_cartas_seleccionadas' class='submenu_botones_boton' title='Eliminar cartas seleccionadas'> ❌ </div>
 			<div id='duplicar_carta_seleccionada' class='submenu_botones_boton' title='Duplicar carta seleccionada'> 📄‍↔️📄 </div>
 			<div id='exportar_cartas_seleccionadas' class='submenu_botones_boton' title='Exportar cartas seleccionadas'> 💾 </div>
-		</td></tr>	
+		</td></tr>
+        <tr class='seccion_editable' style='padding-top:10px;'>
+            <td class='etiqueta_submenu'>Borde (mm): </td>
+            <td><input type='number' step='1' id='config_borde_seleccionadas' style='width:98%;' title='Modifica el grosor del borde de las cartas seleccionadas. Déjalo en blanco para usar el valor por defecto.' /></td>
+        </tr>
 	`;
 
     vaciarTablaAtributos();
@@ -529,6 +546,31 @@ function cargarBarraLateralCartaSeleccionada() {
     $('#eliminar_cartas_seleccionadas').click(function () { eliminar_cartas_seleccionadas() });
     $('#duplicar_carta_seleccionada').click(function () { duplicar_cartas_seleccionadas() });
     $('#exportar_cartas_seleccionadas').click(function () { exportar_cartas_seleccionadas() });
+
+    // Determinar valor inicial del borde
+    var primer_borde = cartas.first()[0].style.borderWidth;
+    if (primer_borde) {
+        $('#config_borde_seleccionadas').val(parseFloat(primer_borde));
+    } else {
+        // En lugar de poner el por defecto, si está vacío significa que no está sobreescrito
+        // $('#config_borde_seleccionadas').val(borde_cartas_mm);
+        $('#config_borde_seleccionadas').attr('placeholder', borde_cartas_mm + ' (por defecto)');
+    }
+
+    $('#config_borde_seleccionadas').on('input', function() {
+        hayCambiosPendientes = true;
+        var val = $(this).val();
+        cartas.each(function() {
+            if (val === '') {
+                $(this).css('border-width', '');
+            } else {
+                $(this).css('border-width', val + 'mm');
+            }
+        });
+        redibujarTodasLasLineasTraseras(); // si cambia tamaño border puede influir
+        // Las de frontales las dejas porque no usamos redibujarTodasLasLineas frontales aun,
+        // pero igual hay que avisar reordenar si afecta la posición.
+    });
 
     if (cartas.length == 1) {
 
