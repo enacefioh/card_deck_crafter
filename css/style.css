@@ -167,6 +167,14 @@ body {
   display: block;
 }
 
+.fila_importar_imagenes_traseras {
+  display: none;
+}
+
+.mostrar_traseras .fila_importar_imagenes_traseras {
+  display: table-row;
+}
+
 .carta,
 .carta_trasera {
 
