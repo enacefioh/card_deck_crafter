@@ -185,11 +185,49 @@ function cargarFuncionalidadMenuPrincipal() {
     $('#toggle_traseras').change(function() {
         if(this.checked) {
             $('body').addClass('mostrar_traseras');
+            redibujarTodasLasLineasTraseras();
         } else {
             $('body').removeClass('mostrar_traseras');
         }
     });
 
+}
+
+function dibujarLineasTrasera(num) {
+    var trasera = $('#carta_trasera_' + num);
+    var pagina_trasera = trasera.closest('.pagina_traseras');
+    if (pagina_trasera.length === 0) return;
+    
+    // Solo calcular si está visible
+    if ($('body').hasClass('mostrar_traseras')) {
+        const pos = trasera.position();
+        if (!pos) return;
+        
+        const width = trasera.outerWidth();
+        const height = trasera.outerHeight();
+        
+        const x0 = pos.left + 2;
+        const y0 = pos.top + 2;
+        const x1 = x0 + width - 3;
+        const y1 = y0 + height - 3;
+        
+        $('#izq_t' + num).remove();
+        $('#der_t' + num).remove();
+        $('#sup_t' + num).remove();
+        $('#inf_t' + num).remove();
+        
+        pagina_trasera.prepend("<div class='linea_vertical' id='izq_t" + num + "' style='left:" + x0 + "px;' />");
+        pagina_trasera.prepend("<div class='linea_vertical' id='der_t" + num + "' style='left:" + x1 + "px;' />");
+        pagina_trasera.prepend("<div class='linea_horizontal' id='sup_t" + num + "' style='top:" + y0 + "px;' />");
+        pagina_trasera.prepend("<div class='linea_horizontal' id='inf_t" + num + "' style='top:" + y1 + "px;' />");
+    }
+}
+
+function redibujarTodasLasLineasTraseras() {
+    $('.carta_trasera').each(function() {
+        var num = $(this).attr('data-id');
+        dibujarLineasTrasera(num);
+    });
 }
 
 
@@ -647,6 +685,8 @@ function anyadirCarta(width_mm, height_mm) {
     pagina.prepend("<div class='linea_vertical' id='der" + num_cartas + "' style='left:" + x1 + "px;' />");
     pagina.prepend("<div class='linea_horizontal' id='sup" + num_cartas + "' style='top:" + y0 + "px;' />");
     pagina.prepend("<div class='linea_horizontal' id='inf" + num_cartas + "' style='top:" + y1 + "px;' />");
+
+    dibujarLineasTrasera(num_cartas);
 
     return carta;
 
@@ -1478,6 +1518,7 @@ function autoConfigurarPagina(pagina, carta) {
     padding_pagina_top = (h_pag - h_carta * filas) / 2;
     if (padding_pagina_left < 25) { columnas--; padding_pagina_left = (w_pag - w_carta * columnas) / 2; }
     if (padding_pagina_top < 25) { filas--; padding_pagina_top = (h_pag - h_carta * filas) / 2; }
+    padding_pagina_right = padding_pagina_left;
     if (num_cartas_por_pag == null || Number.isNaN(num_cartas_por_pag))
         num_cartas_por_pag = filas * columnas;
     console.log(`[DEBUG] Final num_cartas_por_pag: ${num_cartas_por_pag}`);
@@ -1569,6 +1610,9 @@ function abrirCDC(archivo) {
                 autoconfigurada = true;
             }
 
+            if ($('body').hasClass('mostrar_traseras')) {
+                setTimeout(redibujarTodasLasLineasTraseras, 100);
+            }
 
             $(".carta, .carta_trasera").each(function () {
                 $(this).click(function (event) {
