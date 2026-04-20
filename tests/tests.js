@@ -274,6 +274,82 @@ function testCardDuplicationBorderBug() {
     assertEquals(getBorder(6), 6, "[Bug Test]: Carta 6 tiene 6mm");
     assertEquals(getBorder(7), 4, "[Bug Test]: Carta 7 tiene 4mm");
 }
+// 7. Bug Reproduction: Reordering and Pagination
+function testReorderingPaginationBug() {
+    console.log("Testeando Bug: Reordenación y cambio de página...");
+
+    // Reset ambiental
+    $('#contenedor_paginas').empty();
+    num_cartas = 0;
+    num_pags = 0;
+    autoconfigurada = false;
+    num_cartas_por_pag = 9;
+
+    window.width_pag = 210;
+    window.height_pag = 297;
+    document.documentElement.style.setProperty('--width_pag', "210mm");
+    document.documentElement.style.setProperty('--height_pag', "297mm");
+
+    anyadirPagina();
+
+    const setBorder = (id, val) => {
+        desseleccionarCartas();
+        $('#carta_' + id).addClass('carta_seleccionada');
+        cargarBarraLateralCartaSeleccionada();
+        $('#config_borde_seleccionadas').val(val).trigger('input');
+    };
+
+    // 1. Añadir 18 cartas, <h1> con su numeración, y borde
+    for (let i = 1; i <= 18; i++) {
+        let carta = anyadirCarta(63, 88);
+        carta.append(`<h1 class='numero'>${i}</h1>`);
+        setBorder(i, i);
+    }
+
+    // Funciones auxiliares para verificar
+    const getCardInfo = (indexDOM) => {
+        const el = $('.carta').eq(indexDOM);
+        if (el.length === 0) return null;
+        let h1Text = el.find('h1.numero').text();
+        let bw = el[0].style.borderWidth || el[0].style.borderTopWidth;
+        let border = bw ? parseFloat(bw) : 4;
+        return { num: parseInt(h1Text), border: border };
+    };
+
+    // 2. Bajar la carta 2
+    desseleccionarCartas();
+    // En este momento, la carta con h1=2 es $('#carta_2') si el ID no ha cambiado
+    // Es más seguro buscarla por el h1
+    let carta_2 = $('.carta').filter(function() { return $(this).find('h1.numero').text() === '2'; });
+    carta_2.addClass('carta_seleccionada');
+    bajar_cartas_seleccionadas();
+
+    // Comprobar orden: 1, 3, 2, 4, 5...
+    assertEquals(getCardInfo(0).num, 1, "[Bug Test Reorden]: Posición 1 es carta 1");
+    assertEquals(getCardInfo(1).num, 3, "[Bug Test Reorden]: Posición 2 es carta 3");
+    assertEquals(getCardInfo(2).num, 2, "[Bug Test Reorden]: Posición 3 es carta 2");
+    assertEquals(getCardInfo(3).num, 4, "[Bug Test Reorden]: Posición 4 es carta 4");
+    
+    assertEquals(getCardInfo(0).border, 1, "[Bug Test Reorden]: Border de Pos 1 es 1");
+    assertEquals(getCardInfo(1).border, 3, "[Bug Test Reorden]: Border de Pos 2 es 3");
+    assertEquals(getCardInfo(2).border, 2, "[Bug Test Reorden]: Border de Pos 3 es 2");
+
+    // 3. Subir la 10 o bajar la 9 (El usuario dijo: "subir la 9 y comprobar que la 9 ha pasado a la segunda hoja y la décima es la última de la primera hoja")
+    // Para que la 9 pase a la 2ª hoja y la 10 a la 1ª hoja, si se hace mediante 'bajar' la 9:
+    desseleccionarCartas();
+    let carta_9 = $('.carta').filter(function() { return $(this).find('h1.numero').text() === '9'; });
+    carta_9.addClass('carta_seleccionada');
+    bajar_cartas_seleccionadas();
+
+    // La página 1 tiene 9 cartas (índices 0 a 8).
+    // La décima carta original (h1=10) debería estar en el índice 8.
+    assertEquals(getCardInfo(8).num, 10, "[Bug Test Reorden]: Última de pag 1 es carta 10");
+    assertEquals(getCardInfo(8).border, 10, "[Bug Test Reorden]: Border de última de pag 1 es 10");
+    
+    // La novena carta original (h1=9) debería estar en el índice 9 (primera de pag 2).
+    assertEquals(getCardInfo(9).num, 9, "[Bug Test Reorden]: Primera de pag 2 es carta 9");
+    assertEquals(getCardInfo(9).border, 9, "[Bug Test Reorden]: Border de primera de pag 2 es 9");
+}
 
 // Ejecutar todo
 try {
@@ -285,6 +361,7 @@ try {
         testCardDeletion();
         testDualFace();
         testCardDuplicationBorderBug();
+        testReorderingPaginationBug();
     }, 500);
 } catch (error) {
     if (typeof renderResult === "function") {

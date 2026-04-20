@@ -778,7 +778,6 @@ function subir_cartas_seleccionadas() {
     if (cartas_seleccionadas.length !== 1) return;
 
     var actual_elem = cartas_seleccionadas.first();
-    var isTrasera = actual_elem.hasClass('carta_trasera');
     var id_actual = actual_elem.attr('data-id');
     var carta_actual = $('#carta_' + id_actual);
     var trasera_actual = $('#carta_trasera_' + id_actual);
@@ -790,31 +789,11 @@ function subir_cartas_seleccionadas() {
         var id_anterior = carta_anterior.attr('data-id');
         var trasera_anterior = $('#carta_trasera_' + id_anterior);
 
-        // Intercambiar frontales
-        var temp = carta_actual.html();
-        carta_actual.html(carta_anterior.html());
-        carta_anterior.html(temp);
+        carta_anterior.before(carta_actual);
+        trasera_anterior.before(trasera_actual);
 
-        var w_anterior = carta_anterior.css('width');
-        var h_anterior = carta_anterior.css('height');
-        carta_anterior.css('width', carta_actual.css('width'));
-        carta_anterior.css('height', carta_actual.css('height'));
-        carta_actual.css('width', w_anterior);
-        carta_actual.css('height', h_anterior);
-
-        // Intercambiar traseras
-        var temp_t = trasera_actual.html();
-        trasera_actual.html(trasera_anterior.html());
-        trasera_anterior.html(temp_t);
-
-        // Clases seleccionadas
-        if (isTrasera) {
-            trasera_actual.removeClass('carta_seleccionada');
-            trasera_anterior.addClass('carta_seleccionada');
-        } else {
-            carta_actual.removeClass('carta_seleccionada');
-            carta_anterior.addClass('carta_seleccionada');
-        }
+        reordenarCartas();
+        cargarBarraLateralCartaSeleccionada();
     }
 }
 function bajar_cartas_seleccionadas() {
@@ -824,7 +803,6 @@ function bajar_cartas_seleccionadas() {
     if (cartas_seleccionadas.length !== 1) return;
 
     var actual_elem = cartas_seleccionadas.first();
-    var isTrasera = actual_elem.hasClass('carta_trasera');
     var id_actual = actual_elem.attr('data-id');
     var carta_actual = $('#carta_' + id_actual);
     var trasera_actual = $('#carta_trasera_' + id_actual);
@@ -836,31 +814,11 @@ function bajar_cartas_seleccionadas() {
         var id_siguiente = carta_siguiente.attr('data-id');
         var trasera_siguiente = $('#carta_trasera_' + id_siguiente);
 
-        // Intercambiar frontales
-        var temp = carta_actual.html();
-        carta_actual.html(carta_siguiente.html());
-        carta_siguiente.html(temp);
+        carta_siguiente.after(carta_actual);
+        trasera_siguiente.after(trasera_actual);
 
-        var w_siguiente = carta_siguiente.css('width');
-        var h_siguiente = carta_siguiente.css('height');
-        carta_siguiente.css('width', carta_actual.css('width'));
-        carta_siguiente.css('height', carta_actual.css('height'));
-        carta_actual.css('width', w_siguiente);
-        carta_actual.css('height', h_siguiente);
-
-        // Intercambiar traseras
-        var temp_t = trasera_actual.html();
-        trasera_actual.html(trasera_siguiente.html());
-        trasera_siguiente.html(temp_t);
-
-        // Clases seleccionadas
-        if (isTrasera) {
-            trasera_actual.removeClass('carta_seleccionada');
-            trasera_siguiente.addClass('carta_seleccionada');
-        } else {
-            carta_actual.removeClass('carta_seleccionada');
-            carta_siguiente.addClass('carta_seleccionada');
-        }
+        reordenarCartas();
+        cargarBarraLateralCartaSeleccionada();
     }
 }
 function eliminar_cartas_seleccionadas() {
