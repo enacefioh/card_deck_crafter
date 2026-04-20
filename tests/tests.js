@@ -213,6 +213,68 @@ function testDualFace() {
     assertEquals(cartasEnUltimaTrasera, 3, "[Dual-Face Test]: La última página trasera tiene 3 cartas");
 }
 
+// 6. Bug Reproduction: Border Reset on Duplication
+function testCardDuplicationBorderBug() {
+    console.log("Testeando Bug: Reset de bordes al duplicar...");
+
+    // Reset ambiental
+    $('#contenedor_paginas').empty();
+    num_cartas = 0;
+    num_pags = 0;
+    autoconfigurada = false;
+    num_cartas_por_pag = 9;
+
+    window.width_pag = 210;
+    window.height_pag = 297;
+    document.documentElement.style.setProperty('--width_pag', "210mm");
+    document.documentElement.style.setProperty('--height_pag', "297mm");
+
+    anyadirPagina();
+
+    // 1. Añadir 6 cartas
+    for (let i = 0; i < 6; i++) {
+        anyadirCarta(63, 88);
+    }
+
+    // Funciones auxiliares para el test
+    const getBorder = (id) => {
+        const el = document.getElementById('carta_' + id);
+        if (!el) return null;
+        const bw = el.style.borderWidth;
+        // Si no hay estilo inline, devolvemos el valor por defecto (4)
+        return bw ? parseFloat(bw) : 4;
+    };
+
+    const setBorder = (id, val) => {
+        // Simulamos la acción del usuario seleccionando y cambiando el valor
+        desseleccionarCartas();
+        $('#carta_' + id).addClass('carta_seleccionada');
+        cargarBarraLateralCartaSeleccionada();
+        $('#config_borde_seleccionadas').val(val).trigger('input');
+    };
+
+    // 2. Modificar el margen de la 2ª y 5ª poniéndolas a 1mm y 6mm
+    setBorder(2, 1);
+    setBorder(5, 6);
+
+    // 3. Duplicar la segunda carta (que tiene 1mm)
+    desseleccionarCartas();
+    $('#carta_2').addClass('carta_seleccionada');
+    duplicar_cartas_seleccionadas();
+
+    // Después de duplicar la 2, el orden es:
+    // 1(4), 2(1), 3(clon 1), 4(ex3, 4), 5(ex4, 4), 6(ex5, 6), 7(ex6, 4)
+
+    // 4. Comprobar ahora que la 1, 4, 5, y 7 tienen 4mm y la 2, 3 tienen 1mm y la 6 tiene 6mm
+    assertEquals(getBorder(1), 4, "[Bug Test]: Carta 1 tiene 4mm");
+    assertEquals(getBorder(2), 1, "[Bug Test]: Carta 2 tiene 1mm");
+    assertEquals(getBorder(3), 1, "[Bug Test]: Carta 3 (clon) tiene 1mm");
+    assertEquals(getBorder(4), 4, "[Bug Test]: Carta 4 tiene 4mm");
+    assertEquals(getBorder(5), 4, "[Bug Test]: Carta 5 tiene 4mm");
+    assertEquals(getBorder(6), 6, "[Bug Test]: Carta 6 tiene 6mm");
+    assertEquals(getBorder(7), 4, "[Bug Test]: Carta 7 tiene 4mm");
+}
+
 // Ejecutar todo
 try {
     // Esperar un momento para asegurar que cartas.js e inicializar() hayan terminado (async)
@@ -222,6 +284,7 @@ try {
         testPageOverflow();
         testCardDeletion();
         testDualFace();
+        testCardDuplicationBorderBug();
     }, 500);
 } catch (error) {
     if (typeof renderResult === "function") {

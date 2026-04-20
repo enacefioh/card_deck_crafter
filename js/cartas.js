@@ -1,4 +1,4 @@
-var version = "1.0.260205";
+var version = "1.0.260420";
 var num_cartas = 0;
 var num_pags = 1;
 var width_pag = 210; //mm
@@ -158,19 +158,19 @@ function cargarFuncionalidadMenuPrincipal() {
 
     //Edición
     //Seleccionar
-    $('#menu_edicion_seleccionar_todo').click(function () { 
+    $('#menu_edicion_seleccionar_todo').click(function () {
         $(".carta, .carta_trasera").addClass('carta_seleccionada');
         cargarBarraLateralCartaSeleccionada();
     });
-    $('#menu_edicion_seleccionar_todo_frontales').click(function () { 
+    $('#menu_edicion_seleccionar_todo_frontales').click(function () {
         $(".carta").addClass('carta_seleccionada');
         cargarBarraLateralCartaSeleccionada();
     });
-    $('#menu_edicion_seleccionar_todo_traseras').click(function () { 
+    $('#menu_edicion_seleccionar_todo_traseras').click(function () {
         $(".carta_trasera").addClass('carta_seleccionada');
         cargarBarraLateralCartaSeleccionada();
     });
-    $('#menu_edicion_seleccionar_nada').click(function () { 
+    $('#menu_edicion_seleccionar_nada').click(function () {
         desseleccionarCartas();
     });
     //zoom
@@ -195,8 +195,8 @@ function cargarFuncionalidadMenuPrincipal() {
 
     cargarPluginsYPlantillas();
 
-    $('#toggle_traseras').change(function() {
-        if(this.checked) {
+    $('#toggle_traseras').change(function () {
+        if (this.checked) {
             $('body').addClass('mostrar_traseras');
             redibujarTodasLasLineasTraseras();
         } else {
@@ -210,25 +210,25 @@ function dibujarLineasTrasera(num) {
     var trasera = $('#carta_trasera_' + num);
     var pagina_trasera = trasera.closest('.pagina_traseras');
     if (pagina_trasera.length === 0) return;
-    
+
     // Solo calcular si está visible
     if ($('body').hasClass('mostrar_traseras')) {
         const pos = trasera.position();
         if (!pos) return;
-        
+
         const width = trasera.outerWidth();
         const height = trasera.outerHeight();
-        
+
         const x0 = pos.left + 2;
         const y0 = pos.top + 2;
         const x1 = x0 + width - 3;
         const y1 = y0 + height - 3;
-        
+
         $('#izq_t' + num).remove();
         $('#der_t' + num).remove();
         $('#sup_t' + num).remove();
         $('#inf_t' + num).remove();
-        
+
         pagina_trasera.prepend("<div class='linea_vertical' id='izq_t" + num + "' style='left:" + x0 + "px;' />");
         pagina_trasera.prepend("<div class='linea_vertical' id='der_t" + num + "' style='left:" + x1 + "px;' />");
         pagina_trasera.prepend("<div class='linea_horizontal' id='sup_t" + num + "' style='top:" + y0 + "px;' />");
@@ -237,7 +237,7 @@ function dibujarLineasTrasera(num) {
 }
 
 function redibujarTodasLasLineasTraseras() {
-    $('.carta_trasera').each(function() {
+    $('.carta_trasera').each(function () {
         var num = $(this).attr('data-id');
         dibujarLineasTrasera(num);
     });
@@ -557,10 +557,10 @@ function cargarBarraLateralCartaSeleccionada() {
         $('#config_borde_seleccionadas').attr('placeholder', borde_cartas_mm + ' (por defecto)');
     }
 
-    $('#config_borde_seleccionadas').on('input', function() {
+    $('#config_borde_seleccionadas').on('input', function () {
         hayCambiosPendientes = true;
         var val = $(this).val();
-        cartas.each(function() {
+        cartas.each(function () {
             if (val === '') {
                 $(this).css('border-width', '');
             } else {
@@ -604,6 +604,9 @@ function cargarBarraLateralCartaSeleccionada() {
 
 }
 function vaciarTablaAtributos() {
+    if ($('#tabla_atributos').length === 0) {
+        $('body').append('<table id="tabla_atributos" style="display:none;"></table>');
+    }
     $('#tabla_atributos').empty();
     $('#tabla_atributos').html('<colgroup> <col class="col1"> <col class="col2"> </colgroup>');
 }
@@ -698,7 +701,7 @@ function anyadirCarta(width_mm, height_mm) {
     carta.append(img);
     img.attr('data-id', 'carta_fondo');
     img.attr('class', 'img carta_fondo');
-    
+
     var trasera = $('#carta_trasera_' + num_cartas);
     var img_t = $('<div>');
     trasera.append(img_t);
@@ -863,10 +866,10 @@ function bajar_cartas_seleccionadas() {
 function eliminar_cartas_seleccionadas() {
     // 1. Eliminar todas las seleccionadas
     var a_eliminar = new Set();
-    $('.carta_seleccionada').each(function() {
+    $('.carta_seleccionada').each(function () {
         a_eliminar.add($(this).attr('data-id'));
     });
-    
+
     a_eliminar.forEach(id => {
         $('#carta_' + id).remove();
         $('#carta_trasera_' + id).remove();
@@ -875,14 +878,32 @@ function eliminar_cartas_seleccionadas() {
     reordenarCartas();
     cargarBarraLateralGeneral();
 }
-function reordenarCartas() { // Quita todas las cartas y páginas y las vuelve añadir, útil cuando se elimina alguna o quedan huecos o cartas de más en alguna página
+function reordenarCartas() {
     var cartas_guardadas = [];
     var traseras_guardadas = [];
+
     $('.carta').each(function () {
-        cartas_guardadas.push($(this));
+        var $el = $(this);
+        const bw = $el[0].style.borderWidth || $el[0].style.borderTopWidth;
+        console.log("Saving card " + $el.attr('data-id') + " border: " + bw + " style: " + $el.attr('style'));
+        cartas_guardadas.push({
+            html: $el.html(),
+            class: $el.attr('class'),
+            style: $el.attr('style'),
+            bw: bw,
+            w: parseFloat($el[0].style.width) || 63,
+            h: parseFloat($el[0].style.height) || 88
+        });
     });
+
     $('.carta_trasera').each(function () {
-        traseras_guardadas.push($(this));
+        var $el = $(this);
+        traseras_guardadas.push({
+            html: $el.html(),
+            class: $el.attr('class'),
+            style: $el.attr('style'),
+            bw: $el[0].style.borderWidth || $el[0].style.borderTopWidth
+        });
     });
 
     $('.carta').remove();
@@ -894,20 +915,22 @@ function reordenarCartas() { // Quita todas las cartas y páginas y las vuelve a
     anyadirPagina();
 
     for (var i = 0; i < cartas_guardadas.length; i++) {
-        var nueva_carta = anyadirCarta(cartas_guardadas[i].css('width'), cartas_guardadas[i].css('height')); // esta función debe devolver el nuevo div.carta insertado
-        nueva_carta.html(cartas_guardadas[i].html());
-        $(nueva_carta).attr("class", $(cartas_guardadas[i]).attr('class'));
-        var w_guardada = cartas_guardadas[i].css('width');
-        var h_guardada = cartas_guardadas[i].css('height');
-        nueva_carta.css('width', w_guardada);
-        nueva_carta.css('height', h_guardada);
+        var info = cartas_guardadas[i];
+        var nueva_carta = anyadirCarta(info.w, info.h);
+        nueva_carta.html(info.html);
+        nueva_carta.attr("class", info.class);
+        nueva_carta.attr("style", info.style);
+        console.log("Restoring card " + nueva_carta.attr('data-id') + " using info.bw: " + info.bw);
+        if (info.bw) nueva_carta.css("border-width", info.bw);
+        console.log("Card " + nueva_carta.attr('data-id') + " after restore has style: " + nueva_carta.attr('style') + " and bw prop: " + nueva_carta[0].style.borderWidth);
 
         if (i < traseras_guardadas.length) {
+            var info_t = traseras_guardadas[i];
             var nueva_trasera = $('#carta_trasera_' + num_cartas);
-            nueva_trasera.html(traseras_guardadas[i].html());
-            $(nueva_trasera).attr("class", $(traseras_guardadas[i]).attr('class'));
-            nueva_trasera.css('width', w_guardada);
-            nueva_trasera.css('height', h_guardada);
+            nueva_trasera.html(info_t.html);
+            nueva_trasera.attr("class", info_t.class);
+            nueva_trasera.attr("style", info_t.style);
+            if (info_t.bw) nueva_trasera.css("border-width", info_t.bw);
         }
     }
 }
